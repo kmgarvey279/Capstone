@@ -171,3 +171,10 @@ export function nullEnemy(enemyIdToUpdate) {
     enemyId: enemyIdToUpdate
   }
 }
+
+//Doors
+
+export function 
+
+
+//Blocks
