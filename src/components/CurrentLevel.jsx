@@ -19,11 +19,10 @@ function CurrentLevel(props){
         div#inner {
           position: relative;
           z-index: 0;
-          border: solid black 3px;
-          width: 60px;
+          width: 50px;
           max-width: 50px;
           min-width: 50px;
-          height: 60px;
+          height: 50px;
           max-height: 50px;
           min-width: 50px;
           vertical-align: top;
@@ -39,7 +38,9 @@ function CurrentLevel(props){
             key={squareId}
             squareId={parseInt(squareId)}
             tileImage={square.tileImage}
-            sprite={square.sprite}/>
+            sprite={square.sprite}
+            spriteIn={square.spriteIn}
+            spriteOut={square.spriteOut}/>
         </div>;
       })}
     </div>

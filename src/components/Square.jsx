@@ -3,19 +3,198 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 function Square(props){
-  return (
-    <div>
-      <style jsx>{`
-        div#sprite{
-          z-index: 1;
-          position: absolute;
-        }
-      `}</style>
-      <div id="sprite">{props.sprite}</div>
-      <div id="tile">{props.tileImage}</div>
-    </div>
-  )
-}
+  if (props.spriteOut === 'north') {
+    return (
+      <div>
+        <style jsx>{`
+          @keyframes move {
+            0%  {bottom: 0px;}
+            25%  {bottom: 5px;}
+            50%  {bottom: 10px;}
+            75%  {bottom: 15px;}
+          }
+          div#sprite{
+            bottom: 15px;
+            z-index: 1;
+            position: absolute;
+            animation-name: move;
+            animation-duration: .5s;
+          }
+        `}</style>
+        <div id="sprite">{props.sprite}</div>
+        <div id="tile">{props.tileImage}</div>
+      </div>
+    )
+  } else if (props.spriteOut === 'east') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              0%  {left: -0px;}
+              25%  {left: 5px;}
+              50%  {left: -10px;}
+              75%  {left: -15px;}
+            }
+            div#sprite{
+              bottom: 15px;
+              z-index: 1;
+              position: absolute;
+              animation-name: move;
+              animation-duration: .5s;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    } else if (props.spriteOut === 'south') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              0%  {bottom: 15px;}
+              25%  {bottom: 20px;}
+              50%  {bottom: 25px;}
+              75%  {bottom: 30px;}
+            }
+            div#sprite{
+              bottom: 15px;
+              z-index: 1;
+              position: absolute;
+              animation-name: move;
+              animation-duration: .5s;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    } else if (props.spriteOut === 'west') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              0%  {left: 0px;}
+              25%  {left: 5px;}
+              50%  {left: 10px;}
+              75%  {left: 15px;}
+            }
+            div#sprite{
+              bottom: 15px;
+              z-index: 1;
+              position: absolute;
+              animation-name: move;
+              animation-duration: .5s;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+  } else if (props.spriteIn === 'north') {
+    return (
+      <div>
+        <style jsx>{`
+          @keyframes move {
+            0%  {bottom: 0px;}
+            25%  {bottom: 5px;}
+            50%  {bottom: 10px;}
+            75%  {bottom: 15px;}
+          }
+          div#sprite{
+            bottom: 15px;
+            z-index: 1;
+            position: absolute;
+            animation-name: move;
+            animation-duration: .5s;
+          }
+        `}</style>
+        <div id="sprite">{props.sprite}</div>
+        <div id="tile">{props.tileImage}</div>
+      </div>
+    )
+  } else if (props.spriteIn === 'east') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              0%  {left: -15px;}
+              25%  {left: -10px;}
+              50%  {left: -5px;}
+              75%  {left: 0px;}
+            }
+            div#sprite{
+              bottom: 15px;
+              z-index: 1;
+              position: absolute;
+              animation-name: move;
+              animation-duration: .5s;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    } else if (props.spriteIn === 'south') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              0%  {bottom: 30px;}
+              25%  {bottom: 25px;}
+              50%  {bottom: 20px;}
+              75%  {bottom: 15px;}
+            }
+            div#sprite{
+              bottom: 15px;
+              z-index: 1;
+              position: absolute;
+              animation-name: move;
+              animation-duration: .5s;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    } else if (props.spriteIn === 'west') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              0%  {left: 15px;}
+              25%  {left: 10px;}
+              50%  {left: 5px;}
+              75%  {left: 0px;}
+            }
+            div#sprite{
+              bottom: 15px;
+              z-index: 1;
+              position: absolute;
+              animation-name: move;
+              animation-duration: .5s;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+  } else {
+    return (
+      <div>
+        <style jsx>{`
+          div#sprite{
+            z-index: 1;
+            position: absolute;
+            bottom: 15px;
+          }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    }
+  }
 
 Square.propTypes = {
   value: PropTypes.string.isRequired,
@@ -25,6 +204,8 @@ Square.propTypes = {
   squareId: PropTypes.number.isRequired,
   tileImage: PropTypes.object.isRequired,
   sprite: PropTypes.object,
+  spriteIn: PropTypes.string,
+  spriteOut: PropTypes.string
 };
 
 export default connect()(Square);

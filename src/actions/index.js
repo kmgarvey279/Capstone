@@ -6,7 +6,7 @@ export function nullLevel() {
     type: types.NULL_LEVEL,
   };
 }
-export function addSquare(newSquareId, newValue, newIsYou, newIsEnemy, newIsProjectile, newImage, newSprite) {
+export function addSquare(newSquareId, newValue, newIsYou, newIsEnemy, newIsProjectile, newImage, newSprite, newSpriteIn) {
   return {
     type: types.ADD_SQUARE,
     squareId: newSquareId,
@@ -15,7 +15,8 @@ export function addSquare(newSquareId, newValue, newIsYou, newIsEnemy, newIsProj
     isEnemy: newIsEnemy,
     isProjectile: newIsProjectile,
     tileImage: newImage,
-    sprite: newSprite
+    sprite: newSprite,
+    spriteIn: newSpriteIn
   };
 }
 export function updateIsYou(squareId, newBool) {
@@ -47,6 +48,20 @@ export function updateSprite(squareIdToUpdate, newSprite) {
     squareId: squareIdToUpdate,
     sprite: newSprite
   };
+}
+export function updateSpriteIn(squareIdToUpdate, newSpriteIn) {
+  return {
+    type: types.UPDATE_SPRITEIN,
+    squareId: squareIdToUpdate,
+    spriteIn: newSpriteIn
+  }
+}
+export function updateSpriteOut(squareIdToUpdate, newSpriteOut) {
+  return {
+    type: types.UPDATE_SPRITEOUT,
+    squareId: squareIdToUpdate,
+    spriteOut: newSpriteOut
+  }
 }
 // //GAME
 export function changeGameState(newGameState) {

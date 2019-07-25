@@ -4,7 +4,7 @@ const { types } = constants;
 const levelReducer = (state = {}, action) => {
   let newState;
   let newSquare;
-  const { squareId, value, isYou, isEnemy, isProjectile, tileImage, sprite} = action;
+  const { squareId, value, isYou, isEnemy, isProjectile, tileImage, sprite, spriteIn, spriteOut} = action;
 
   switch (action.type) {
     case types.NULL_LEVEL:
@@ -19,7 +19,9 @@ const levelReducer = (state = {}, action) => {
             isEnemy: isEnemy,
             isProjectile: isProjectile,
             tileImage: tileImage,
-            sprite: sprite
+            sprite: sprite,
+            spriteIn: spriteIn,
+            spriteOut: spriteOut
           }
         });
         return newState;
@@ -43,6 +45,18 @@ const levelReducer = (state = {}, action) => {
         return newState;
     case types.UPDATE_SPRITE:
       newSquare = Object.assign({}, state[squareId], {sprite});
+      newState = Object.assign({}, state, {
+        [squareId]: newSquare
+      });
+        return newState;
+    case types.UPDATE_SPRITEIN:
+      newSquare = Object.assign({}, state[squareId], {spriteIn});
+      newState = Object.assign({}, state, {
+        [squareId]: newSquare
+      });
+        return newState;
+    case types.UPDATE_SPRITEOUT:
+      newSquare = Object.assign({}, state[squareId], {spriteOut});
       newState = Object.assign({}, state, {
         [squareId]: newSquare
       });

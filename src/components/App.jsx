@@ -140,8 +140,9 @@ class App extends React.Component {
       sprite = this.props.enemies[newEnemyId].sprites.move['south'];
       squareIsEnemy = newEnemyId;
     }
-    console.log(thisSquareId)
-    dispatch(actions.addSquare(thisSquareId, squareValue, squareIsYou, squareIsEnemy, squareIsProjectile, squareImage, sprite));
+    let spriteIn = '';
+    let spriteOut = '';
+    dispatch(actions.addSquare(thisSquareId, squareValue, squareIsYou, squareIsEnemy, squareIsProjectile, squareImage, sprite, spriteIn, spriteOut));
   }
 
 //Handle Movement
@@ -159,14 +160,21 @@ class App extends React.Component {
       //if move is legal...
       if (result === 'moved'){
         //null previous location
-        dispatch(actions.updateSprite(originalLocation, ''));
-        dispatch(actions.updateIsYou(originalLocation, false));
+        dispatch(actions.updateSpriteOut(originalLocation, direction));
+        let spriteTimer = setTimeout(() =>
+          this.clearSprite(originalLocation),
+          500
+        );
         //update location
         this.handleUpdatePlayerLocation(canMove, direction);
       }
     }
   }
-
+  clearSprite(originalLocation) {
+    const { dispatch } = this.props;
+    dispatch(actions.updateSprite(originalLocation, ''));
+    dispatch(actions.updateIsYou(originalLocation, false));
+  }
   attemptMove(direction, originalLocation) {
     let newLocation;
     if(direction == "north") {
@@ -210,6 +218,7 @@ class App extends React.Component {
       dispatch(actions.updateIsYou(location, true));
       let newSprite = this.props.player.sprites.stand[direction];
       dispatch(actions.updateSprite(location, newSprite));
+      dispatch(actions.updateSpriteIn(location, direction));
       //update player location to match
       dispatch(actions.updatePlayerLocation(location));
     }

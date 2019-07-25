@@ -63,10 +63,10 @@ const levels = {
 
 const playerSpriteList = {
   stand: {
-    north: <img id="player" src={playerStandNorth} width="40" height="40"/>,
-    east: <img id="player" src={playerStandEast} width="40" height="40"/>,
-    south: <img id="player" src={playerStandSouth} width="40" height="40"/>,
-    west: <img id="player" src={playerStandWest} width="40" height="40"/>,
+    north: <img id="player" src={playerStandNorth} width="50" height="50"/>,
+    east: <img id="player" src={playerStandEast} width="50" height="50"/>,
+    south: <img id="player" src={playerStandSouth} width="50" height="50"/>,
+    west: <img id="player" src={playerStandWest} width="50" height="50"/>,
   },
   walk: {
     north: <img id="player" src={playerWalkNorth} width="50" height="50"/>,
@@ -94,10 +94,10 @@ const enemySpriteList = {
   //Blob Type
   1: {
     move: {
-      north: <img id="player" src={blobNorth} width="40" height="40"/>,
-      east: <img id="player" src={blobEast} width="40" height="40"/>,
-      south: <img id="player" src={blobSouth} width="40" height="40"/>,
-      west: <img id="player" src={blobWest} width="40" height="40"/>
+      north: <img id="player" src={blobNorth} width="50" height="50"/>,
+      east: <img id="player" src={blobEast} width="50" height="50"/>,
+      south: <img id="player" src={blobSouth} width="50" height="50"/>,
+      west: <img id="player" src={blobWest} width="50" height="50"/>
     },
     knockback: {
       north: <img id="player" src={blobNorth} width="40" height="40"/>,
