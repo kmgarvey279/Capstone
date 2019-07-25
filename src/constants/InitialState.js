@@ -63,16 +63,16 @@ const levels = {
 
 const playerSpriteList = {
   stand: {
-    north: <img id="player" src={playerStandNorth} width="50" height="50"/>,
-    east: <img id="player" src={playerStandEast} width="50" height="50"/>,
-    south: <img id="player" src={playerStandSouth} width="50" height="50"/>,
-    west: <img id="player" src={playerStandWest} width="50" height="50"/>,
+    north: <img id="player" src={playerStandNorth} width="55" height="55"/>,
+    east: <img id="player" src={playerStandEast} width="55" height="55"/>,
+    south: <img id="player" src={playerStandSouth} width="55" height="55"/>,
+    west: <img id="player" src={playerStandWest} width="55" height="55"/>,
   },
   walk: {
-    north: <img id="player" src={playerWalkNorth} width="50" height="50"/>,
-    east: <img id="player" src={playerWalkEast} width="50" height="50"/>,
-    south: <img id="player" src={playerWalkSouth} width="50" height="50"/>,
-    west: <img id="player" src={playerWalkWest} width="50" height="50"/>,
+    north: <img id="player" src={playerWalkNorth} width="50" height="55"/>,
+    east: <img id="player" src={playerWalkEast} width="50" height="55"/>,
+    south: <img id="player" src={playerWalkSouth} width="50" height="55"/>,
+    west: <img id="player" src={playerWalkWest} width="50" height="55"/>,
   },
   knockback: {
     north: <img id="player" src={playerStandNorth} width="50" height="50"/>,
@@ -81,10 +81,10 @@ const playerSpriteList = {
     west: <img id="player" src={playerStandWest} width="50" height="50"/>,
   },
   attack: {
-    north: <img id="player" src={playerAttackNorth} width="50" height="50"/>,
-    east: <img id="player" src={playerAttackEast} width="50" height="50"/>,
-    south: <img id="player" src={playerAttackSouth} width="50" height="50"/>,
-    west: <img id="player" src={playerAttackWest} width="50" height="50"/>,
+    north: <img id="player" src={playerAttackNorth} width="50" height="50" />,
+    east: <img id="player" src={playerAttackEast} width="50" height="50" />,
+    south: <img id="player" src={playerAttackSouth} width="50" height="50" />,
+    west: <img id="player" src={playerAttackWest} width="50" height="50" />,
   },
   fall: <img id="player" src={playerStandEast} width="50" height="50"/>,
   victory: <img id="player" src={playerStandEast} width="50" height="50"/>
@@ -178,7 +178,8 @@ export const initialState = {
     score: 0,
     weaponById: weapons,
     levelById: levels,
-    enemyById: enemies
+    enemyById: enemies,
+    coolDown: false
   },
   player: {
     health: 100,

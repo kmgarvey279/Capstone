@@ -3,7 +3,7 @@ const { initialState, types } = constants;
 
 const gameReducer = (state = initialState.game, action) => {
   let newState;
-  const { gameState } = action;
+  const { gameState, coolDown, levelId } = action;
 
   switch (action.type) {
     case types.CHANGE_GAMESTATE:
@@ -14,6 +14,11 @@ const gameReducer = (state = initialState.game, action) => {
     case types.LEVELID_UP:
       newState = Object.assign({}, state, {
         levelId: levelId
+      });
+      return newState;
+    case types.TOGGLE_COOLDOWN:
+      newState = Object.assign({}, state, {
+        coolDown: coolDown
       });
       return newState;
   default:
