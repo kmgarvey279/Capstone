@@ -34,11 +34,11 @@ export function updateIsEnemy(squareIdToUpdate, enemyId) {
     }
 }
 
-export function updateIsProjectile(squareIdToUpdate, newBool) {
+export function updateIsProjectile(squareIdToUpdate, newProjectileId) {
   return {
     type: types.UPDATE_ISPROJECTILE,
     squareId: squareIdToUpdate,
-    isProjectile: newBool
+    isProjectile: newProjectileId
   };
 }
 export function updateSprite(squareIdToUpdate, newSprite) {
@@ -63,23 +63,26 @@ export function levelIdUp(newLevelId) {
 }
 
 // //PROJECTILE
-export function createProjectile(newDirection, newLocation, newTarget) {
+export function createProjectile(newProjectileId, newDirection, newLocation, newTarget) {
   return {
     type: types.CREATE_PROJECTILE,
+    projectileId: newProjectileId,
     direction: newDirection,
     location: newLocation,
     target: newTarget
   };
 }
-export function updateProjectileLocation(newLocation) {
+export function updateProjectileLocation(newProjectileId, newLocation) {
   return {
     type: types.UPDATE_PROJECTILE_LOCATION,
+    projectileId: newProjectileId,
     location: newLocation
   };
 }
-export function nullProjectile() {
+export function nullProjectile(projectileId) {
   return {
-    type: types.NULL_PROJECTILE
+    type: types.NULL_PROJECTILE,
+    projectileId: projectileId
   };
 }
 // //PLAYER

@@ -14,6 +14,14 @@ import lava from '../assets/images/lava.png';
 import stairs from '../assets/images/stairs.png';
 import wall from '../assets/images/wall.jpeg';
 import empty from '../assets/images/tile.png';
+import wallCorner1 from '../assets/images/level/wall-corner1.png';
+import wallCorner2 from '../assets/images/level/wall-corner2.png';
+import wallCorner3 from '../assets/images/level/wall-corner3.png';
+import wallCorner4 from '../assets/images/level/wall-corner4.png';
+import wallTop from '../assets/images/level/wall-top.png';
+import wallBottom from '../assets/images/level/wall-bottom.png';
+import wallLeft from '../assets/images/level/wall-left.png';
+import wallRight from '../assets/images/level/wall-right.png';
 
 class App extends React.Component {
 
@@ -100,7 +108,25 @@ class App extends React.Component {
     } else if (squareValue == 'L') {
       squareImage = <img id="tile" src={lava} weight="50" height="50" />;
     } else if (squareValue == 'W') {
-      squareImage = <img id="tile" src={wall} weight="50" height="50" />;
+      if (thisSquareId == 1) {
+        squareImage = <img id="tile" src={wallCorner1} weight="50" height="50" />;
+      } else if (thisSquareId === 12) {
+        squareImage = <img id="tile" src={wallCorner3} weight="50" height="50" />;
+      } else if (thisSquareId === 133) {
+        squareImage = <img id="tile" src={wallCorner2} weight="50" height="50" />;
+      } else if (thisSquareId === 144) {
+        squareImage = <img id="tile" src={wallCorner4} weight="50" height="50" />;
+      } else if (thisSquareId %12 === 0) {
+        squareImage = <img id="tile" src={wallBottom} weight="50" height="50" />;
+      } else if (thisSquareId < 12) {
+        squareImage = <img id="tile" src={wallLeft} weight="50" height="50" />;
+      } else if (thisSquareId >= 131) {
+        squareImage = <img id="tile" src={wallRight} weight="50" height="50" />;
+      } else if ((thisSquareId - 1) %12 === 0) {
+        squareImage = <img id="tile" src={wallTop} weight="50" height="50" />;
+      } else {
+        squareImage = <img id="tile" src={wall} weight="50" height="50" />;
+      }
     } else {
       squareImage = <img id="tile" src={empty} weight="50" height="50" />;
     }
@@ -114,18 +140,19 @@ class App extends React.Component {
       sprite = this.props.enemies[newEnemyId].sprites.move['south'];
       squareIsEnemy = newEnemyId;
     }
+    console.log(thisSquareId)
     dispatch(actions.addSquare(thisSquareId, squareValue, squareIsYou, squareIsEnemy, squareIsProjectile, squareImage, sprite));
   }
 
 //Handle Movement
   move(direction){
     if (this.props.game.gameState === 'active') {
-      let originalLocation = this.props.player.location
+      let originalLocation = this.props.player.location;
       const { dispatch } = this.props;
       //update direction
       dispatch(actions.updatePlayerDirection(direction));
       let newSprite = this.props.player.sprites.walk[direction];
-      dispatch(actions.updateSprite(this.props.player.location, newSprite));
+      dispatch(actions.updateSprite(originalLocation, newSprite));
       //check if move is legal, if not return original location
       let canMove = this.attemptMove(direction, originalLocation);
       let result = this.squareCheck(canMove);
@@ -144,28 +171,29 @@ class App extends React.Component {
     let newLocation;
     if(direction == "north") {
       newLocation = originalLocation - 1;
-      if(newLocation >= 0 && newLocation % 10 !== 0 && this.props.currentLevel[newLocation].value !== 'W') {
+      if(this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
         return originalLocation;
       }
     } else if (direction == "east") {
-      newLocation = originalLocation + 10;
-      if(newLocation <= 100 && this.props.currentLevel[newLocation].value !== 'W') {
+      newLocation = originalLocation + 12;
+      if(this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
         return originalLocation;
       }
     } else if (direction == "south") {
       newLocation = originalLocation + 1;
-      if(newLocation > 0 && newLocation <= 100 && originalLocation % 10 !== 0 && this.props.currentLevel[newLocation].value !== 'W') {
+      if(this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
+        alert(originalLocation)
         return originalLocation;
       }
     } else if (direction == "west") {
-      newLocation = originalLocation - 10;
-      if(newLocation >= 0 && this.props.currentLevel[newLocation].value !== 'W') {
+      newLocation = originalLocation - 12;
+      if(this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
         return originalLocation;
@@ -224,20 +252,22 @@ class App extends React.Component {
     let newHealth = this.props.player.health -= 10;
     dispatch(actions.updatePlayerHealth(newHealth));
     //handle knockback
-    let location = this.props.player.location;
-    let direction = this.props.player.direction;
-    let newSprite = this.props.player.sprites.knockback[direction];
-    dispatch(actions.updateSprite(location, newSprite));
-    let canMove = this.attemptMove(knockBackDirection, location)
-    if (canMove !== location) {
-      //null previous location
-      dispatch(actions.updateSprite(location, ''));
-      dispatch(actions.updateIsYou(location, false));
-      //update location
-      this.handleUpdatePlayerLocation(canMove, direction);
-    } else {
-      newSprite = this.props.player.sprites.stand[direction];
+    for (let i = 0; i < 2; i++) {
+      let location = this.props.player.location;
+      let direction = this.props.player.direction;
+      let newSprite = this.props.player.sprites.knockback[direction];
       dispatch(actions.updateSprite(location, newSprite));
+      let canMove = this.attemptMove(knockBackDirection, location)
+      if (canMove !== location) {
+        //null previous location
+        dispatch(actions.updateSprite(location, ''));
+        dispatch(actions.updateIsYou(location, false));
+        //update location
+        this.handleUpdatePlayerLocation(canMove, direction);
+      } else {
+        newSprite = this.props.player.sprites.stand[direction];
+        dispatch(actions.updateSprite(location, newSprite));
+      }
     }
   }
 
@@ -249,7 +279,7 @@ class App extends React.Component {
     dispatch(actions.createEnemy(enemyId, thisEnemy.kind, thisEnemy.sprites, thisEnemy.health, locationId));
     let enemyTimer = setInterval(() =>
       this.enemyMove(enemyId),
-      1000
+      2000
     );
     return enemyId;
   }
@@ -320,28 +350,30 @@ class App extends React.Component {
     }
   }
 
-  enemyKnockBack(location, knockBackDirection, enemyId) {
+  enemyKnockBack(knockBackDirection, enemyId) {
+    alert("hit!")
     const { dispatch } = this.props;
+    let location = this.props.enemies[enemyId].location
     //take damage
     let newHealth = this.props.enemies[enemyId].health -= 10;
     dispatch(actions.updateEnemyHealth(enemyId, newHealth));
     //handle knockback
-    let direction = this.props.enemies[enemyId].direction;
-    let newSprite = this.props.enemies[enemyId].sprites.knockback[direction];
-    dispatch(actions.updateSprite(location, newSprite));
-    let canMove = this.attemptMove(knockBackDirection, location)
-    if (canMove !== location) {
-      //null previous location
-      dispatch(actions.updateSprite(location, ''));
-      dispatch(actions.updateIsEnemy(location, ''));
-      //update location
-      this.handleUpdateEnemyLocation(enemyId, canMove, direction);
-    } else {
-      newSprite = this.props.enemies[enemyId].sprites.move[direction];
+    for (let i = 0; i < 2; i++) {
+      let direction = this.props.enemies[enemyId].direction;
+      let newSprite = this.props.enemies[enemyId].sprites.knockback[direction];
       dispatch(actions.updateSprite(location, newSprite));
+      let canMove = this.attemptMove(knockBackDirection, location)
+      if (canMove !== location) {
+        //null previous location + update location
+        dispatch(actions.updateSprite(location, ''));
+        dispatch(actions.updateIsEnemy(location, ''));
+        this.handleUpdateEnemyLocation(enemyId, canMove, direction);
+      } else {
+        newSprite = this.props.enemies[enemyId].sprites.move[direction];
+        dispatch(actions.updateSprite(location, newSprite));
+      }
     }
   }
-
   // moveVertical()
   //
   // movePursue()
@@ -351,11 +383,11 @@ class App extends React.Component {
     let playerLocation = this.props.player.location
     if (location - 1 === playerLocation) {
       return 'north'
-    } else if (location + 10 == playerLocation) {
+    } else if (location + 12 == playerLocation) {
       return 'east';
     } else if (location + 1 == playerLocation) {
       return 'south';
-    } else if (location -10 == playerLocation) {
+    } else if (location -12 == playerLocation) {
       return 'west';
     } else {
       return false;
@@ -364,16 +396,13 @@ class App extends React.Component {
 
 //Handle Projectiles
   attack() {
-    if (this.props.game.gameState === 'active' && this.props.projectile.location === undefined) {
-      this.handleCreateProjectile();
-      this.projectileTimer = setInterval(() =>
-        this.handleProjectile(),
-        200
-      );
+    if (this.props.game.gameState === 'active') {
+      let projectileId = v4(); 
+      this.handleCreateProjectile(projectileId);
     }
   }
 
-  handleCreateProjectile() {
+  handleCreateProjectile(projectileId) {
     let direction = this.props.player.direction;
     let location = this.props.player.location;
     let range = this.props.player.weapon.range;
@@ -382,54 +411,76 @@ class App extends React.Component {
       location -= 1;
       target = location - (1 * range);
     } else if (direction == 'east') {
-      location += 10;
-      target = location + (10 * range);
+      location += 12;
+      target = location + (12 * range);
     } else if (direction == 'south') {
       location += 1;
       target = location + (1 * range);
     } else if (direction == 'west') {
-      location -= 10;
-      target = location - (10 * range);
+      location -= 12;
+      target = location - (12 * range);
     }
     const { dispatch } = this.props;
-    dispatch(actions.createProjectile(direction, location, target));
-    dispatch(actions.updateIsProjectile(location, true));
+    dispatch(actions.createProjectile(projectileId, direction, location, target));
+    this.projectileTimer = setInterval(() =>
+      this.handleProjectile(projectileId),
+      200
+    );
+    dispatch(actions.updateIsProjectile(location, projectileId));
     let newSprite = this.props.player.weapon.sprites[direction];
     dispatch(actions.updateSprite(location, newSprite));
+    let enemyCheck = this.props.currentLevel[location].isEnemy
+      if (enemyCheck !== '') {
+        this.enemyKnockBack(direction, enemyCheck);
+        this.destroyProjectile(projectileId);
+      }  
   }
 
-  handleProjectile() {
+  handleProjectile(projectileId) {
     if (this.props.game.gameState === 'active') {
-      let location = this.props.projectile.location;
-      let direction = this.props.projectile.direction;
-      let newLocation = this.attemptMove(direction, location);
       const { dispatch } = this.props;
-      //if projectile stops or reaches its max range
-      let enemyCheck = this.props.currentLevel[newLocation].isEnemy;
-      if (enemyCheck !=='') {
-        alert("location: " + location + "direction" + direction + "enemyCheck" + enemyCheck )
-        this.enemyKnockBack(location, direction, enemyCheck);
-      }
-      if (newLocation === location || newLocation === this.props.projectile.target || enemyCheck !== '') {
-        //null this projectile
-        dispatch(actions.nullProjectile());
-        //null projectile timer
-        clearInterval(this.projectileTimer)
-        //null projectile sprite on square
-        dispatch(actions.updateSprite(location, ''));
-        dispatch(actions.updateIsProjectile(location, false));
+      let location = this.props.projectiles[projectileId].location;
+      //void projectile if @ max range 
+      if (location === this.props.projectiles[projectileId].target) {
+        this.destroyProjectile(projectileId);
       } else {
-        //update location property of projectile
-        dispatch(actions.updateProjectileLocation(newLocation));
-        //null projectile on previous square
-        dispatch(actions.updateIsProjectile(location, false));
-        dispatch(actions.updateSprite(location, ''));
-        //update new one
-        dispatch(actions.updateIsProjectile(newLocation, true));
-        let newSprite = this.props.player.weapon.sprites[direction];
-        dispatch(actions.updateSprite(newLocation, newSprite));
+        let direction = this.props.projectiles[projectileId].direction;
+        let newLocation = this.attemptMove(direction, location);
+        let enemyCheck = this.props.currentLevel[newLocation].isEnemy;
+        //void projectile if it cannot continue
+        if (location === newLocation) {
+          this.destroyProjectile(projectileId);
+        //damage enemy and void projectile if it hits
+        } else if (enemyCheck !=='') {
+          this.enemyKnockBack(direction, enemyCheck);
+          this.destroyProjectile(projectileId);
+        //otherwise move the projectile  
+        } else {
+          alert(newLocation)
+          this.moveProjectile(projectileId, newLocation);
+        }
       }
     }
+  }
+  
+  moveProjectile(projectileId, newLocation) {
+    const { dispatch } = this.props;
+    let location = this.props.projectiles[projectileId].location;
+    dispatch(actions.updateIsProjectile(location, ''));
+    dispatch(actions.updateSprite(location, ''));
+    dispatch(actions.updateIsProjectile(newLocation, projectileId));
+    let newSprite = this.props.player.weapon.sprites[this.props.projectiles[projectileId].direction];
+    dispatch(actions.updateSprite(newLocation, newSprite));
+    dispatch(actions.updateProjectileLocation(projectileId, newLocation));
+  }
+  
+  destroyProjectile(projectileId) {
+    const { dispatch } = this.props;
+    let location = this.props.projectiles[projectileId].location;
+    dispatch(actions.updateSprite(location, ''));
+    dispatch(actions.updateIsProjectile(location, ''));
+    dispatch(actions.nullProjectile(projectileId));
+    clearInterval(this.projectileTimer);
   }
 
   render(){
@@ -440,7 +491,7 @@ class App extends React.Component {
           <Route exact path='/game' render={()=><Game
             currentLevel={this.props.currentLevel}
             player={this.props.player}
-            projectile={this.props.projectile}
+            projectiles={this.props.projectiles}
             game={this.props.game} />} />
       </div>
     );
@@ -451,7 +502,7 @@ App.propTypes = {
   currentLevel: PropTypes.object,
   game: PropTypes.object,
   player: PropTypes.object,
-  projectile: PropTypes.object,
+  projectiles: PropTypes.object,
   enemies: PropTypes.object
 };
 
@@ -460,7 +511,7 @@ const mapStateToProps = state => {
     currentLevel: state.currentLevel,
     game: state.game,
     player: state.player,
-    projectile: state.projectile,
+    projectiles: state.projectiles,
     enemies: state.enemies
   }
 };

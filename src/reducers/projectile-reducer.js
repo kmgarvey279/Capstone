@@ -3,24 +3,31 @@ const { initialState, types } = constants;
 
 const projectileReducer = (state = {}, action) => {
   let newState;
-  const { location, direction, target } = action;
+  let newProjectile;
+  const { projectileId, location, direction, target } = action;
   
   switch (action.type) {
     case types.CREATE_PROJECTILE:
-        newState = Object.assign({}, state, {
+      newState = Object.assign({}, state, {
+        [projectileId]: {
+          projectileId: projectileId,
           location: location,
           direction: direction,
           target: target
-        });
-        return newState;
+        }
+      });
+      return newState;
     case types.UPDATE_PROJECTILE_LOCATION:
-        newState = Object.assign({}, state, {
-          location: location
-        });
-        return newState;
+      newProjectile = Object.assign({}, state[projectileId], {location});
+      newState = Object.assign({}, state, {
+        [projectileId]: newProjectile
+      });
+      return newState;
     case types.NULL_PROJECTILE:
-        newState = {}
-        return newState;
+      newState = Object.assign({}, state, {
+        [projectileId]: {}
+      });
+      return newState;
   default:
     return state;
   }

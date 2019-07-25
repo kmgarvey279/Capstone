@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   player: playerReducer,
   currentLevel: levelReducer,
   game: gameReducer,
-  projectile: projectileReducer,
+  projectiles: projectileReducer,
   enemies: enemyReducer
 });
 
