@@ -7,18 +7,19 @@ function CurrentLevel(props){
     <div id="outer">
       <style jsx>{`
         div#outer {
+          margin-top: 15px;
           margin-left: auto;
           margin-right: auto;
           -webkit-column-count: 12;
           -moz-column-count: 12;
           column-count: 12;
           column-gap: 0px;
-          width: 600px;
-          height: 620px;
-          max-height: 620px;
-          min-height: 620px;
-          max-width: 600px;
-          min-width: 600px;
+          width: 620px;
+          height: 640px;
+          max-height: 640px;
+          min-height: 640px;
+          max-width: 620px;
+          min-width: 620px;
         }
         div#inner {
           position: relative;
@@ -26,9 +27,9 @@ function CurrentLevel(props){
           width: 60px;
           max-width: 60px;
           min-width: 60px;
-          height: 50px;
-          max-height: 50px;
-          min-height: 50px;
+          height: 52px;
+          max-height: 52px;
+          min-height: 52px;
           vertical-align: top;
           display: inline-block;
         }

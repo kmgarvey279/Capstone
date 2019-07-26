@@ -11,6 +11,7 @@ import playerAttackNorth from '../../assets/images/player/playerAttackNorth.png'
 import playerAttackEast from '../../assets/images/player/playerAttackEast.png';
 import playerAttackSouth from '../../assets/images/player/playerAttackSouth.png';
 import playerAttackWest from '../../assets/images/player/playerAttackWest.png';
+import taser from '../../assets/images/projectiles/taser.png';
 
 //Constants
 export const UPDATE_PLAYER_HEALTH = "UPDATE_PLAYER_HEALTH";
@@ -38,37 +39,70 @@ export function updatePlayerDirection(newDirection) {
 }
 
 //Initial State
-const playerSpriteList = {
-  stand: {
-    north: <img id="player" src={playerStandNorth} width="55" height="55"/>,
-    east: <img id="player" src={playerStandEast} width="55" height="55"/>,
-    south: <img id="player" src={playerStandSouth} width="55" height="55"/>,
-    west: <img id="player" src={playerStandWest} width="55" height="55"/>,
-  },
-  walk: {
-    north: <img id="player" src={playerWalkNorth} width="50" height="55"/>,
-    east: <img id="player" src={playerWalkEast} width="50" height="55"/>,
-    south: <img id="player" src={playerWalkSouth} width="50" height="55"/>,
-    west: <img id="player" src={playerWalkWest} width="50" height="55"/>,
-  },
-  knockback: {
-    north: <img id="player" src={playerStandNorth} width="50" height="50"/>,
-    east: <img id="player" src={playerStandEast} width="50" height="50"/>,
-    south: <img id="player" src={playerStandSouth} width="50" height="50"/>,
-    west: <img id="player" src={playerStandWest} width="50" height="50"/>,
-  },
-  attack: {
-    north: <img id="player" src={playerAttackNorth} width="50" height="50" />,
-    east: <img id="player" src={playerAttackEast} width="50" height="50" />,
-    south: <img id="player" src={playerAttackSouth} width="50" height="50" />,
-    west: <img id="player" src={playerAttackWest} width="50" height="50" />,
-  },
-  fall: <img id="player" src={playerStandEast} width="50" height="50"/>,
-  victory: <img id="player" src={playerStandEast} width="50" height="50"/>
-};
+const initialState = {
+    health: 100,
+    direction: 'north',
+    location: null,
+    sprites: {
+      stand: {
+        north: <img id="player" src={playerStandNorth} width="55" height="55"/>,
+        east: <img id="player" src={playerStandEast} width="55" height="55"/>,
+        south: <img id="player" src={playerStandSouth} width="55" height="55"/>,
+        west: <img id="player" src={playerStandWest} width="55" height="55"/>,
+      },
+      walk: {
+        north: <img id="player" src={playerWalkNorth} width="50" height="55"/>,
+        east: <img id="player" src={playerWalkEast} width="50" height="55"/>,
+        south: <img id="player" src={playerWalkSouth} width="50" height="55"/>,
+        west: <img id="player" src={playerWalkWest} width="50" height="55"/>,
+      },
+      knockback: {
+        north: <img id="player" src={playerStandNorth} width="50" height="50"/>,
+        east: <img id="player" src={playerStandEast} width="50" height="50"/>,
+        south: <img id="player" src={playerStandSouth} width="50" height="50"/>,
+        west: <img id="player" src={playerStandWest} width="50" height="50"/>,
+      },
+      attack: {
+        north: <img id="player" src={playerAttackNorth} width="50" height="50" />,
+        east: <img id="player" src={playerAttackEast} width="50" height="50" />,
+        south: <img id="player" src={playerAttackSouth} width="50" height="50" />,
+        west: <img id="player" src={playerAttackWest} width="50" height="50" />,
+      },
+      fall: <img id="player" src={playerStandEast} width="50" height="50"/>,
+      victory: <img id="player" src={playerStandEast} width="50" height="50"/>
+    },
+    currentWeapon: 1,
+    weapons: {
+      1: {
+        id: 1,
+        name: 'Taser Gun',
+        range: 3,
+        sprites: {
+          north: <img id="player" src={taser} width="50" height="50"/>,
+          west: <img id="player" src={taser} width="50" height="50"/>,
+          east: <img id="player" src={taser} width="50" height="50"/>,
+          south: <img id="player" src={taser} width="50" height="50"/>,
+          burst: <img id="player" src={taser} width="50" height="50"/>,
+          icon: <img id="player" src={taser} width="50" height="50"/>
+        }
+      },
+      2: {
+        id: 2,
+        name: 'Flamethrower',
+        range: 4,
+        sprites: {}
+      },
+      3: {
+        id: 3,
+        name: 'Laser',
+        range: 7,
+        sprites: {}
+      }
+    }
+  };
 
 //Reducer
-const playerReducer = (state = initialState.player, action) => {
+export default function playerReducer(state = initialState, action){
   let newState;
   const { health, location, direction } = action;
 
@@ -92,5 +126,3 @@ const playerReducer = (state = initialState.player, action) => {
         return state;
       }
     };
-
-export default playerReducer;

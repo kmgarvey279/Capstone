@@ -4,12 +4,8 @@ import App from "./components/App";
 import { AppContainer } from 'react-hot-loader';
 import { HashRouter } from 'react-router-dom';
 import { createStore } from 'redux';
-import rootReducer from './reducers/index';
+import rootReducer from './redux/modules/index';
 import { Provider } from 'react-redux';
-
-// const initialState = {
-//   playerStats: {playerHealth: 100, playerWeapon: 'Flare Gun', playerDirection: 'S', playerScore: 0}
-// };
 
 const store = createStore(rootReducer);
 

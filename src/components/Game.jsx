@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CurrentLevel from './CurrentLevel';
-import GameUI from './GameUI';
+import GameUITop from './GameUITop';
+import GameUIBottom from './GameUIBottom';
 
 function Game(props){
-  
+
   if (props.game.gameState === 'paused') {
     return (
       <div id="game">
@@ -17,12 +18,9 @@ function Game(props){
           filter: grayscale(1);
         }
         `}</style>
-        <div>
+        <GameUITop player={props.player}/>
         <CurrentLevel currentLevel={props.currentLevel}/>
-        </div>
-        <div>
-        <GameUI game={props.game} player={props.player}/>
-        </div>
+        <GameUIBottom game={props.game} player={props.player}/>
       </div>
     );
   } else {
@@ -32,14 +30,33 @@ function Game(props){
         div#game {
           text-align: center;
           background-color: black;
+          height: 800px;
+        }
+        div#ui {
+          border: 3px solid darkblue;
+          background-color: lightblue;
+          height: 150px;
+          max-height: 150px;
+          min-height: 150px;
+          min-width: 560px;
+          max-width: 560px;
+          width: 560px;
+          columns: 3 auto;
+          column-gap: 10px;
+          break-inside: avoid-column;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: -35px;
+          text-align: center;
+          z-index: 20;
+          left: 0;
+          right: 0;
+          position: absolute;
         }
         `}</style>
-        <div>
+        <GameUITop player={props.player}/>
         <CurrentLevel currentLevel={props.currentLevel}/>
-        </div>
-        <div>
-        <GameUI game={props.game} player={props.player}/>
-        </div>
+        <div id="ui"><GameUIBottom game={props.game} player={props.player}/></div>
       </div>
     );
   }

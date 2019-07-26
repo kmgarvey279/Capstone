@@ -1,6 +1,4 @@
 import React from "react";
-import CurrentLevel from "./CurrentLevel";
-import GameUI from "./GameUI";
 import Title from "./Title";
 import End from "./End";
 import Game from "./Game";
@@ -21,7 +19,7 @@ import * as projectilesModule from './../redux/modules/projectiles';
 
 
 
-import lava from '../assets/images/lava.png';
+import lava from '../assets/images/lava.gif';
 import stairs from '../assets/images/stairs.png';
 import wall from '../assets/images/wall.jpeg';
 import empty from '../assets/images/tile.png';
@@ -142,6 +140,8 @@ class App extends React.Component {
       squareImage = <img id="tile" src={stairs} weight="50" height="50" />;
     } else if (squareValue == 'L') {
       squareImage = <img id="tile" src={lava} weight="50" height="50" />;
+    } else if (squareValue == 'P') {
+      squareImage = '';
     } else if (squareValue == 'W') {
       if (thisSquareId == 1) {
         squareImage = <img id="tile" src={wallCorner1} weight="50" height="50" />;
@@ -166,6 +166,7 @@ class App extends React.Component {
       squareImage = <img id="tile" src={empty} weight="50" height="50" />;
     }
     if (squareValue == 'S') {
+      dispatch(gameModule.setRespawnPoint(thisSquareId));
       sprite = this.props.player.sprites.stand[this.props.player.direction];
       squareIsYou = true;
       dispatch(playerModule.updatePlayerLocation(thisSquareId));
@@ -174,6 +175,9 @@ class App extends React.Component {
       let newEnemyId = this.handleCreateNewEnemy(thisSquareId, parseInt(squareValue));
       sprite = this.props.enemies[newEnemyId].sprites.move['south'];
       squareIsEnemy = newEnemyId;
+    }
+    if (squareValue == 'B') {
+      sprite = this.props.game.miscSprites['block'];
     }
     let spriteIn = '';
     let spriteOut = '';
@@ -185,30 +189,29 @@ class App extends React.Component {
     if (this.props.game.gameState === 'active') {
       let originalLocation = this.props.player.location;
       const { dispatch } = this.props;
-      //update direction
+      //update direction & switch to walking sprite & trigger movement transition
       dispatch(playerModule.updatePlayerDirection(direction));
       let newSprite = this.props.player.sprites.walk[direction];
       dispatch(levelModule.updateSprite(originalLocation, newSprite));
+      dispatch(levelModule.updateSpriteOut(originalLocation, direction));
       //check if move is legal, if not return original location
       let canMove = this.attemptMove(direction, originalLocation);
-      let result = this.squareCheck(canMove);
       //if move is legal...
-      if (result === 'moved' && canMove !== originalLocation){
+      if (canMove !== originalLocation){
         //null previous location
-        dispatch(levelModule.updateSpriteOut(originalLocation, direction));
         let spriteClearTimer = setTimeout(() =>
-          this.clearSprite(originalLocation),
-          110
+          this.clearPlayerSprite(originalLocation),
+          100
         );
-        dispatch(levelModule.updateIsYou(originalLocation, false));
         let spriteAddTimer = setTimeout(() =>
           this.handleUpdatePlayerLocation(canMove, direction),
-          100
+          150
         );
       }
     }
   }
-  clearSprite(originalLocation) {
+
+  clearPlayerSprite(originalLocation) {
     const { dispatch } = this.props;
     dispatch(levelModule.updateIsYou(originalLocation, false));
     dispatch(levelModule.updateSpriteOut(originalLocation, ''));
@@ -265,17 +268,33 @@ class App extends React.Component {
 
   squareCheck(squareId) {
     let location = this.props.currentLevel[squareId];
+    let direction = this.props.player.direction;
     const { dispatch } = this.props;
-    if (location.isEnemy !== '' || location.isProjectile) {
+    if (location.isEnemy !== '' || location.isProjectile || location.value == 'L') {
       //take damage + knockback
-      let knockBackDirection = this.reverseDirection(this.props.player.direction);
+      let knockBackDirection = this.reverseDirection(direction);
       this.knockBack(knockBackDirection);
-      //exit level
-    } else if (location.isYou && location.value == 'F') {
+      //switch levels
+    } else if (location.value == 'F') {
       let newLevel = this.props.game.levelId++
       dispatch(gameModule.levelIdUp(newLevel));
       this.handleUpdatePlayerLocation(id, false);
       this.generateLevelFromTemplate();
+      //fall to your doom and respawn
+    } else if (location.value == 'P'){
+      let newHealth = this.props.player.health -= 10;
+      dispatch(playerModule.updatePlayerHealth(newHealth));
+      dispatch(levelModule.updateSpriteOut(location, direction));
+      let spriteClearTimer = setTimeout(() =>
+        this.clearSprite(location),
+        100
+      );
+      dispatch(levelModule.updateIsYou(location, false));
+      let spriteAddTimer = setTimeout(() =>
+        this.handleUpdatePlayerLocation(this.props.game.respawnLocation, direction),
+        100
+      );
+
     } else {
       //move to next square
       return 'moved';

@@ -15,7 +15,7 @@ function Square(props){
           }
           div#sprite{
             right: 4px;
-            bottom: 15px;
+            bottom: 5px;
             z-index: 100;
             position: absolute;
             animation-name: move;
@@ -37,7 +37,7 @@ function Square(props){
               75%  {left: 40px;}
             }
             div#sprite{
-              bottom: 15px;
+              bottom: 5px;
               z-index: 100;
               position: absolute;
               animation-name: move;
@@ -59,7 +59,7 @@ function Square(props){
               75%  {top: 40px;}
             }
             div#sprite{
-              bottom: 15px;
+              bottom: 5px;
               z-index: 100;
               position: absolute;
               animation-name: move;
@@ -81,7 +81,7 @@ function Square(props){
               75%  {right: 40px;}
             }
             div#sprite{
-              bottom: 15px;
+              bottom: 5px;
               z-index: 100;
               position: absolute;
               animation-name: move;
@@ -187,7 +187,7 @@ function Square(props){
           div#sprite{
             z-index: 100;
             position: absolute;
-            bottom: 15px;
+            bottom: 5px;
           }
           `}</style>
           <div id="sprite">{props.sprite}</div>

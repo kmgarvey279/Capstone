@@ -4,21 +4,11 @@ import { connect } from 'react-redux';
 import profile from '../assets/images/profileplaceholder.png';
 import weapon from '../assets/images/FlareGun.png';
 
-function GameUI(props) {
+function GameUIBottom(props) {
   return (
     <div id="ui">
       <style jsx>{`
-        div#ui {
-          border: 3px solid darkblue;
-          background-color: lightblue;
-          height: 200px;
-          width: 500px;
-          columns: 3 auto;
-          column-gap: 10px;
-          break-inside: avoid-column;
-          margin-left: auto;
-          margin-right: auto;
-        }
+
         div#stats {
           vertical-align: top;
           display: inline-block;
@@ -39,9 +29,9 @@ function GameUI(props) {
   );
 }
 
-GameUI.propTypes = {
+GameUIBottom.propTypes = {
   game: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired
 };
 
-export default connect()(GameUI);
+export default connect()(GameUIBottom);
