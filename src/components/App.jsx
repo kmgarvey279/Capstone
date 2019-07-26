@@ -166,7 +166,9 @@ class App extends React.Component {
       squareImage = <img id="tile" src={empty} weight="50" height="50" />;
     }
     if (squareValue == 'S') {
+      alert(thisSquareId)
       dispatch(gameModule.setRespawnPoint(thisSquareId));
+      alert(this.props.game.respawnPoint)
       sprite = this.props.player.sprites.stand[this.props.player.direction];
       squareIsYou = true;
       dispatch(playerModule.updatePlayerLocation(thisSquareId));
@@ -239,7 +241,6 @@ class App extends React.Component {
       if(this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
-        alert(originalLocation)
         return originalLocation;
       }
     } else if (direction == "west") {
@@ -278,23 +279,10 @@ class App extends React.Component {
     } else if (location.value == 'F') {
       let newLevel = this.props.game.levelId++
       dispatch(gameModule.levelIdUp(newLevel));
-      this.handleUpdatePlayerLocation(id, false);
       this.generateLevelFromTemplate();
       //fall to your doom and respawn
     } else if (location.value == 'P'){
-      let newHealth = this.props.player.health -= 10;
-      dispatch(playerModule.updatePlayerHealth(newHealth));
-      dispatch(levelModule.updateSpriteOut(location, direction));
-      let spriteClearTimer = setTimeout(() =>
-        this.clearSprite(location),
-        100
-      );
-      dispatch(levelModule.updateIsYou(location, false));
-      let spriteAddTimer = setTimeout(() =>
-        this.handleUpdatePlayerLocation(this.props.game.respawnLocation, direction),
-        100
-      );
-
+      this.fall(squareId);
     } else {
       //move to next square
       return 'moved';
@@ -337,6 +325,23 @@ class App extends React.Component {
         dispatch(levelModule.updateSprite(location, newSprite));
       }
     }
+  }
+
+  fall(location) {
+    const { dispatch } = this.props;
+    let newHealth = this.props.player.health -= 10;
+    dispatch(playerModule.updatePlayerHealth(newHealth));
+    let newSprite = this.props.player.sprites.fall;
+    dispatch(levelModule.updateSprite(location, newSprite));
+    dispatch(levelModule.updateSpriteOut(location, this.props.player.direction));
+    let spriteClearTimer = setTimeout(() =>
+      this.clearPlayerSprite(location),
+      400
+    );
+    let spriteAddTimer = setTimeout(() =>
+      this.handleUpdatePlayerLocation(this.props.game.respawnPoint, this.props.player.direction),
+      400
+    );
   }
 
 //Handle Enemies

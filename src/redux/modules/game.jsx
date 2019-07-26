@@ -37,10 +37,10 @@ export function coolDown(newBool) {
   }
 }
 
-export function setRespawnPoint(respawnPoint) {
+export function setRespawnPoint(newRespawnPoint) {
   return {
     type: SET_RESPAWNPOINT,
-    respawnPoint: respawnPoint
+    respawnPoint: newRespawnPoint
   }
 }
 
@@ -180,7 +180,8 @@ const gameReducer = (state = initialState, action) => {
     case SET_RESPAWNPOINT:
       newState = Object.assign({}, state, {
         respawnPoint: respawnPoint
-      })
+      });
+      return newState;
   default:
     return state;
   }

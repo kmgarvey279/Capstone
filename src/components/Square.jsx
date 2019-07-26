@@ -3,7 +3,30 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 function Square(props){
-  if (props.spriteOut === 'north') {
+  if (props.spriteOut !== '' && props.value == 'P') {
+    return (
+      <div>
+        <style jsx>{`
+          @keyframes fall {
+            0%  {transform: rotate(20deg) scale(1.0);}
+            25%  {transform: rotate(40deg) scale(0.7);}
+            50%  {transform: rotate(60deg) scale(0.4);}
+            75%  {transform: rotate(100deg) scale(0.1);}
+          }
+          div#sprite{
+            right: 4px;
+            bottom: 5px;
+            z-index: 100;
+            position: absolute;
+            animation-name: fall;
+            animation-duration: 1s;
+          }
+        `}</style>
+        <div id="sprite">{props.sprite}</div>
+        <div id="tile">{props.tileImage}</div>
+      </div>
+    )
+  } else if (props.spriteOut === 'north') {
     return (
       <div>
         <style jsx>{`
