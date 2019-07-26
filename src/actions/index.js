@@ -173,8 +173,49 @@ export function nullEnemy(enemyIdToUpdate) {
 }
 
 //Doors
+export function createDoor(doorId, location, isLocked, leadsTo) {
+  return {
+    type: types.CREATE_DOOR,
+    doorId: doorId,
+    isLocked: isLocked,
+    leadsTo: leadsTo
+  }
+}
 
-export function 
+export function nullDoors() {
+  return {
+    type: types.NULL_DOORS
+  }
+}
 
+export function openDoor(doorId) {
+  return {
+    type: types.OPEN_DOOR,
+    doorId: doorId,
+    isLocked: false
+  }
+}
 
 //Blocks
+export function createBlock(blockId, location) {
+  return {
+    type: types.CREATE_BLOCK,
+    blockId: blockId,
+    location: location
+  }
+}
+
+export function updateBlockLocation(blockId, location) {
+  return {
+    type: types.UPDATE_BLOCK_LOCATION,
+    blockId: blockId,
+    location: location
+  }
+}
+
+export function nullBlock(blockId, location) {
+  return {
+    type: types.NULL_BLOCK,
+    blockId: blockId
+  }
+}

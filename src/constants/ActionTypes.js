@@ -28,8 +28,9 @@ export const UPDATE_ENEMY_HEALTH = "UPDATE_ENEMY_HEALTH";
 export const NULL_ENEMY = "NULL_ENEMY"
 //DOOR
 export const CREATE_DOOR = "CREATE_DOOR";
-export const NULL_DOOR = "NULL_DOOR";
+export const NULL_DOORS = "NULL_DOOR";
 export const OPEN_DOOR = "OPEN_DOOR";
 //BLOCK
 export const CREATE_BLOCK = "CREATE_BLOCK";
 export const NULL_BLOCK = "NULL_BLOCK";
+export const UPDATE_BLOCK_LOCATION = "UPDATE_BLOCK_LOCATION";
