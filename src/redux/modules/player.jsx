@@ -17,6 +17,7 @@ import taser from '../../assets/images/projectiles/taser.png';
 export const UPDATE_PLAYER_HEALTH = "UPDATE_PLAYER_HEALTH";
 export const UPDATE_PLAYER_LOCATION = "UPDATE_PLAYER_LOCATION";
 export const UPDATE_PLAYER_DIRECTION = "UPDATE_PLAYER_DIRECTION";
+export const TOGGLE_INVINCIBILITY = "TOGGLE_INVINCIBILITY";
 
 //Action Creators
 export function updatePlayerHealth(newHealth) {
@@ -37,12 +38,19 @@ export function updatePlayerDirection(newDirection) {
     direction: newDirection
   };
 }
+export function toggleInvincibility(newBool) {
+  return {
+    type: TOGGLE_INVINCIBILITY,
+    invincibility: newBool
+  };
+}
 
 //Initial State
 const initialState = {
     health: 100,
     direction: 'north',
     location: null,
+    invincibility: false,
     sprites: {
       stand: {
         north: <img id="player" src={playerStandNorth} width="55" height="55"/>,
@@ -104,7 +112,7 @@ const initialState = {
 //Reducer
 export default function playerReducer(state = initialState, action){
   let newState;
-  const { health, location, direction } = action;
+  const { health, location, direction, invincibility } = action;
 
   switch (action.type) {
     case UPDATE_PLAYER_HEALTH:
@@ -122,6 +130,11 @@ export default function playerReducer(state = initialState, action){
           direction: direction
         });
         return newState;
+    case TOGGLE_INVINCIBILITY:
+      newState = Object.assign({}, state, {
+        invincibility: invincibility
+      })
+      return newState;
     default:
         return state;
       }

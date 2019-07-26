@@ -18,7 +18,7 @@ function GameUITop(props) {
           z-index: 10;
         }
       `}</style>
-        <h3>Health: {props.player.health}/100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Score: {props.player.score} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Weapon:</h3>
+        <h3>Health: {props.player.health}/100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Score: {props.player.score} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Weapon:{props.player.weapons[props.player.currentWeapon].sprites['icon']}</h3>
     </div>
   );
 }

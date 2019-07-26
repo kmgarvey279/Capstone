@@ -202,11 +202,11 @@ class App extends React.Component {
         //null previous location
         let spriteClearTimer = setTimeout(() =>
           this.clearSprite(originalLocation),
-          100
+          120
         );
         let spriteAddTimer = setTimeout(() =>
           this.handleUpdatePlayerLocation(canMove, direction),
-          100
+          120
         );
       }
     }
@@ -224,10 +224,10 @@ class App extends React.Component {
     if(direction == "north") {
       newLocation = originalLocation - 1;
       //check if there is a movable block
-      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation - 1] !== 'W') {
+      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation - 1].value !== 'W') {
         this.moveBlock(this.props.currentLevel[newLocation].contentId, direction, newLocation, newLocation - 1);
         return newLocation;
-      } else if (this.props.currentLevel[newLocation].value !== 'W') {
+      } else if (this.props.currentLevel[newLocation].content !== 'block' && this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
         return originalLocation;
@@ -235,10 +235,10 @@ class App extends React.Component {
     } else if (direction == "east") {
       newLocation = originalLocation + 12;
       //check if there is a movable block
-      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation + 12] !== 'W') {
+      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation + 12].value !== 'W') {
         this.moveBlock(this.props.currentLevel[newLocation].contentId, direction, newLocation, newLocation + 12);
         return newLocation;
-      } else if (this.props.currentLevel[newLocation].value !== 'W') {
+      } else if (this.props.currentLevel[newLocation].content !== 'block' && this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
         return originalLocation;
@@ -246,10 +246,10 @@ class App extends React.Component {
     } else if (direction == "south") {
       newLocation = originalLocation + 1;
       //check if there is a movable block
-      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation + 1] !== 'W') {
+      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation + 1].value !== 'W') {
         this.moveBlock(this.props.currentLevel[newLocation].contentId, direction, newLocation, newLocation + 1);
         return newLocation;
-      } else if(this.props.currentLevel[newLocation].value !== 'W') {
+      } else if(this.props.currentLevel[newLocation].content !== 'block' && this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
         return originalLocation;
@@ -257,10 +257,10 @@ class App extends React.Component {
     } else if (direction == "west") {
       newLocation = originalLocation - 12;
       //check if there is a movable block
-      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation - 12] !== 'W') {
+      if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[newLocation - 12].value !== 'W') {
         this.moveBlock(this.props.currentLevel[newLocation].contentId, direction, newLocation, newLocation - 12);
         return newLocation;
-      } else if(this.props.currentLevel[newLocation].value !== 'W') {
+      } else if(this.props.currentLevel[newLocation].content !== 'block' && this.props.currentLevel[newLocation].value !== 'W') {
         return newLocation;
       } else {
         return originalLocation;
@@ -319,26 +319,33 @@ class App extends React.Component {
   knockBack(knockBackDirection) {
     const { dispatch } = this.props;
     //take damage
-    let newHealth = this.props.player.health -= 10;
-    dispatch(playerModule.updatePlayerHealth(newHealth));
-    //handle knockback
-    for (let i = 0; i < 2; i++) {
-      let location = this.props.player.location;
-      let direction = this.props.player.direction;
-      let newSprite = this.props.player.sprites.knockback[direction];
-      dispatch(levelModule.updateSprite(location, newSprite));
-      dispatch(levelModule.updateTransition(location, knockBackDirection));
-      let canMove = this.attemptMove(knockBackDirection, location)
-      if (canMove !== location) {
-        let spriteClearTimer = setTimeout(() =>
-          this.clearSprite(location),
-          100
-        );
-        let spriteAddTimer = setTimeout(() =>
-          this.handleUpdatePlayerLocation(canMove, direction),
-          100
-        );
+    if (this.props.player.invincibility == false) {
+      let newHealth = this.props.player.health -= 10;
+      dispatch(playerModule.updatePlayerHealth(newHealth));
+      //handle knockback
+      for (let i = 0; i < 2; i++) {
+        let location = this.props.player.location;
+        let direction = this.props.player.direction;
+        let newSprite = this.props.player.sprites.knockback[direction];
+        dispatch(levelModule.updateSprite(location, newSprite));
+        dispatch(levelModule.updateTransition(location, knockBackDirection));
+        let canMove = this.attemptMove(knockBackDirection, location)
+        if (canMove !== location) {
+          let spriteClearTimer = setTimeout(() =>
+            this.clearSprite(location),
+            150
+          );
+          let spriteAddTimer = setTimeout(() =>
+            this.handleUpdatePlayerLocation(canMove, direction),
+            150
+          );
+        }
       }
+      dispatch(playerModule.toggleInvincibility(true));
+      let invincibilityTimer = setTimeout(() =>
+        dispatch(playerModule.toggleInvincibility(false)),
+        300
+      );
     }
   }
 
@@ -373,13 +380,14 @@ class App extends React.Component {
       this.clearSprite(location),
       100
     );
+    dispatch(blocksModule.updateBlockLocation(blockId, newLocation));
     let spriteAddTimer = setTimeout(() =>
       this.handleUpdateBlockLocation(blockId, newLocation, direction),
       100
     );
   }
 
-  handleUpdateBlockLocation(location, blockId, direction) {
+  handleUpdateBlockLocation(blockId, location, direction) {
     const { dispatch } = this.props;
     //check props of new square
     let square = this.props.currentLevel[location];
@@ -392,7 +400,7 @@ class App extends React.Component {
         this.enemyKnockBack(this.props.enemies[square.contentId], direction);
       }
       dispatch(levelModule.updateContent(location, 'block', blockId));
-      dispatch(levelModule.updateSprite(location, this.props.game.miscSprites[block]));
+      dispatch(levelModule.updateSprite(location, this.props.game.miscSprites['block']));
       dispatch(blocksModule.updateBlockLocation(blockId, location));
     }
   }
@@ -468,9 +476,12 @@ class App extends React.Component {
     }
     dispatch(enemiesModule.updateEnemyDirection(enemyId, direction));
     let canMove = this.attemptMove(direction, location);
-    if (canMove !== location && this.props.currentLevel[canMove].content !== 'enemy' && this.props.currentLevel[canMove].value !== 'L' && this.props.currentLevel[canMove].value !== 'P') {
+    if (canMove !== location && this.props.currentLevel[canMove].content !== 'enemy'
+    && this.props.currentLevel[canMove].value !== 'L'
+    && this.props.currentLevel[canMove].value !== 'P'
+    && this.props.currentLevel[canMove].content !== 'block'){
       //damage player
-      if (this.props.currentLevel[canMove].isYou) {
+      if (this.props.currentLevel[canMove].content == 'player' && this.props.player.invincibility == false) {
         this.knockBack(direction);
       }
       dispatch(levelModule.updateTransition(location, direction));

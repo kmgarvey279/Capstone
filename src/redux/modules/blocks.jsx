@@ -34,7 +34,7 @@ export function nullBlock(blockId, location) {
 //Reducer
 const blockReducer = (state = {}, action) => {
   let newState;
-  let newProjectile;
+  let newBlock;
   const { blockId, location } = action;
 
   switch (action.type) {
@@ -49,7 +49,7 @@ const blockReducer = (state = {}, action) => {
     case UPDATE_BLOCK_LOCATION:
       newBlock = Object.assign({}, state[blockId], {location});
       newState = Object.assign({}, state, {
-        [blockId]: newblock
+        [blockId]: newBlock
       });
       return newState;
     case NULL_BLOCK:

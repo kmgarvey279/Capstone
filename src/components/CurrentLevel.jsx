@@ -43,7 +43,8 @@ function CurrentLevel(props){
             squareId={parseInt(squareId)}
             tileImage={square.tileImage}
             sprite={square.sprite}
-            transition={square.transition}/>
+            transition={square.transition}
+            player={props.player}/>
         </div>;
       })}
     </div>
@@ -51,7 +52,8 @@ function CurrentLevel(props){
 }
 
 CurrentLevel.propTypes = {
-  currentLevel: PropTypes.object.isRequired
+  currentLevel: PropTypes.object.isRequired,
+  player: PropTypes.object
 };
 
 export default CurrentLevel;
