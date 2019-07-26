@@ -37,15 +37,13 @@ function CurrentLevel(props){
       {Object.keys(props.currentLevel).map(function(squareId) {
         var square = props.currentLevel[squareId];
         return <div id="inner"><Square value={square.value}
-            isYou={square.isYou}
-            isEnemy={square.isEnemy}
-            isProjectile={square.isProjectile}
+            content={square.content}
+            contentId={square.contentId}
             key={squareId}
             squareId={parseInt(squareId)}
             tileImage={square.tileImage}
             sprite={square.sprite}
-            spriteIn={square.spriteIn}
-            spriteOut={square.spriteOut}/>
+            transition={square.transition}/>
         </div>;
       })}
     </div>

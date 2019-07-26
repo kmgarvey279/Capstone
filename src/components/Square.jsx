@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 function Square(props){
-  if (props.spriteOut !== '' && props.value == 'P') {
+  if (props.transition !== '' && props.value == 'P') {
     return (
       <div>
         <style jsx>{`
@@ -26,7 +26,7 @@ function Square(props){
         <div id="tile">{props.tileImage}</div>
       </div>
     )
-  } else if (props.spriteOut === 'north') {
+  } else if (props.transition === 'north') {
     return (
       <div>
         <style jsx>{`
@@ -49,7 +49,7 @@ function Square(props){
         <div id="tile">{props.tileImage}</div>
       </div>
     )
-  } else if (props.spriteOut === 'east') {
+  } else if (props.transition === 'east') {
       return (
         <div>
           <style jsx>{`
@@ -71,7 +71,7 @@ function Square(props){
           <div id="tile">{props.tileImage}</div>
         </div>
       )
-    } else if (props.spriteOut === 'south') {
+    } else if (props.transition === 'south') {
       return (
         <div>
           <style jsx>{`
@@ -93,7 +93,7 @@ function Square(props){
           <div id="tile">{props.tileImage}</div>
         </div>
       )
-    } else if (props.spriteOut === 'west') {
+    } else if (props.transition === 'west') {
       return (
         <div>
           <style jsx>{`
@@ -115,94 +115,6 @@ function Square(props){
           <div id="tile">{props.tileImage}</div>
         </div>
       )
-  // } else if (props.spriteIn === 'north') {
-  //   return (
-  //     <div>
-  //       <style jsx>{`
-  //         @keyframes move {
-  //           0%  {bottom: 0px;}
-  //           25%  {bottom: 5px;}
-  //           50%  {bottom: 10px;}
-  //           75%  {bottom: 15px;}
-  //         }
-  //         div#sprite{
-  //           bottom: 15px;
-  //           z-index: 100;
-  //           position: absolute;
-  //           animation-name: move;
-  //           animation-duration: .5s;
-  //         }
-  //       `}</style>
-  //       <div id="sprite">{props.sprite}</div>
-  //       <div id="tile">{props.tileImage}</div>
-  //     </div>
-  //   )
-  // } else if (props.spriteIn === 'east') {
-  //     return (
-  //       <div>
-  //         <style jsx>{`
-  //           @keyframes move {
-  //             0%  {left: -15px;}
-  //             25%  {left: -10px;}
-  //             50%  {left: -5px;}
-  //             75%  {left: 0px;}
-  //           }
-  //           div#sprite{
-  //             bottom: 15px;
-  //             z-index: 100;
-  //             position: absolute;
-  //             animation-name: move;
-  //             animation-duration: .5s;
-  //           }
-  //         `}</style>
-  //         <div id="sprite">{props.sprite}</div>
-  //         <div id="tile">{props.tileImage}</div>
-  //       </div>
-  //     )
-  //   } else if (props.spriteIn === 'south') {
-  //     return (
-  //       <div>
-  //         <style jsx>{`
-  //           @keyframes move {
-  //             0%  {bottom: 30px;}
-  //             25%  {bottom: 25px;}
-  //             50%  {bottom: 20px;}
-  //             75%  {bottom: 15px;}
-  //           }
-  //           div#sprite{
-  //             bottom: 15px;
-  //             z-index: 100;
-  //             position: absolute;
-  //             animation-name: move;
-  //             animation-duration: .5s;
-  //           }
-  //         `}</style>
-  //         <div id="sprite">{props.sprite}</div>
-  //         <div id="tile">{props.tileImage}</div>
-  //       </div>
-  //     )
-  //   } else if (props.spriteIn === 'west') {
-  //     return (
-  //       <div>
-  //         <style jsx>{`
-  //           @keyframes move {
-  //             0%  {left: 15px;}
-  //             25%  {left: 10px;}
-  //             50%  {left: 5px;}
-  //             75%  {left: 0px;}
-  //           }
-  //           div#sprite{
-  //             bottom: 15px;
-  //             z-index: 100;
-  //             position: absolute;
-  //             animation-name: move;
-  //             animation-duration: .5s;
-  //           }
-  //         `}</style>
-  //         <div id="sprite">{props.sprite}</div>
-  //         <div id="tile">{props.tileImage}</div>
-  //       </div>
-  //     )
   } else {
     return (
       <div>
@@ -222,14 +134,12 @@ function Square(props){
 
 Square.propTypes = {
   value: PropTypes.string.isRequired,
-  isYou: PropTypes.bool.isRequired,
-  isEnemy: PropTypes.string.isRequired,
-  isProjectile: PropTypes.bool.isRequired,
+  content: PropTypes.string.isRequired,
+  contentId: PropTypes.string.isRequired,
   squareId: PropTypes.number.isRequired,
   tileImage: PropTypes.object.isRequired,
   sprite: PropTypes.object,
-  spriteIn: PropTypes.string,
-  spriteOut: PropTypes.string
+  transition: PropTypes.string
 };
 
 export default connect()(Square);

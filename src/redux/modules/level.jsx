@@ -1,13 +1,10 @@
 //Constants
 export const NULL_LEVEL = "NULL_LEVEL";
 export const ADD_SQUARE = "ADD_SQUARE";
-export const UPDATE_ISYOU = "UPDATE_ISYOU";
-export const UPDATE_ISENEMY = "UPDATE_ISENEMY";
+export const UPDATE_CONTENT = "UPDATE_CONTENT";
 export const UPDATE_VALUE = "UPDATE_VALUE";
-export const UPDATE_ISPROJECTILE = "UPDATE_ISPROJECTILE";
 export const UPDATE_SPRITE = "UPDATE_SPRITE";
-export const UPDATE_SPRITEIN = "UPDATE_SPRITEIN";
-export const UPDATE_SPRITEOUT = "UPDATE_SPRITEOUT";
+export const UPDATE_TRANSITION = "UPDATE_TRANSITION";
 
 //Action Creators
 
@@ -16,43 +13,28 @@ export function nullLevel() {
     type: NULL_LEVEL,
   };
 }
-export function addSquare(newSquareId, newValue, newIsYou, newIsEnemy, newIsProjectile, newImage, newSprite, newSpriteIn, newSpriteOut) {
+
+export function addSquare(newSquareId, newValue, newContent, newContentId, newImage, newSprite, newTransition) {
   return {
     type: ADD_SQUARE,
     squareId: newSquareId,
     value: newValue,
-    isYou: newIsYou,
-    isEnemy: newIsEnemy,
-    isProjectile: newIsProjectile,
+    content: newContent,
+    contentId: newContentId,
     tileImage: newImage,
     sprite: newSprite,
-    spriteIn: newSpriteIn,
-    spriteOut: newSpriteOut
+    transition: newTransition
   };
 }
-export function updateIsYou(squareId, newBool) {
+export function updateContent(squareId, newContent, newContentId) {
   return {
-    type: UPDATE_ISYOU,
+    type: UPDATE_CONTENT,
     squareId: squareId,
-    isYou: newBool
+    content: newContent,
+    contentId: newContentId
   };
 }
 
-export function updateIsEnemy(squareIdToUpdate, enemyId) {
-    return {
-      type: UPDATE_ISENEMY,
-      squareId: squareIdToUpdate,
-      isEnemy: enemyId
-    }
-}
-
-export function updateIsProjectile(squareIdToUpdate, newProjectileId) {
-  return {
-    type: UPDATE_ISPROJECTILE,
-    squareId: squareIdToUpdate,
-    isProjectile: newProjectileId
-  };
-}
 export function updateSprite(squareIdToUpdate, newSprite) {
   return {
     type: UPDATE_SPRITE,
@@ -60,18 +42,11 @@ export function updateSprite(squareIdToUpdate, newSprite) {
     sprite: newSprite
   };
 }
-export function updateSpriteIn(squareIdToUpdate, newSpriteIn) {
+export function updateTransition(squareIdToUpdate, newTransition) {
   return {
-    type: UPDATE_SPRITEIN,
+    type: UPDATE_TRANSITION,
     squareId: squareIdToUpdate,
-    spriteIn: newSpriteIn
-  }
-}
-export function updateSpriteOut(squareIdToUpdate, newSpriteOut) {
-  return {
-    type: UPDATE_SPRITEOUT,
-    squareId: squareIdToUpdate,
-    spriteOut: newSpriteOut
+    transition: newTransition
   }
 }
 
@@ -81,7 +56,7 @@ export function updateSpriteOut(squareIdToUpdate, newSpriteOut) {
 const levelReducer = (state = {}, action) => {
   let newState;
   let newSquare;
-  const { squareId, value, isYou, isEnemy, isProjectile, tileImage, sprite, spriteIn, spriteOut} = action;
+  const { squareId, value, content, contentId, tileImage, sprite, transition} = action;
 
   switch (action.type) {
     case NULL_LEVEL:
@@ -92,13 +67,11 @@ const levelReducer = (state = {}, action) => {
           [squareId]: {
             squareId: squareId,
             value: value,
-            isYou: isYou,
-            isEnemy: isEnemy,
-            isProjectile: isProjectile,
+            content: content,
+            contentId: contentId,
             tileImage: tileImage,
             sprite: sprite,
-            spriteIn: spriteIn,
-            spriteOut: spriteOut
+            transition: transition,
           }
         });
         return newState;
@@ -108,14 +81,8 @@ const levelReducer = (state = {}, action) => {
     //     [id]: newSquare
     //   });
     //     return newState;
-    case UPDATE_ISYOU:
-      newSquare = Object.assign({}, state[squareId], {isYou});
-      newState = Object.assign({}, state, {
-        [squareId]: newSquare
-      });
-        return newState;
-    case UPDATE_ISPROJECTILE:
-      newSquare = Object.assign({}, state[squareId], {isProjectile});
+    case UPDATE_CONTENT:
+      newSquare = Object.assign({}, state[squareId], {content, contentId});
       newState = Object.assign({}, state, {
         [squareId]: newSquare
       });
@@ -126,20 +93,8 @@ const levelReducer = (state = {}, action) => {
         [squareId]: newSquare
       });
         return newState;
-    case UPDATE_SPRITEIN:
-      newSquare = Object.assign({}, state[squareId], {spriteIn});
-      newState = Object.assign({}, state, {
-        [squareId]: newSquare
-      });
-        return newState;
-    case UPDATE_SPRITEOUT:
-      newSquare = Object.assign({}, state[squareId], {spriteOut});
-      newState = Object.assign({}, state, {
-        [squareId]: newSquare
-      });
-        return newState;
-    case UPDATE_ISENEMY:
-      newSquare = Object.assign({}, state[squareId], {isEnemy});
+    case UPDATE_TRANSITION:
+      newSquare = Object.assign({}, state[squareId], {transition});
       newState = Object.assign({}, state, {
         [squareId]: newSquare
       });
