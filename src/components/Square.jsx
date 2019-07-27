@@ -8,16 +8,11 @@ function Square(props){
       <div>
         <style jsx>{`
           @keyframes flash {
-            0%  {visibility: hidden;)}
-            10%  {visibility: visible; background-color:red;}
-            20%  {visibility: hidden;)}
-            30%  {visibility: visible; background-color:red;}
-            40%  {visibility: hidden;)}
-            50%  {visibility: visible; background-color:red;}
-            60%  {visibility: hidden;)}
-            70%  {visibility: visible; background-color:red;}
-            80%  {visibility: hidden;)}
-            90%  {visibility: visible; background-color:red;}
+            10%  {background-color:red;}
+            30%  {background-color:red;}
+            50%  {background-color:red;}
+            70%  {background-color:red;}
+            90%  {background-color:red;}
           }
           div#spriteFlash{
             right: 4px;

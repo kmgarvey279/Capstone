@@ -5,18 +5,20 @@ export const CREATE_ENEMY = "CREATE_ENEMY";
 export const UPDATE_ENEMY_LOCATION = "UPDATE_ENEMY_LOCATION";
 export const UPDATE_ENEMY_DIRECTION = "UPDATE_ENEMY_DIRECTION";
 export const UPDATE_ENEMY_HEALTH = "UPDATE_ENEMY_HEALTH";
-export const NULL_ENEMY = "NULL_ENEMY"
+export const NULL_ENEMY = "NULL_ENEMY";
+export const UPDATE_ENEMY_STATUS = "UPDATE_ENEMY_STATUS";
 
 //Action Creators
-export function createEnemy(enemyId, newKind, newSprites, newHealth, newLocation) {
+export function createEnemy(enemyId, newKind, newSprites, newHealth, newStatus, newLocation, newDirection) {
   return {
     type: CREATE_ENEMY,
     enemyId: enemyId,
     kind: newKind,
     sprites: newSprites,
     health: newHealth,
+    status: newStatus,
     location: newLocation,
-    direction: 'south'
+    direction: newDirection
   }
 }
 
@@ -25,6 +27,14 @@ export function updateEnemyLocation(enemyIdToUpdate, newLocation) {
     type: UPDATE_ENEMY_LOCATION,
     enemyId: enemyIdToUpdate,
     location: newLocation
+  }
+}
+
+export function updateEnemyStatus(enemyIdToUpdate, newStatus) {
+  return {
+    type: UPDATE_ENEMY_STATUS,
+    enemyId: enemyIdToUpdate,
+    status: newStatus
   }
 }
 
@@ -57,7 +67,7 @@ export function nullEnemy(enemyIdToUpdate) {
 const enemyReducer = (state = {}, action) => {
   let newState;
   let newEnemy;
-  const { enemyId, kind, sprites, location, direction, health, movePattern } = action;
+  const { enemyId, kind, sprites, location, direction, health, status } = action;
 
   switch (action.type) {
     case CREATE_ENEMY:
@@ -69,7 +79,7 @@ const enemyReducer = (state = {}, action) => {
           location: location,
           direction: direction,
           health: health,
-          movePattern: movePattern
+          status: status
         }
       });
       return newState;
@@ -87,6 +97,12 @@ const enemyReducer = (state = {}, action) => {
       return newState;
     case UPDATE_ENEMY_HEALTH:
       newEnemy = Object.assign({}, state[enemyId], {health});
+      newState = Object.assign({}, state, {
+        [enemyId]: newEnemy
+      });
+      return newState;
+    case UPDATE_ENEMY_STATUS:
+      newEnemy = Object.assign({}, state[enemyId], {status});
       newState = Object.assign({}, state, {
         [enemyId]: newEnemy
       });
