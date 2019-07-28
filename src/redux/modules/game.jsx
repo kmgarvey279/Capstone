@@ -93,10 +93,10 @@ const initialState = {
       kind: 'Slime',
       sprites: {
         move: {
-          north: <img id="player" src={blobNorth} width="50" height="50"/>,
-          east: <img id="player" src={blobEast} width="50" height="50"/>,
-          south: <img id="player" src={blobSouth} width="50" height="50"/>,
-          west: <img id="player" src={blobWest} width="50" height="50"/>
+          north: <img id="player" src={blobNorth} width="70" height="70"/>,
+          east: <img id="player" src={blobEast} width="70" height="70"/>,
+          south: <img id="player" src={blobSouth} width="70" height="70"/>,
+          west: <img id="player" src={blobWest} width="70" height="70"/>
         },
         knockback: {
           north: <img id="player" src={blobKnockbackNorth} width="40" height="40"/>,

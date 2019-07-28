@@ -209,17 +209,16 @@ class App extends React.Component {
         //square content !== player
         dispatch(levelModule.updateContent(originalLocation, 'empty', ''));
         //start walk animation
-        dispatch(levelModule.updateSprite(originalLocation, this.props.player.sprites.walk[direction]));
-        dispatch(levelModule.updateTransition(originalLocation, direction));
+        dispatch(levelModule.updateSprite(originalLocation, ''));
+        dispatch(levelModule.updateSprite(canMove, this.props.player.sprites.walk[direction]));
+        dispatch(levelModule.updateTransition(canMove, direction));
         //update player location and new square
         dispatch(levelModule.updateContent(canMove, 'player', ''))
         dispatch(playerModule.updatePlayerLocation(canMove));
         //after walking animation finishes, remove sprite from previous square & add to new one
         let spriteClearTimer = setTimeout(() =>
-          {dispatch(levelModule.updateSprite(originalLocation, ''));
-          dispatch(levelModule.updateTransition(originalLocation, ''));
-          dispatch(levelModule.updateSprite(canMove, this.props.player.sprites.stand[direction]))},
-          120
+          dispatch(levelModule.updateSprite(canMove, this.props.player.sprites.stand[direction])),
+          600
         );
       }
     }

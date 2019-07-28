@@ -1,11 +1,11 @@
 import React from 'react';
 import playerStandNorth from '../../assets/images/player/playerStandNorth.png';
 import playerStandEast from '../../assets/images/player/playerStandEast.png';
-import playerStandSouth from '../../assets/images/player/playerStandSouth.png';
+import playerStandSouth from '../../assets/images/player/playerStandFront.gif';
 import playerStandWest from '../../assets/images/player/playerStandWest.png';
 import playerWalkNorth from '../../assets/images/player/playerWalkNorth.png';
 import playerWalkEast from '../../assets/images/player/playerWalkEast.png';
-import playerWalkSouth from '../../assets/images/player/playerWalkSouth.png';
+import playerWalkSouth from '../../assets/images/player/playerWalkSouth.gif';
 import playerWalkWest from '../../assets/images/player/playerWalkWest.png';
 import playerAttackNorth from '../../assets/images/player/playerAttackNorth.png';
 import playerAttackEast from '../../assets/images/player/playerAttackEast.png';
@@ -55,13 +55,13 @@ const initialState = {
       stand: {
         north: <img id="player" src={playerStandNorth} width="55" height="55"/>,
         east: <img id="player" src={playerStandEast} width="55" height="55"/>,
-        south: <img id="player" src={playerStandSouth} width="55" height="55"/>,
+        south: <img id="player" src={playerStandSouth} width="90" height="90"/>,
         west: <img id="player" src={playerStandWest} width="55" height="55"/>,
       },
       walk: {
         north: <img id="player" src={playerWalkNorth} width="50" height="55"/>,
         east: <img id="player" src={playerWalkEast} width="50" height="55"/>,
-        south: <img id="player" src={playerWalkSouth} width="50" height="55"/>,
+        south: <img id="player" src={playerWalkSouth} width="90" height="90"/>,
         west: <img id="player" src={playerWalkWest} width="50" height="55"/>,
       },
       knockback: {
