@@ -14,14 +14,14 @@ export function nullLevel() {
   };
 }
 
-export function addSquare(newSquareId, newValue, newContent, newContentId, newImage, newSprite, newTransition) {
+export function addSquare(newSquareId, newValue, newContent, newContentId, newTileImage, newSprite, newTransition) {
   return {
     type: ADD_SQUARE,
     squareId: newSquareId,
     value: newValue,
     content: newContent,
     contentId: newContentId,
-    tileImage: newImage,
+    tileImage: newTileImage,
     sprite: newSprite,
     transition: newTransition
   };
@@ -47,7 +47,16 @@ export function updateTransition(squareIdToUpdate, newTransition) {
     type: UPDATE_TRANSITION,
     squareId: squareIdToUpdate,
     transition: newTransition
-  }
+  };
+}
+
+export function updateValue(squareIdToUpdate, newValue, newTileImage) {
+  return {
+    type: UPDATE_TRANSITION,
+    squareId: squareIdToUpdate,
+    value: newValue,
+    tileImage: newTileImage
+  };
 }
 
 //Initial State
@@ -75,12 +84,12 @@ const levelReducer = (state = {}, action) => {
           }
         });
         return newState;
-    // case c.UPDATE_VALUE:
-    //   newSquare = Object.assign({}, state[id], {value});
-    //   newState = Object.assign({}, state, {
-    //     [id]: newSquare
-    //   });
-    //     return newState;
+    case UPDATE_VALUE:
+      newSquare = Object.assign({}, state[id], {value, tileImage});
+      newState = Object.assign({}, state, {
+        [squareId]: newSquare
+      });
+        return newState;
     case UPDATE_CONTENT:
       newSquare = Object.assign({}, state[squareId], {content, contentId});
       newState = Object.assign({}, state, {

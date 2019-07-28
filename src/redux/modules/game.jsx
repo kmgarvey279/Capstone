@@ -1,13 +1,13 @@
 import React from 'react';
 //enemies
 import blobNorth from '../../assets/images/enemies/blob-back.png';
-import blobEast from '../../assets/images/enemies/blob.png';
-import blobSouth from '../../assets/images/enemies/blob-front2.png';
+import blobEast from '../../assets/images/enemies/blob.gif';
+import blobSouth from '../../assets/images/enemies/blob.gif';
 import blobWest from '../../assets/images/enemies/blob-back2.png';
-import blobKnockbackNorth from '../../assets/images/enemies/blob-back-knockback.png';
-import blobKnockbackEast from '../../assets/images/enemies/blob-front-knockback.png';
-import blobKnockbackSouth from '../../assets/images/enemies/blob-front-knockback.png';
-import blobKnockbackWest from '../../assets/images/enemies/blob-back-knockback.png';
+import blobKnockbackNorth from '../../assets/images/enemies/blob-front-knockback.gif';
+import blobKnockbackEast from '../../assets/images/enemies/blob-front-knockback.gif';
+import blobKnockbackSouth from '../../assets/images/enemies/blob-front-knockback.gif';
+import blobKnockbackWest from '../../assets/images/enemies/blob-front-knockback.gif';
 
 import block from '../../assets/images/level/block.png'
 //Constants
@@ -30,7 +30,7 @@ export function levelIdUp(newLevelId) {
   };
 }
 
-export function coolDown(newBool) {
+export function toggleCoolDown(newBool) {
   return {
     type: TOGGLE_COOLDOWN,
     coolDown: newBool
@@ -99,10 +99,10 @@ const initialState = {
           west: <img id="player" src={blobWest} width="50" height="50"/>
         },
         knockback: {
-          north: <img id="player" src={blobNorth} width="40" height="40"/>,
-          east: <img id="player" src={blobEast} width="40" height="40"/>,
-          south: <img id="player" src={blobSouth} width="40" height="40"/>,
-          west: <img id="player" src={blobWest} width="40" height="40"/>
+          north: <img id="player" src={blobKnockbackNorth} width="40" height="40"/>,
+          east: <img id="player" src={blobKnockbackNorth} width="40" height="40"/>,
+          south: <img id="player" src={blobKnockbackNorth} width="40" height="40"/>,
+          west: <img id="player" src={blobKnockbackNorth} width="40" height="40"/>
         }
       },
       health: 40
