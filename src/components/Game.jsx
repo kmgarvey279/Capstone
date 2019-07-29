@@ -13,9 +13,9 @@ function Game(props){
         div#game {
           text-align: center;
           background-color: black;
-          filter: gray;
-          -webkit-filter: grayscale(1);
-          filter: grayscale(1);
+          -webkit-filter: blur(5px);
+          filter: blur(5px) grayscale(100%) sepia(100%) hue-rotate(130deg);
+
         }
         div#ui {
           border: 3px solid darkblue;

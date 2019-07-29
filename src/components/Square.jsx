@@ -3,31 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 function Square(props){
-  if (props.player.invincibility == true && props.content == 'player') {
-    return (
-      <div>
-        <style jsx>{`
-          @keyframes flash {
-            10%  {background-color:red;}
-            30%  {background-color:red;}
-            50%  {background-color:red;}
-            70%  {background-color:red;}
-            90%  {background-color:red;}
-          }
-          div#spriteFlash{
-            right: 4px;
-            bottom: 5px;
-            z-index: 100;
-            position: absolute;
-            animation-name: flash;
-            animation-duration: 2s;
-          }
-        `}</style>
-        <div id="spriteFlash">{props.sprite}</div>
-        <div id="tile">{props.tileImage}</div>
-      </div>
-    )
-  } else if (props.transition !== '' && props.value == 'P') {
+  if (props.transition !== '' && props.value == 'P' && !(props.player.status == 'dash' && props.content == 'player')) {
     return (
       <div>
         <style jsx>{`

@@ -21,10 +21,12 @@ import taser from '../../assets/images/projectiles/taser.png';
 
 //Constants
 export const UPDATE_PLAYER_HEALTH = "UPDATE_PLAYER_HEALTH";
+export const UPDATE_PLAYER_STATUS = "UPDATE_PLAYER_STATUS";
 export const UPDATE_PLAYER_LOCATION = "UPDATE_PLAYER_LOCATION";
 export const UPDATE_PLAYER_DIRECTION = "UPDATE_PLAYER_DIRECTION";
 export const TOGGLE_INVINCIBILITY = "TOGGLE_INVINCIBILITY";
 export const UPDATE_SCORE = "UPDATE_SCORE";
+export const CHANGE_CURRENT_WEAPON = "CHANGE_CURRENT_WEAPON";
 
 //Action Creators
 export function updatePlayerHealth(newHealth) {
@@ -57,14 +59,27 @@ export function updateScore(newScore) {
     score: newScore
   };
 }
+export function changeCurrentWeapon(newWeaponId) {
+  return {
+    type: CHANGE_CURRENT_WEAPON,
+    currentWeapon: newWeaponId
+  };
+}
+export function updatePlayerStatus(status) {
+  return {
+    type: UPDATE_PLAYER_STATUS,
+    status: status
+  }
+}
+
 
 //Initial State
 const initialState = {
     health: 100,
+    status: 'normal',
     score: 0,
     direction: 'north',
     location: null,
-    invincibility: false,
     sprites: {
       stand: {
         north: <img id="player" src={playerStandNorth} width="80" height="80"/>,
@@ -112,13 +127,14 @@ const initialState = {
         id: 2,
         name: 'Cryostat',
         range: 4,
-        sprites: {}
-      },
-      3: {
-        id: 3,
-        name: 'Laser',
-        range: 7,
-        sprites: {}
+        sprites: {
+          north: <img id="player" src={taser} width="50" height="50"/>,
+          west: <img id="player" src={taser} width="50" height="50"/>,
+          east: <img id="player" src={taser} width="50" height="50"/>,
+          south: <img id="player" src={taser} width="50" height="50"/>,
+          burst: <img id="player" src={taser} width="50" height="50"/>,
+          icon: <img id="player" src={taser} width="50" height="50"/>
+        }
       }
     }
   };
@@ -126,7 +142,7 @@ const initialState = {
 //Reducer
 export default function playerReducer(state = initialState, action){
   let newState;
-  const { health, location, direction, invincibility, score } = action;
+  const { health, location, direction, invincibility, score, currentWeapon, status } = action;
 
   switch (action.type) {
     case UPDATE_PLAYER_HEALTH:
@@ -152,6 +168,16 @@ export default function playerReducer(state = initialState, action){
     case UPDATE_SCORE:
       newState = Object.assign({}, state, {
         score: score
+      });
+      return newState;
+    case CHANGE_CURRENT_WEAPON:
+      newState = Object.assign({}, state, {
+        currentWeapon: currentWeapon
+      });
+      return newState;
+    case UPDATE_PLAYER_STATUS:
+      newState = Object.assign({}, state, {
+        status: status
       });
       return newState;
     default:

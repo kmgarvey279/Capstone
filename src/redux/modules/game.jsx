@@ -15,7 +15,6 @@ import blockSink from '../../assets/images/level/blockSink.gif';
 export const SET_LEVELID = "SET_LEVELID";
 export const SET_PREVIOUS_LEVELID = "SET_PREVIOUS_LEVELID";
 export const CHANGE_GAMESTATE = "CHANGE_GAMESTATE";
-export const TOGGLE_COOLDOWN = "TOGGLE_COOLDOWN";
 export const SET_RESPAWNPOINT = "SET_RESPAWNPOINT";
 
 //Action Creators
@@ -36,13 +35,6 @@ export function setPreviousLevelId(newPreviousLevelId) {
     type: SET_PREVIOUS_LEVELID,
     previousLevelId: newPreviousLevelId
   };
-}
-
-export function toggleCoolDown(newBool) {
-  return {
-    type: TOGGLE_COOLDOWN,
-    coolDown: newBool
-  }
 }
 
 export function setRespawnPoint(newRespawnPoint) {
@@ -71,7 +63,7 @@ const initialState = {
         ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
         ['W'], ['0'], ['W'], ['W'], ['$'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
         ['W'], ['0'], ['B'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['$'], ['0'], ['W'],
-        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['I'], ['I'], ['I'], ['I'], ['0'], ['0'], ['0'], ['0'], ['W'],
         ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['0'], ['W'],
         ['W'], ['W'], ['W'], ['W'], ['W'], ['D','1-B',3,'open'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
       ],
@@ -136,7 +128,6 @@ const initialState = {
       health: 80
     }
   },
-  coolDown: false,
   miscSprites: {
     block:  <img id="player" src={block} width="60" height="60"/>,
     blockSink:  <img id="player" src={blockSink} width="60" height="60"/>
@@ -194,11 +185,6 @@ const gameReducer = (state = initialState, action) => {
     case SET_PREVIOUS_LEVELID:
       newState = Object.assign({}, state, {
         previousLevelId: previousLevelId
-      });
-      return newState;
-    case TOGGLE_COOLDOWN:
-      newState = Object.assign({}, state, {
-        coolDown: coolDown
       });
       return newState;
     case SET_RESPAWNPOINT:
