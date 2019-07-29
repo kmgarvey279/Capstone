@@ -52,7 +52,7 @@ export function updateTransition(squareIdToUpdate, newTransition) {
 
 export function updateValue(squareIdToUpdate, newValue, newTileImage) {
   return {
-    type: UPDATE_TRANSITION,
+    type: UPDATE_VALUE,
     squareId: squareIdToUpdate,
     value: newValue,
     tileImage: newTileImage
@@ -85,7 +85,7 @@ const levelReducer = (state = {}, action) => {
         });
         return newState;
     case UPDATE_VALUE:
-      newSquare = Object.assign({}, state[id], {value, tileImage});
+      newSquare = Object.assign({}, state[squareId], {value, tileImage});
       newState = Object.assign({}, state, {
         [squareId]: newSquare
       });

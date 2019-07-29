@@ -4,6 +4,7 @@ import { v4 } from 'uuid';
 export const CREATE_PROJECTILE = "CREATE_PROJECTILE";
 export const UPDATE_PROJECTILE_LOCATION = "UPDATE_PROJECTILE_LOCATION";
 export const NULL_PROJECTILE = "NULL_PROJECTILE";
+export const NULL_ALL_PROJECTILES = "NULL_ALL_PROJECTILES";
 
 //Action Creators
 export function createProjectile(newProjectileId, newDirection, newLocation, newTarget) {
@@ -27,6 +28,12 @@ export function nullProjectile(projectileId) {
     type: NULL_PROJECTILE,
     projectileId: projectileId
   };
+}
+
+export function nullAllProjectiles() {
+  return {
+    type: NULL_ALL_PROJECTILES,
+  }
 }
 
 //Initial State
@@ -59,6 +66,8 @@ const projectileReducer = (state = {}, action) => {
         [projectileId]: {}
       });
       return newState;
+    case NULL_ALL_PROJECTILES:
+      return {};
   default:
     return state;
   }

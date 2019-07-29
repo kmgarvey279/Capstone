@@ -1,16 +1,22 @@
 import React from 'react';
-import playerStandNorth from '../../assets/images/player/playerStandNorth.png';
+import playerStandNorth from '../../assets/images/player/playerStandNorth.gif';
 import playerStandEast from '../../assets/images/player/playerStandEast.png';
-import playerStandSouth from '../../assets/images/player/playerStandFront.gif';
+import playerStandSouth from '../../assets/images/player/playerStandSouth.gif';
 import playerStandWest from '../../assets/images/player/playerStandWest.png';
-import playerWalkNorth from '../../assets/images/player/playerWalkNorth.png';
+
+import playerWalkNorth from '../../assets/images/player/playerWalkNorth.gif';
 import playerWalkEast from '../../assets/images/player/playerWalkEast.png';
 import playerWalkSouth from '../../assets/images/player/playerWalkSouth.gif';
 import playerWalkWest from '../../assets/images/player/playerWalkWest.png';
+
 import playerAttackNorth from '../../assets/images/player/playerAttackNorth.png';
 import playerAttackEast from '../../assets/images/player/playerAttackEast.png';
-import playerAttackSouth from '../../assets/images/player/playerAttackSouth.png';
+import playerAttackSouth from '../../assets/images/player/playerAttackSouth.gif';
 import playerAttackWest from '../../assets/images/player/playerAttackWest.png';
+
+import playerKnockbackSouth from '../../assets/images/player/playerKnockbackSouth.gif';
+import playerKnockbackNorth from '../../assets/images/player/playerKnockbackNorth.gif';
+
 import taser from '../../assets/images/projectiles/taser.png';
 
 //Constants
@@ -18,6 +24,7 @@ export const UPDATE_PLAYER_HEALTH = "UPDATE_PLAYER_HEALTH";
 export const UPDATE_PLAYER_LOCATION = "UPDATE_PLAYER_LOCATION";
 export const UPDATE_PLAYER_DIRECTION = "UPDATE_PLAYER_DIRECTION";
 export const TOGGLE_INVINCIBILITY = "TOGGLE_INVINCIBILITY";
+export const UPDATE_SCORE = "UPDATE_SCORE";
 
 //Action Creators
 export function updatePlayerHealth(newHealth) {
@@ -44,31 +51,38 @@ export function toggleInvincibility(newBool) {
     invincibility: newBool
   };
 }
+export function updateScore(newScore) {
+  return {
+    type: UPDATE_SCORE,
+    score: newScore
+  };
+}
 
 //Initial State
 const initialState = {
     health: 100,
+    score: 0,
     direction: 'north',
     location: null,
     invincibility: false,
     sprites: {
       stand: {
-        north: <img id="player" src={playerStandNorth} width="55" height="55"/>,
+        north: <img id="player" src={playerStandNorth} width="80" height="80"/>,
         east: <img id="player" src={playerStandEast} width="55" height="55"/>,
-        south: <img id="player" src={playerStandSouth} width="90" height="90"/>,
+        south: <img id="player" src={playerStandSouth} width="80" height="80"/>,
         west: <img id="player" src={playerStandWest} width="55" height="55"/>,
       },
       walk: {
-        north: <img id="player" src={playerWalkNorth} width="50" height="55"/>,
+        north: <img id="player" src={playerWalkNorth} width="80" height="80"/>,
         east: <img id="player" src={playerWalkEast} width="50" height="55"/>,
-        south: <img id="player" src={playerWalkSouth} width="90" height="90"/>,
+        south: <img id="player" src={playerWalkSouth} width="80" height="80"/>,
         west: <img id="player" src={playerWalkWest} width="50" height="55"/>,
       },
       knockback: {
-        north: <img id="player" src={playerStandNorth} width="50" height="50"/>,
-        east: <img id="player" src={playerStandEast} width="50" height="50"/>,
-        south: <img id="player" src={playerStandSouth} width="50" height="50"/>,
-        west: <img id="player" src={playerStandWest} width="50" height="50"/>,
+        north: <img id="player" src={playerKnockbackNorth} width="80" height="80"/>,
+        east: <img id="player" src={playerKnockbackSouth} width="80" height="80"/>,
+        south: <img id="player" src={playerKnockbackSouth} width="80" height="80"/>,
+        west: <img id="player" src={playerKnockbackSouth} width="80" height="80"/>,
       },
       attack: {
         north: <img id="player" src={playerAttackNorth} width="50" height="50" />,
@@ -112,7 +126,7 @@ const initialState = {
 //Reducer
 export default function playerReducer(state = initialState, action){
   let newState;
-  const { health, location, direction, invincibility } = action;
+  const { health, location, direction, invincibility, score } = action;
 
   switch (action.type) {
     case UPDATE_PLAYER_HEALTH:
@@ -134,6 +148,11 @@ export default function playerReducer(state = initialState, action){
       newState = Object.assign({}, state, {
         invincibility: invincibility
       })
+      return newState;
+    case UPDATE_SCORE:
+      newState = Object.assign({}, state, {
+        score: score
+      });
       return newState;
     default:
         return state;

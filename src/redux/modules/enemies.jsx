@@ -6,6 +6,7 @@ export const UPDATE_ENEMY_LOCATION = "UPDATE_ENEMY_LOCATION";
 export const UPDATE_ENEMY_DIRECTION = "UPDATE_ENEMY_DIRECTION";
 export const UPDATE_ENEMY_HEALTH = "UPDATE_ENEMY_HEALTH";
 export const NULL_ENEMY = "NULL_ENEMY";
+export const NULL_ALL_ENEMIES = "NULL_ALL_ENEMIES";
 export const UPDATE_ENEMY_STATUS = "UPDATE_ENEMY_STATUS";
 
 //Action Creators
@@ -61,6 +62,13 @@ export function nullEnemy(enemyIdToUpdate) {
   }
 }
 
+export function nullAllEnemies() {
+  return {
+    type: NULL_ALL_ENEMIES,
+  }
+}
+
+
 //Initial State
 
 //Reducer
@@ -112,6 +120,8 @@ const enemyReducer = (state = {}, action) => {
         [enemyId]: {}
       })
       return newState;
+    case NULL_ALL_ENEMIES:
+      return {};
   default:
     return state;
   }

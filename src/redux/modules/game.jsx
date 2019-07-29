@@ -9,9 +9,11 @@ import blobKnockbackEast from '../../assets/images/enemies/blob-front-knockback.
 import blobKnockbackSouth from '../../assets/images/enemies/blob-front-knockback.gif';
 import blobKnockbackWest from '../../assets/images/enemies/blob-front-knockback.gif';
 
-import block from '../../assets/images/level/block.png'
+import block from '../../assets/images/level/block.png';
+import blockSink from '../../assets/images/level/blockSink.gif';
 //Constants
-export const LEVELID_UP = "LEVELID_UP";
+export const SET_LEVELID = "SET_LEVELID";
+export const SET_PREVIOUS_LEVELID = "SET_PREVIOUS_LEVELID";
 export const CHANGE_GAMESTATE = "CHANGE_GAMESTATE";
 export const TOGGLE_COOLDOWN = "TOGGLE_COOLDOWN";
 export const SET_RESPAWNPOINT = "SET_RESPAWNPOINT";
@@ -23,10 +25,16 @@ export function changeGameState(newGameState) {
     gameState: newGameState
   };
 }
-export function levelIdUp(newLevelId) {
+export function setLevelId(newLevelId) {
   return {
-    type: LEVELID_UP,
+    type: SET_LEVELID,
     levelId: newLevelId
+  };
+}
+export function setPreviousLevelId(newPreviousLevelId) {
+  return {
+    type: SET_PREVIOUS_LEVELID,
+    previousLevelId: newPreviousLevelId
   };
 }
 
@@ -47,46 +55,56 @@ export function setRespawnPoint(newRespawnPoint) {
 //Initial State
 const initialState = {
   levelId: 1,
+  previousLevelId: 3,
   gameState: 'title',
-  score: 0,
   respawnPoint: '',
+  enemyTimers: [],
   levelById: {
+    // key: W = wall, D = door, P = pit, L = lava, B = block, E =  enemy
     1:[
-        'W', 'W', 'W', 'F', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W',
-        'W', '0', '0', '0', '0', '0', 'P', 'P', 'L', '0', '0', 'W',
-        'W', 'W', '0', '0', '0', '0', '0', 'P', 'L', '0', 'L', 'W',
-        'W', '0', '0', '0', '0', '0', '0', '0', 'L', 'L', '0', 'W',
-        'W', 'W', 'W', 'W', '0', '0', '0', '0', '0', 'L', '0', 'W',
-        'W', '0', '0', 'W', '1', '0', '1', '0', 'B', 'L', 'L', 'W',
-        'W', '0', '0', 'W', '0', '0', '0', '0', '0', '0', '0', 'W',
-        'W', '0', '0', 'W', '0', '0', '0', '0', '0', '0', '0', 'W',
-        'W', '0', 'B', 'W', 'W', 'W', 'W', 'W', 'W', '0', '0', 'W',
-        'W', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'W',
-        'W', '0', '0', '0', '0', '0', '0', '0', 'W', '0', '0', 'W',
-        'W', 'W', 'W', 'W', 'W', 'S', 'W', 'W', 'W', 'W', 'W', 'W'
+        ['W'], ['W'], ['W'], ['D','1-A',2,'locked'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W'],
+        ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['L'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['0'], ['W'],
+        ['W'], ['W'], ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['L'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['E',1], ['0'], ['E',1], ['0'], ['0'], ['L'], ['L'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['W'], ['W'], ['$'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['B'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['$'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['0'], ['W'],
+        ['W'], ['W'], ['W'], ['W'], ['W'], ['D','1-B',3,'open'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
       ],
        /////////////////////////////////////////////////
-    2:['0', 'E', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', 'L', 'L', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', 'L', '0', '0', '0', '0',
-       '0', '0', 'F', '0', '0', 'L', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', 'L', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', 'L', '0', '0', '0', '0',
-       '0', '0', '0', '0', 'L', 'L', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', 'S', '0', '0', '0', '0', '0'],
+    2:[
+        ['W'], ['W'], ['W'], ['D','2-A',1,'locked'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W'],
+        ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['L'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['0'], ['W'],
+        ['W'], ['0'], ['W'], ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['L'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['E',1], ['0'], ['E',1], ['0'], ['0'], ['L'], ['L'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['B'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['0'], ['W'],
+        ['W'], ['W'], ['W'], ['W'], ['W'], ['D','2-B',3,'open'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
+      ],
        /////////////////////////////////////////////////
-    3:['0', 'E', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', 'F', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', 'W', 'W', 'W', 'W', 'W', 'W', 'W',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', 'S', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-       '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+    3:[
+        ['W'], ['W'], ['W'], ['D','3-A',1,'locked'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W'],
+        ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['L'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['0'], ['W'],
+        ['W'], ['W'], ['W'], ['W'], ['0'], ['0'], ['0'], ['P'], ['P'], ['L'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['E',1], ['0'], ['E',1], ['0'], ['0'], ['L'], ['L'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['B'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['0'], ['W'],
+        ['W'], ['W'], ['W'], ['W'], ['W'], ['D','3-B',2,'open'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
+      ]
   },
   enemyById: {
     1: {
@@ -120,7 +138,8 @@ const initialState = {
   },
   coolDown: false,
   miscSprites: {
-    block:  <img id="player" src={block} width="60" height="60"/>
+    block:  <img id="player" src={block} width="60" height="60"/>,
+    blockSink:  <img id="player" src={blockSink} width="60" height="60"/>
   }
 };
 
@@ -159,7 +178,7 @@ const enemySpriteList = {
 //Reducer
 const gameReducer = (state = initialState, action) => {
   let newState;
-  const { gameState, coolDown, levelId, respawnPoint } = action;
+  const { gameState, coolDown, levelId, respawnPoint, previousLevelId } = action;
 
   switch (action.type) {
     case CHANGE_GAMESTATE:
@@ -167,9 +186,14 @@ const gameReducer = (state = initialState, action) => {
         gameState: gameState
       });
       return newState;
-    case LEVELID_UP:
+    case SET_LEVELID:
       newState = Object.assign({}, state, {
         levelId: levelId
+      });
+      return newState;
+    case SET_PREVIOUS_LEVELID:
+      newState = Object.assign({}, state, {
+        previousLevelId: previousLevelId
       });
       return newState;
     case TOGGLE_COOLDOWN:

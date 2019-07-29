@@ -55,18 +55,18 @@ function Square(props){
       <div>
         <style jsx>{`
           @keyframes move {
-            0%  {bottom: 10px;}
-            25%  {bottom: 20px;}
-            50%  {bottom: 30px;}
-            75%  {bottom: 40px;}
+            0%  {bottom: 20px;}
+            25%  {bottom: 30px;}
+            50%  {bottom: 40px;}
+            75%  {bottom: 50px;}
           }
           div#spriteNorth{
-            right: 4px;
-            bottom: 5px;
             z-index: 100;
             position: absolute;
             animation-name: move;
             animation-duration: 1s;
+            bottom: 15px;
+            right -13px;
           }
         `}</style>
         <div id="spriteNorth">{props.sprite}</div>
@@ -78,13 +78,14 @@ function Square(props){
         <div>
           <style jsx>{`
             @keyframes move {
-              0%  {left: 10px;}
-              25%  {left: 20px;}
-              50%  {left: 30px;}
-              75%  {left: 40px;}
+              0%  {right: 20px;}
+              25%  {right: 0px;}
+              50%  {right: -10px;}
+              75%  {right: -20px;}
             }
             div#spriteEast{
-              bottom: 5px;
+              bottom: 15px;
+              right -13px;
               z-index: 100;
               position: absolute;
               animation-name: move;
@@ -106,12 +107,12 @@ function Square(props){
               75%  {top: -50px;}
             }
             div#spriteSouth{
-              bottom: 5px;
               z-index: 100;
               position: absolute;
               animation-name: move;
               animation-duration: 1s;
-                          right -10px;
+              bottom: 15px;
+              right -13px;
             }
           `}</style>
           <div id="spriteSouth">{props.sprite}</div>
@@ -123,13 +124,14 @@ function Square(props){
         <div>
           <style jsx>{`
             @keyframes move {
-              0%  {right: 10px;}
-              25%  {right: 20px;}
-              50%  {right: 30px;}
-              75%  {right: 40px;}
+              0%  {left: -80px;}
+              25%  {left: -70px;}
+              50%  {left: -60px;}
+              75%  {left: -50px;}
             }
             div#spriteWest{
-              bottom: 5px;
+              bottom: 15px;
+              right -13px;
               z-index: 100;
               position: absolute;
               animation-name: move;
@@ -147,8 +149,8 @@ function Square(props){
           div#sprite{
             z-index: 100;
             position: absolute;
-            bottom: 10px;
-            right -10px;
+            bottom: 15px;
+            right -13px;
           }
           `}</style>
           <div id="sprite">{props.sprite}</div>

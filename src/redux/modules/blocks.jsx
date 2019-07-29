@@ -3,6 +3,7 @@ import { v4 } from 'uuid';
 //Constants
 export const CREATE_BLOCK = "CREATE_BLOCK";
 export const NULL_BLOCK = "NULL_BLOCK";
+export const NULL_ALL_BLOCKS = "NULL_ALL_BLOCKS";
 export const UPDATE_BLOCK_LOCATION = "UPDATE_BLOCK_LOCATION";
 
 //Action Creators
@@ -22,10 +23,16 @@ export function updateBlockLocation(blockId, location) {
   }
 }
 
-export function nullBlock(blockId, location) {
+export function nullBlock(blockId) {
   return {
     type: NULL_BLOCK,
     blockId: blockId
+  }
+}
+
+export function nullAllBlock() {
+  return {
+    type: NULL_ALL_BLOCKS,
   }
 }
 
@@ -57,6 +64,8 @@ const blockReducer = (state = {}, action) => {
         [blockId]: {}
       });
       return newState;
+    case NULL_ALL_BLOCKS:
+      return {};
   default:
     return state;
   }

@@ -1,23 +1,16 @@
-import { v4 } from 'uuid';
-
 //Constants
 export const CREATE_DOOR = "CREATE_DOOR";
-export const NULL_DOORS = "NULL_DOOR";
 export const OPEN_DOOR = "OPEN_DOOR";
 
 //Action Creators
-export function createDoor(doorId, location, isLocked, leadsTo) {
+export function createDoor(doorId, location, leadsTo, isLocked, direction) {
   return {
     type: CREATE_DOOR,
     doorId: doorId,
+    location: location,
+    leadsTo: leadsTo,
     isLocked: isLocked,
-    leadsTo: leadsTo
-  }
-}
-
-export function nullDoors() {
-  return {
-    type: NULL_DOORS
+    direction: direction
   }
 }
 
@@ -35,7 +28,7 @@ export function openDoor(doorId) {
 const doorReducer = (state = {}, action) => {
   let newState;
   let newDoor;
-  const { doorId, location, isLocked, leadsTo } = action;
+  const { doorId, location, isLocked, leadsTo, direction } = action;
 
   switch (action.type) {
     case CREATE_DOOR:
@@ -43,8 +36,9 @@ const doorReducer = (state = {}, action) => {
         [doorId]: {
           doorId: doorId,
           location: location,
+          leadsTo: leadsTo,
           isLocked: isLocked,
-          leadsTo: leadsTo
+          direction: direction
         }
       });
       return newState;
@@ -53,9 +47,6 @@ const doorReducer = (state = {}, action) => {
       newState = Object.assign({}, state, {
         [doorId]: newDoor
       });
-      return newState;
-    case NULL_DOORS:
-      newState = {}
       return newState;
   default:
     return state;
