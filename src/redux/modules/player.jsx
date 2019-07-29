@@ -85,9 +85,9 @@ const initialState = {
         west: <img id="player" src={playerKnockbackSouth} width="80" height="80"/>,
       },
       attack: {
-        north: <img id="player" src={playerAttackNorth} width="50" height="50" />,
+        north: <img id="player" src={playerAttackNorth} width="80" height="80" />,
         east: <img id="player" src={playerAttackEast} width="50" height="50" />,
-        south: <img id="player" src={playerAttackSouth} width="50" height="50" />,
+        south: <img id="player" src={playerAttackSouth} width="80" height="80" />,
         west: <img id="player" src={playerAttackWest} width="50" height="50" />,
       },
       fall: <img id="player" src={playerStandEast} width="50" height="50"/>,
@@ -110,7 +110,7 @@ const initialState = {
       },
       2: {
         id: 2,
-        name: 'Flamethrower',
+        name: 'Cryostat',
         range: 4,
         sprites: {}
       },

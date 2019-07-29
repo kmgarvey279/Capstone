@@ -134,10 +134,13 @@ class App extends React.Component {
     dispatch(enemiesModule.nullAllEnemies());
     dispatch(blocksModule.nullAllBlock());
     dispatch(projectilesModule.nullAllProjectiles());
-    let levelTemplate = this.props.game.levelById[this.props.game.levelId];
+    let levelTransitionTimer = setTimeout(() =>
+    {let levelTemplate = this.props.game.levelById[this.props.game.levelId];
     for(let i = 0; i < levelTemplate.length; i++){
       this.handleAddingSquareToLevel(i+1, levelTemplate[i]);
-    }
+    }},
+      500
+    );
   }
 
   getTileDirection(thisSquareId) {
@@ -406,7 +409,6 @@ class App extends React.Component {
     } else if (squareToCheck.value == 'P'){
       this.fall(squareId, direction);
     } else if (squareToCheck.value == '$') {
-      alert("score!");
       dispatch(playerModule.updateScore(this.props.player.score + 1));
       return 'moved';
     } else {
