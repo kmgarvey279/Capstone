@@ -17,7 +17,12 @@ import playerAttackWest from '../../assets/images/player/playerAttackWest.png';
 import playerKnockbackSouth from '../../assets/images/player/playerKnockbackSouth.gif';
 import playerKnockbackNorth from '../../assets/images/player/playerKnockbackNorth.gif';
 
+import playerDashSouth from '../../assets/images/player/playerDashSouth.gif'
+
+import playerParticleSouth from '../../assets/images/player/playerParticleSouth.gif'
+
 import taser from '../../assets/images/projectiles/taser.png';
+import cryostat from '../../assets/images/projectiles/cryostatEast.gif';
 
 //Constants
 export const UPDATE_PLAYER_HEALTH = "UPDATE_PLAYER_HEALTH";
@@ -105,6 +110,18 @@ const initialState = {
         south: <img id="player" src={playerAttackSouth} width="80" height="80" />,
         west: <img id="player" src={playerAttackWest} width="50" height="50" />,
       },
+      dash: {
+        north: <img id="player" src={playerDashSouth} width="80" height="80" />,
+        east: <img id="player" src={playerDashSouth} width="80" height="80" />,
+        west: <img id="player" src={playerDashSouth} width="80" height="80" />,
+        south: <img id="player" src={playerDashSouth} width="80" height="80" />,
+      },
+      particle: {
+        north: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
+        east: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
+        south: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
+        west: <img id="player" src={playerParticleSouth} width="80" height="80"/>
+      },
       fall: <img id="player" src={playerStandEast} width="50" height="50"/>,
       victory: <img id="player" src={playerStandEast} width="50" height="50"/>
     },
@@ -128,10 +145,10 @@ const initialState = {
         name: 'Cryostat',
         range: 4,
         sprites: {
-          north: <img id="player" src={taser} width="50" height="50"/>,
-          west: <img id="player" src={taser} width="50" height="50"/>,
-          east: <img id="player" src={taser} width="50" height="50"/>,
-          south: <img id="player" src={taser} width="50" height="50"/>,
+          north: <img id="player" src={cryostat} width="80" height="80"/>,
+          west: <img id="player" src={cryostat} width="80" height="80"/>,
+          east: <img id="player" src={cryostat} width="80" height="80"/>,
+          south: <img id="player" src={cryostat} width="80" height="80"/>,
           burst: <img id="player" src={taser} width="50" height="50"/>,
           icon: <img id="player" src={taser} width="50" height="50"/>
         }

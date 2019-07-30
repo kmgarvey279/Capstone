@@ -334,10 +334,12 @@ class App extends React.Component {
 
   dash() {
     let direction = this.props.player.direction;
+    this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.dash[direction], direction);
     for (let i = 0; i < 3; i++) {
       //check if player can be knocked back in this direction
       let originalLocation = this.props.player.location;
       let canMove = this.attemptMove(direction, originalLocation);
+      let last;
       let next = this.attemptMove(direction, canMove);
       if (canMove !== location) {
         //check for effects of landing on new square
@@ -348,10 +350,15 @@ class App extends React.Component {
         } else if (squareCheck = 'moved' || squareCheck == 'slide'){
           //update player and new square
           this.handleUpdatePlayerLocation(originalLocation, canMove);
-          this.handleUpdateSprite(canMove, this.props.player.sprites.walk[direction], direction);
+          this.handleUpdateSprite(canMove, this.props.player.sprites.dash[direction], direction);
           let afterImageTimer = setTimeout(() =>
-            this.handleUpdateSprite(originalLocation, '', ''),
-            300
+            this.handleUpdateSprite(originalLocation, this.props.player.sprites.particle[direction], ''),
+            200
+          );
+          last = originalLocation;
+          let afterAfterImageTimer = setTimeout(() =>
+            this.handleUpdateSprite(last, '', ''),
+            800
           );
           if(squareCheck == 'slide') {
             this.move(direction)
@@ -365,7 +372,7 @@ class App extends React.Component {
     let spriteClearTimer = setTimeout(() =>
       {this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
       this.props.dispatch(playerModule.updatePlayerStatus('normal'))},
-      600
+      400
     );
   }
 
@@ -420,6 +427,102 @@ class App extends React.Component {
       600
     );
   }
+
+  //Handle Projectiles
+
+    attack() {
+      let direction = this.props.player.direction;
+      let playerLocation = this.props.player.location;
+      let name = this.props.player.weapons[this.props.player.currentWeapon].name;
+      let range = this.props.player.weapons[this.props.player.currentWeapon].range;
+      let startPoint = this.attemptMove(direction, playerLocation);
+      if (startPoint !== playerLocation) {
+        if (this.props.currentLevel[startPoint].content == 'enemy') {
+          this.enemyKnockBack(direction, this.props.currentLevel[startPoint].contentId);
+        } else {
+          let newSprite = this.props.player.weapons[this.props.player.currentWeapon].sprites[direction];
+          this.props.dispatch(levelModule.updateSprite(startPoint, newSprite));
+          let projectileTimer = setTimeout(() =>
+            this.handleProjectile(name, direction, startPoint, range, newSprite),
+            100
+          );
+        }
+      } else {
+        alert('fizzz...')
+      }
+    };
+
+    handleProjectile(name, direction, location, range, sprite) {
+      if (this.props.game.gameState === 'active') {
+        if (name == 'Cryostat') {
+          this.laserLoop(direction, location, range, sprite);
+        } else {
+          this.projectileLoop(0, direction, location, range, sprite);
+        }
+      }
+    };
+
+    projectileLoop(i, direction, location, range, sprite) {
+        let that = this;
+        let canMove = this.attemptMove(direction, location);
+        //void projectile if it can't progress
+        if (location === canMove) {
+          this.handleUpdateSprite(location, '', '');
+          alert("fizzzz");
+          //damage enemy and void projectile if it hits
+        } else if (this.props.currentLevel[canMove].content === 'enemy') {
+          this.enemyKnockBack(direction, this.props.currentLevel[canMove].contentId);
+          this.handleUpdateSprite(location, '', '');
+          alert("hit!");
+          //otherwise move the projectile
+        } else {
+          //update sprites
+          this.handleUpdateSprite(location, '', '');
+          this.handleUpdateSprite(canMove, sprite, direction);
+          location = canMove;
+          setTimeout(function() {
+            i++;
+            if (i < range) {
+              that.projectileLoop(i, direction, location, range, sprite);
+            }
+          }, 100);
+        }
+        let projectileTimer = setTimeout(() =>
+          this.handleUpdateSprite(location, '', ''),
+          100
+        );
+      };
+
+      laserLoop(direction, location, range, sprite) {
+        let originalLocation = location;
+          this.handleUpdateSprite(originalLocation, sprite, direction);
+          for (let i = 0; i < range; i++) {
+            //check if player can be knocked back in this direction
+            let canMove = this.attemptMove(direction, originalLocation);
+            let last;
+            let next = this.attemptMove(direction, canMove);
+            if (canMove !== location) {
+              //check for effects of landing on new square
+              if (this.props.currentLevel[canMove].content == 'enemy') {
+                let enemyId = this.props.currentLevel[canMove].contentId;
+                this.enemyKnockBack(direction, enemyId);
+              } else {
+                //update player and new square
+                this.handleUpdateSprite(canMove, sprite, direction);
+                let afterImageTimer = setTimeout(() =>
+                  this.handleUpdateSprite(originalLocation, this.props.player.sprites.particle[direction], ''),
+                  200
+                );
+                last = originalLocation;
+                originalLocation = canMove;
+                let afterAfterImageTimer = setTimeout(() =>
+                  this.handleUpdateSprite(last, '', ''),
+                  800
+                );
+              }
+            }
+          }
+        }
 
 //movement helper functions
 
@@ -730,65 +833,6 @@ class App extends React.Component {
     }
   }
 
-//Handle Projectiles
-
-  attack() {
-    let direction = this.props.player.direction;
-    let playerLocation = this.props.player.location;
-    let range = this.props.player.weapons[this.props.player.currentWeapon].range;
-    let startPoint = this.attemptMove(direction, playerLocation);
-    if (startPoint !== playerLocation) {
-      if (this.props.currentLevel[startPoint].content == 'enemy') {
-        this.enemyKnockBack(direction, this.props.currentLevel[startPoint].contentId);
-      } else {
-        let newSprite = this.props.player.weapons[this.props.player.currentWeapon].sprites[direction];
-        this.props.dispatch(levelModule.updateSprite(startPoint, newSprite));
-        let projectileTimer = setTimeout(() =>
-          this.handleProjectile(direction, startPoint, range, newSprite),
-          100
-        );
-      }
-    } else {
-      alert('fizzz...')
-    }
-  };
-
-  handleProjectile(direction, location, range, sprite) {
-    if (this.props.game.gameState === 'active') {
-      this.projectileLoop(0, direction, location, range, sprite);
-    }
-  };
-
-  projectileLoop(i, direction, location, range, sprite) {
-      let that = this;
-      let canMove = this.attemptMove(direction, location);
-      //void projectile if it can't progress
-      if (location === canMove) {
-        this.handleUpdateSprite(location, '', '');
-        alert("fizzzz");
-        //damage enemy and void projectile if it hits
-      } else if (this.props.currentLevel[canMove].content === 'enemy') {
-        this.enemyKnockBack(direction, this.props.currentLevel[canMove].contentId);
-        this.handleUpdateSprite(location, '', '');
-        alert("hit!");
-        //otherwise move the projectile
-      } else {
-        //update sprites
-        this.handleUpdateSprite(location, '', '');
-        this.handleUpdateSprite(canMove, sprite, direction);
-        location = canMove;
-        setTimeout(function() {
-          i++;
-          if (i < range) {
-            that.projectileLoop(i, direction, location, range, sprite);
-          }
-        }, 100);
-      }
-      let projectileTimer = setTimeout(() =>
-        this.handleUpdateSprite(location, '', ''),
-        100
-      );
-    };
 
   render(){
     return (
