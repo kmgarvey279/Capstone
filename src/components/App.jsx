@@ -47,19 +47,35 @@ class App extends React.Component {
   handleKeyPress(event){
     //move up
   if(event.keyCode === 38 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('moveCooldown'));
+    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+    let cooldownTimer = setTimeout(() =>
+      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+      200
+    );
     this.move("north")
     //move down
   } else if(event.keyCode === 40 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('moveCooldown'));
+    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+    let cooldownTimer = setTimeout(() =>
+      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+      200
+    );
     this.move("south")
     //move right
   } else if (event.keyCode === 39 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('moveCooldown'));
+    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+    let cooldownTimer = setTimeout(() =>
+      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+      200
+    );
     this.move("east")
     //move left
   } else if (event.keyCode === 37 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('moveCooldown'));
+    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+    let cooldownTimer = setTimeout(() =>
+      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+      200
+    );
     this.move("west")
     //attack!
   } else if (event.keyCode === 32) {
@@ -67,7 +83,13 @@ class App extends React.Component {
       this.startGame();
       this.props.history.push("/game");
     } else if (this.props.game.gameState == 'active' && this.props.player.status =='normal'){
-      this.props.dispatch(playerModule.updatePlayerStatus('moveCooldown'));
+      this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+      let cooldownTimer = setTimeout(() =>
+        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+        200
+      );
+      let newSprite = this.props.player.sprites.attack[this.props.player.direction];
+      this.props.dispatch(levelModule.updateSprite(this.props.player.location, newSprite));
       this.attack();
     }
     //change selected weapon
@@ -310,21 +332,6 @@ class App extends React.Component {
     this.props.dispatch(playerModule.updatePlayerStatus('normal'));
   }
 
-  attack() {
-    if (this.props.game.gameState === 'active') {
-      let newSprite = this.props.player.sprites.attack[this.props.player.direction];
-      this.props.dispatch(levelModule.updateSprite(this.props.player.location, newSprite));
-      let projectileId = v4();
-      let direction = this.props.player.direction;
-      let location = this.props.player.location;
-      this.handleCreateProjectile(projectileId, direction, location);
-      let shootTimer = setTimeout(() =>
-        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        300
-      );
-    }
-  }
-
   dash() {
     let direction = this.props.player.direction;
     for (let i = 0; i < 3; i++) {
@@ -430,16 +437,7 @@ class App extends React.Component {
   //check if move is possible
   attemptMove(direction, originalLocation) {
     //get difference between two spaces
-    let difference;
-    if(direction == 'north') {
-      difference = -1;
-    } else if (direction == 'east') {
-      difference = 12;
-    } else if (direction == 'south') {
-      difference = 1;
-    } else {
-      difference = -12
-    }
+    let difference = this.getDifference(direction);
     //and new square id #
     let newLocation = originalLocation + difference;
     //check for pushable block
@@ -486,6 +484,18 @@ class App extends React.Component {
     } else {
       //move to square as normal
       return 'moved';
+    }
+  }
+
+  getDifference(direction) {
+    if(direction == 'north') {
+      return -1;
+    } else if (direction == 'east') {
+      return  12;
+    } else if (direction == 'south') {
+      return  1;
+    } else {
+      return  -12
     }
   }
 
@@ -722,76 +732,63 @@ class App extends React.Component {
 
 //Handle Projectiles
 
-  handleCreateProjectile(projectileId, direction, location) {
-    let next;
-    let rangeCounter = 0;
+  attack() {
+    let direction = this.props.player.direction;
+    let playerLocation = this.props.player.location;
     let range = this.props.player.weapons[this.props.player.currentWeapon].range;
-    let canMove = this.attemptMove(direction, location);
-    if (canMove !== location) {
-      if (this.props.currentLevel[canMove].content == 'enemy') {
-        this.enemyKnockBack(direction, this.props.currentLevel[canMove].contentId);
+    let startPoint = this.attemptMove(direction, playerLocation);
+    if (startPoint !== playerLocation) {
+      if (this.props.currentLevel[startPoint].content == 'enemy') {
+        this.enemyKnockBack(direction, this.props.currentLevel[startPoint].contentId);
       } else {
-        console.log(projectileId + " " + direction + " " + canMove + " " + range + " " + rangeCounter)
-        this.props.dispatch(projectilesModule.createProjectile(projectileId, direction, canMove, range, rangeCounter));
-        console.log(this.props.projectiles[projectileId])
         let newSprite = this.props.player.weapons[this.props.player.currentWeapon].sprites[direction];
-        this.props.dispatch(levelModule.updateSprite(canMove, newSprite));
-        this.handleProjectile(projectileId),
-        this.props.dispatch(levelModule.updateContent(canMove, 'projectile', projectileId));
+        this.props.dispatch(levelModule.updateSprite(startPoint, newSprite));
+        let projectileTimer = setTimeout(() =>
+          this.handleProjectile(direction, startPoint, range, newSprite),
+          100
+        );
       }
     } else {
       alert('fizzz...')
     }
   };
 
-  handleProjectile(projectileId) {
+  handleProjectile(direction, location, range, sprite) {
     if (this.props.game.gameState === 'active') {
-      for (let i=0; i < this.props.projectiles[projectileId].range; i++) {
-        let thisProjectile = this.props.projectiles[projectileId];
-        let location = thisProjectile.location;
-        let direction = thisProjectile.direction;
-        let canMove = this.attemptMove(direction, location);
-        //void projectile if @ max range
-        if (thisProjectile.rangeCounter === thisProjectile.range || location === canMove) {
-          this.destroyProjectile(projectileId);
-          break;
-          //damage enemy and void projectile if it hits
-        } else if (this.props.currentLevel[canMove].content === 'enemy') {
-          this.enemyKnockBack(direction, this.props.currentLevel[canMove].contentId);
-          this.destroyProjectile(projectileId);
-          break;
-          //otherwise move the projectile
-        } else {
-          //update location
-          let newCount = thisProjectile.rangeCounter += 1
-          this.props.dispatch(projectilesModule.updateRangeCounter(projectileId, newCount));
-          this.props.dispatch(levelModule.updateContent(location, 'empty', ''));
-          this.props.dispatch(levelModule.updateContent(canMove, 'projectile', projectileId))
-          this.props.dispatch(projectilesModule.updateProjectileLocation(projectileId, canMove));
-          //update sprites
-          let newSprite = this.props.player.weapons[this.props.player.currentWeapon].sprites[direction];
-          this.handleUpdateSprite(canMove, newSprite, direction);
-          let afterImageTimer = setTimeout(() =>
-            this.handleUpdateSprite(location, '', ''),
-            300
-          );
-        }
-      }
+      this.projectileLoop(0, direction, location, range, sprite);
     }
   };
 
-  destroyProjectile(projectileId) {
-    let location = this.props.projectiles[projectileId].location;
-    let newSprite = this.props.player.weapons[this.props.player.currentWeapon].sprites['burst'];
-    this.props.dispatch(levelModule.updateSprite(location, newSprite));
-    this.props.dispatch(projectilesModule.nullProjectile(projectileId));
-    this.props.dispatch(levelModule.updateContent(location, 'empty', ''));
-    clearInterval(this.projectileTimer);
-    let spriteClearTimer = setTimeout(() =>
-      this.handleUpdateSprite(location, '', ''),
-      400
-    );
-  }
+  projectileLoop(i, direction, location, range, sprite) {
+      let that = this;
+      let canMove = this.attemptMove(direction, location);
+      //void projectile if it can't progress
+      if (location === canMove) {
+        this.handleUpdateSprite(location, '', '');
+        alert("fizzzz");
+        //damage enemy and void projectile if it hits
+      } else if (this.props.currentLevel[canMove].content === 'enemy') {
+        this.enemyKnockBack(direction, this.props.currentLevel[canMove].contentId);
+        this.handleUpdateSprite(location, '', '');
+        alert("hit!");
+        //otherwise move the projectile
+      } else {
+        //update sprites
+        this.handleUpdateSprite(location, '', '');
+        this.handleUpdateSprite(canMove, sprite, direction);
+        location = canMove;
+        setTimeout(function() {
+          i++;
+          if (i < range) {
+            that.projectileLoop(i, direction, location, range, sprite);
+          }
+        }, 100);
+      }
+      let projectileTimer = setTimeout(() =>
+        this.handleUpdateSprite(location, '', ''),
+        100
+      );
+    };
 
   render(){
     return (
