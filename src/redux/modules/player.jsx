@@ -130,7 +130,7 @@ const initialState = {
       1: {
         id: 1,
         name: 'Taser Gun',
-        range: 3,
+        range: 4,
         sprites: {
           north: <img id="player" src={taser} width="50" height="50"/>,
           west: <img id="player" src={taser} width="50" height="50"/>,
@@ -143,7 +143,7 @@ const initialState = {
       2: {
         id: 2,
         name: 'Cryostat',
-        range: 4,
+        range: 3,
         sprites: {
           north: <img id="player" src={cryostat} width="80" height="80"/>,
           west: <img id="player" src={cryostat} width="80" height="80"/>,
