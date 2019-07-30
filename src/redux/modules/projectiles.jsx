@@ -46,7 +46,6 @@ export function updateRangeCounter(projectileId, newRangeCounter){
 }
 
 //Initial State
-
 //Reducer
 const projectileReducer = (state = {}, action) => {
   let newState;

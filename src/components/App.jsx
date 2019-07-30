@@ -46,43 +46,39 @@ class App extends React.Component {
 
   handleKeyPress(event){
     //move up
-  if(event.keyCode === 38 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-    let cooldownTimer = setTimeout(() =>
-      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-      200
-    );
-    this.move("north")
-    //move down
-  } else if(event.keyCode === 40 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-    let cooldownTimer = setTimeout(() =>
-      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-      200
-    );
-    this.move("south")
-    //move right
-  } else if (event.keyCode === 39 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-    let cooldownTimer = setTimeout(() =>
-      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-      200
-    );
-    this.move("east")
-    //move left
-  } else if (event.keyCode === 37 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
-    this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-    let cooldownTimer = setTimeout(() =>
-      this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-      200
-    );
-    this.move("west")
-    //attack!
-  } else if (event.keyCode === 32) {
-    if(this.props.game.gameState == 'title') {
-      this.startGame();
-      this.props.history.push("/game");
-    } else if (this.props.game.gameState == 'active' && this.props.player.status =='normal'){
+    if(event.keyCode === 38 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
+      this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+      let cooldownTimer = setTimeout(() =>
+        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+        200
+      );
+      this.move("north")
+      //move down
+    } else if(event.keyCode === 40 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
+      this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+      let cooldownTimer = setTimeout(() =>
+        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+        200
+      );
+      this.move("south")
+      //move right
+    } else if (event.keyCode === 39 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
+      this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+      let cooldownTimer = setTimeout(() =>
+        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+        200
+      );
+      this.move("east")
+      //move left
+    } else if (event.keyCode === 37 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
+      this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+      let cooldownTimer = setTimeout(() =>
+        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
+        200
+      );
+      this.move("west")
+      //attack!
+    } else if (event.keyCode === 32 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
       let cooldownTimer = setTimeout(() =>
         this.props.dispatch(playerModule.updatePlayerStatus('normal')),
@@ -91,35 +87,31 @@ class App extends React.Component {
       let newSprite = this.props.player.sprites.attack[this.props.player.direction];
       this.props.dispatch(levelModule.updateSprite(this.props.player.location, newSprite));
       this.attack();
-    }
-    //change selected weapon
-  } else if (event.keyCode === 16 && this.props.game.gameState == 'active') {
-      let newWeaponId;
-      if (this.props.player.currentWeapon < Object.keys(this.props.player.weapons).length) {
-        newWeaponId = this.props.player.currentWeapon + 1;
-      } else {
-        newWeaponId = 1;
-      }
-      this.props.dispatch(playerModule.changeCurrentWeapon(newWeaponId));
-    //dash
-  } else if (event.keyCode === 17 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
-      this.props.dispatch(playerModule.updatePlayerStatus('dash'));
-      this.dash();
-    //pause/unpause
-  } else if (event.keyCode === 13) {
-      if(this.props.game.gameState == 'title') {
-        this.startGame();
-      } else if (this.props.game.gameState == 'active' || this.props.game.gameState == 'paused') {
-        this.pauseGame();
-      }
+      //change selected weapon
+    } else if (event.keyCode === 16 && this.props.game.gameState == 'active') {
+        let newWeaponId;
+        if (this.props.player.currentWeapon < Object.keys(this.props.player.weapons).length) {
+          newWeaponId = this.props.player.currentWeapon + 1;
+        } else {
+          newWeaponId = 1;
+        }
+        this.props.dispatch(playerModule.changeCurrentWeapon(newWeaponId));
+      //dash
+    } else if (event.keyCode === 17 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
+        this.props.dispatch(playerModule.updatePlayerStatus('dash'));
+        this.dash();
+      //pause/unpause
+    } else if (event.keyCode === 13 && (this.props.game.gameState == 'active' || this.props.game.gameState == 'paused')) {
+      this.pauseGame();
     }
   }
+
+
 
 //Change Level State
   startGame(){
     this.handleChangeGameState('active')
     this.generateLevelFromTemplate();
-    this.props.history.push("/game");
   }
 
   pauseGame(){
@@ -141,6 +133,7 @@ class App extends React.Component {
     {let levelTemplate = this.props.game.levelById[this.props.game.levelId];
     for(let i = 0; i < levelTemplate.length; i++){
       this.handleAddingSquareToLevel(i+1, levelTemplate[i]);
+      this.handleChangeGameState("active");
     }},
       500
     );
@@ -256,11 +249,13 @@ class App extends React.Component {
       } else {
         squareImage = <img id="tile" src={wall} weight="50" height="50" />;
       }
-    //create empty tile
+    //create coin tile
     } else if (squareValue == '$') {
       squareImage = <img id="tile" src={coin} weight="50" height="50" />;
+    //create ice tile
     } else if (squareValue == 'I') {
       squareImage = <img id="tile" src={ice} weight="50" height="50" />;
+    //create empty tile
     } else {
       squareImage = <img id="tile" src={tile} weight="50" height="50" />;
     }
@@ -351,7 +346,7 @@ class App extends React.Component {
         //check for effects of landing on new square
         if (this.props.currentLevel[canMove].content == 'enemy') {
           let enemyId = this.props.currentLevel[canMove].contentId;
-          this.enemyKnockBack(direction, enemyId);
+          this.handleEnemyDamage('dash', direction, this.props.currentLevel[canMove].contentId);
         } else {
           //update player and new square
           this.handleUpdatePlayerLocation(originalLocation, canMove);
@@ -451,105 +446,108 @@ class App extends React.Component {
     );
   }
 
+  playerHealthCheck(){
+    if (this.props.player.health <= 0) {
+      this.handleChangeGameState('gameOver');
+    }
+  }
+
   //Handle Projectiles
 
-    attack() {
-      let direction = this.props.player.direction;
-      let playerLocation = this.props.player.location;
-      let name = this.props.player.weapons[this.props.player.currentWeapon].name;
-      let range = this.props.player.weapons[this.props.player.currentWeapon].range;
-      let startPoint = this.attemptMove(direction, playerLocation);
-      if (startPoint !== playerLocation) {
-        if (this.props.currentLevel[startPoint].content == 'enemy') {
-          this.enemyKnockBack(direction, this.props.currentLevel[startPoint].contentId);
-        } else {
-          let newSprite = this.props.player.weapons[this.props.player.currentWeapon].sprites[direction];
-          this.props.dispatch(levelModule.updateSprite(startPoint, newSprite));
-          let projectileTimer = setTimeout(() =>
-            this.handleProjectile(name, direction, startPoint, range, newSprite),
-            100
-          );
-        }
+  attack() {
+    let direction = this.props.player.direction;
+    let playerLocation = this.props.player.location;
+    let name = this.props.player.weapons[this.props.player.currentWeapon].name;
+    let range = this.props.player.weapons[this.props.player.currentWeapon].range;
+    let startPoint = this.attemptMove(direction, playerLocation);
+    if (startPoint !== playerLocation) {
+      if (this.props.currentLevel[startPoint].content == 'enemy') {
+        this.handleEnemyDamage(name, direction, this.props.currentLevel[startPoint].contentId);
       } else {
-        alert('fizzz...')
-      }
-    };
-
-    handleProjectile(name, direction, location, range, sprite) {
-      if (this.props.game.gameState === 'active') {
-        if (name == 'Cryostat') {
-          this.laserLoop(direction, location, range, sprite);
-        } else {
-          this.projectileLoop(0, direction, location, range, sprite);
-        }
-      }
-    };
-
-    projectileLoop(i, direction, location, range, sprite) {
-        let that = this;
-        let canMove = this.attemptMove(direction, location);
-        //void projectile if it can't progress
-        if (location === canMove) {
-          this.handleUpdateSprite(location, '', '');
-          //damage enemy and void projectile if it hits
-        } else if (this.props.currentLevel[canMove].content === 'enemy') {
-          this.enemyKnockBack(direction, this.props.currentLevel[canMove].contentId);
-          this.handleUpdateSprite(location, '', '');
-          //otherwise move the projectile
-        } else {
-          //update sprites
-          this.handleUpdateSprite(location, '', '');
-          this.handleUpdateSprite(canMove, sprite, direction);
-          location = canMove;
-          setTimeout(function() {
-            i++;
-            if (i < range) {
-              that.projectileLoop(i, direction, location, range, sprite);
-            }
-          }, 200);
-        }
+        let newSprite = this.props.player.weapons[this.props.player.currentWeapon].sprites[direction];
+        this.props.dispatch(levelModule.updateSprite(startPoint, newSprite));
         let projectileTimer = setTimeout(() =>
-          this.handleUpdateSprite(location, '', ''),
-          200
-        );
-      };
-
-      laserLoop(direction, location, range, sprite) {
-        let originalLocation = location;
-        this.handleUpdateSprite(originalLocation, sprite, direction);
-        for (let i = 0; i < range; i++) {
-          //check if player can be knocked back in this direction
-          let canMove = this.attemptMove(direction, originalLocation);
-          let last;
-          let next = this.attemptMove(direction, canMove);
-          if (canMove !== originalLocation) {
-            //check for effects of landing on new square
-            if (this.props.currentLevel[canMove].content == 'enemy') {
-              let enemyId = this.props.currentLevel[canMove].contentId;
-              this.enemyKnockBack(direction, enemyId);
-            } else {
-              //update new square
-              this.handleUpdateSprite(canMove, sprite, direction);
-              let afterImageTimer = setTimeout(() =>
-                this.handleUpdateSprite(originalLocation, this.props.player.sprites.particle[direction], ''),
-                200
-              );
-              last = originalLocation;
-              originalLocation = canMove;
-              let afterAfterImageTimer = setTimeout(() =>
-                this.handleUpdateSprite(last, '', ''),
-                800
-              );
-            }
-          } else {
-            this.handleUpdateSprite(originalLocation, '', '');
-          }
-        }
-        let afterAfterImageTimer = setTimeout(() =>
-          this.handleUpdateSprite(next, '', ''),
-          200
+          this.handleProjectile(name, direction, startPoint, range, newSprite),
+          100
         );
       }
+    } else {
+      alert('fizzz...')
+    }
+  };
+
+  handleProjectile(name, direction, location, range, sprite) {
+    if (this.props.game.gameState === 'active') {
+      if (name == 'Cryostat') {
+        this.laserLoop(name, direction, location, range, sprite);
+      } else {
+        this.projectileLoop(0, name, direction, location, range, sprite);
+      }
+    }
+  };
+
+  projectileLoop(i, name, direction, location, range, sprite) {
+      let that = this;
+      let canMove = this.attemptMove(direction, location);
+      //void projectile if it can't progress
+      if (location === canMove) {
+        this.handleUpdateSprite(location, '', '');
+        //damage enemy and void projectile if it hits
+      } else if (this.props.currentLevel[canMove].content === 'enemy') {
+        this.handleEnemyDamage(name, direction, this.props.currentLevel[canMove].contentId);
+        this.handleUpdateSprite(location, '', '');
+        //otherwise move the projectile
+      } else {
+        //update sprites
+        this.handleUpdateSprite(location, '', '');
+        this.handleUpdateSprite(canMove, sprite, direction);
+        location = canMove;
+        setTimeout(function() {
+          i++;
+          if (i < range) {
+            that.projectileLoop(i, name, direction, location, range, sprite);
+          }
+        }, 200);
+      }
+      let projectileTimer = setTimeout(() =>
+        this.handleUpdateSprite(location, '', ''),
+        200
+      );
+    };
+
+    laserLoop(name, direction, location, range, sprite) {
+      let originalLocation = location;
+      let next;
+      this.handleUpdateSprite(originalLocation, sprite, direction);
+      for (let i = 0; i < range; i++) {
+        //check if player can be knocked back in this direction
+        let canMove = this.attemptMove(direction, originalLocation);
+        let last;
+        next = this.attemptMove(direction, canMove);
+        if (canMove !== originalLocation) {
+          //check for effects of landing on new square
+          if (this.props.currentLevel[canMove].content == 'enemy') {
+            let enemyId = this.props.currentLevel[canMove].contentId;
+            this.handleEnemyDamage(name, direction, this.props.currentLevel[canMove].contentId);
+          } else {
+            //update new square
+            this.handleUpdateSprite(canMove, sprite, direction);
+            last = originalLocation;
+            originalLocation = canMove;
+            let afterAfterImageTimer = setTimeout(() =>
+              this.handleUpdateSprite(last, '', ''),
+              800
+            );
+          }
+        } else {
+          this.handleUpdateSprite(originalLocation, '', '');
+        }
+      }
+      let afterAfterImageTimer = setTimeout(() =>
+        this.handleUpdateSprite(next, '', ''),
+        200
+      );
+    }
 
 //movement helper functions
 
@@ -604,6 +602,7 @@ class App extends React.Component {
       this.props.dispatch(gameModule.setPreviousLevelId(thisLevel));
       this.props.dispatch(gameModule.setLevelId(newLevel));
       this.generateLevelFromTemplate();
+      this.handleChangeGameState("building");
       return 'exit';
       //fall to your doom and respawn
     } else if (squareToCheck.value == 'P' && this.props.player.status !== 'dash'){
@@ -612,6 +611,7 @@ class App extends React.Component {
       return 'slide';
     } else if (squareToCheck.value == '$') {
       this.props.dispatch(playerModule.updateScore(this.props.player.score + 1));
+      this.props.dispatch(levelModule.updateValue(squareId, '0', <img id="tile" src={tile} weight="50" height="50" />));
       return 'moved';
     } else {
       //move to square as normal
@@ -792,24 +792,60 @@ class App extends React.Component {
     this.props.dispatch(enemiesModule.updateEnemyLocation(enemyId, newLocation));
   }
 
-  enemyKnockBack(knockBackDirection, enemyId) {
-    let direction = this.props.enemies[enemyId].direction;
-    //take damage + dizzy effect
-    let newHealth = this.props.enemies[enemyId].health -= 10;
-    this.props.dispatch(enemiesModule.updateEnemyHealth(enemyId, newHealth));
-    if (this.props.player.weapons[this.props.player.currentWeapon].name == 'Taser Gun'){
+  handleEnemyDamage(source, knockBackDirection, enemyId) {
+    //if attack == dash
+    if (source == 'dash') {
+      if (this.props.enemies[enemyId].status == 'frozen') {
+        this.killEnemy(enemyId);
+      } else {
+        this.props.dispatch(enemiesModule.updateEnemyHealth(enemyId, this.props.enemies[enemyId].health -= 10));
+        this.enemyHealthCheck(enemyId);
+        this.enemyKnockBack(knockBackDirection, enemyId);
+      }
+    //if attack == taser
+    } else if (source == 'Taser Gun'){
+      this.props.dispatch(enemiesModule.updateEnemyHealth(enemyId, this.props.enemies[enemyId].health -= 10));
       this.props.dispatch(enemiesModule.updateEnemyStatus(enemyId, 'shocked'));
       let statusTimer = setTimeout(() =>
         this.props.dispatch(enemiesModule.updateEnemyStatus(enemyId, 'normal')),
         600
       );
-    } else if (this.props.player.weapons[this.props.player.currentWeapon].name == 'Cryostat'){
+      this.enemyHealthCheck(enemyId);
+      this.enemyKnockBack(knockBackDirection, enemyId);
+    //if attack == cryostat
+    } else if (source == 'Cryostat'){
+      this.props.dispatch(enemiesModule.updateEnemyHealth(enemyId, this.props.enemies[enemyId].health -= 10));
       this.props.dispatch(enemiesModule.updateEnemyStatus(enemyId, 'frozen'));
       let statusTimer = setTimeout(() =>
         this.props.dispatch(enemiesModule.updateEnemyStatus(enemyId, 'normal')),
         10000
       );
+      this.enemyHealthCheck(enemyId);
+      this.enemyKnockBack(knockBackDirection, enemyId);
     }
+  }
+
+  enemyHealthCheck(enemyId) {
+    if (this.props.enemies[enemyId].health <= 0) {
+      this.killEnemy(enemyId);
+    }
+  }
+
+  killEnemy(enemyId){
+    let location = this.props.enemies[enemyId].location;
+    // this.props.dispatch(updateSprite(this.props.enemies[enemyId].sprites['dead'], location));
+    this.props.dispatch(enemiesModule.updateEnemyStatus(enemyId, 'dead'));
+    let statusTimer = setTimeout(() =>
+      {this.handleUpdateSprite(location, '', '');
+      this.props.dispatch(levelModule.updateContent(location, ''));
+      this.props.dispatch(enemiesModule.nullEnemy(enemyId));
+      this.props.dispatch(levelModule.updateValue(location, '$', <img id="tile" src={coin} weight="50" height="50" />));},
+      600
+    );
+  }
+
+  enemyKnockBack(knockBackDirection, enemyId) {
+    let direction = this.props.enemies[enemyId].direction;
     //handle knockback (1-2 spaces)
     for (let i = 0; i < 2; i++) {
       let originalLocation = this.props.enemies[enemyId].location;
@@ -864,7 +900,7 @@ class App extends React.Component {
   render(){
     return (
       <div>
-          <Route exact path='/' render={()=><Title onStartClick={() => this.handleStartButtonClick()}/>} />
+          <Route exact path='/' render={()=><Title handleStart={() => this.startGame()} menu={this.props.menu}/>} />
           <Route exact path='/end' render={()=><End />} />
           <Route exact path='/game' render={()=><Game
             currentLevel={this.props.currentLevel}
@@ -885,7 +921,8 @@ App.propTypes = {
   projectiles: PropTypes.object,
   enemies: PropTypes.object,
   blocks: PropTypes.object,
-  doors: PropTypes.object
+  doors: PropTypes.object,
+  menu: PropTypes.object
 };
 
 const mapStateToProps = state => {
@@ -896,7 +933,8 @@ const mapStateToProps = state => {
     projectiles: state.projectiles,
     enemies: state.enemies,
     blocks: state.blocks,
-    doors: state.doors
+    doors: state.doors,
+    menu: state.menu
   }
 };
 

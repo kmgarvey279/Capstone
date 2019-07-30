@@ -5,6 +5,7 @@ import projectileReducer from './projectiles';
 import enemyReducer from './enemies';
 import blockReducer from './blocks';
 import doorReducer from './doors';
+import menuReducer from './menu';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   projectiles: projectileReducer,
   enemies: enemyReducer,
   doors: doorReducer,
-  blocks: blockReducer
+  blocks: blockReducer,
+  menu: menuReducer
 });
 
 export default rootReducer;

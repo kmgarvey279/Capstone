@@ -5,7 +5,7 @@ import * as menuModule from './../redux/modules/menu';
 import {bindActionCreators} from 'redux';
 import { withRouter } from 'react-router-dom';
 
-class Title extends React.Component {
+class GameOver extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -13,10 +13,7 @@ class Title extends React.Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyPress, false);
+    this.props.dispatch(menuModule.changeMenu('gameOver'));
   }
 
   handleKeyPress(event){
@@ -42,7 +39,7 @@ class Title extends React.Component {
     this.props.handleStart();
     this.props.history.push('/game');
   } else if (this.props.menu.selectedOption === 2) {
-      //select Mmnu
+    this.props.history.push('/');
     }
   }
 
@@ -58,8 +55,8 @@ class Title extends React.Component {
             }
           `}</style>
           <h1>Title!</h1>
-          <div id='new'><h4>New Game</h4></div>
-          <div id ='load'><h4>Load</h4></div>
+          <div id='new'><h4>Continue</h4></div>
+          <div id ='load'><h4>Give Up</h4></div>
         </div>
       );
     } else if (this.props.menu.selectedOption === 2) {
@@ -73,8 +70,8 @@ class Title extends React.Component {
             }
           `}</style>
           <h1>Title!</h1>
-          <div id='new'><h4>New Game</h4></div>
-          <div id ='load'><h4>Load</h4></div>
+          <div id='new'><h4>Continue</h4></div>
+          <div id ='load'><h4>Give Up</h4></div>
         </div>
       );
     } else {
@@ -88,8 +85,8 @@ class Title extends React.Component {
           `}</style>
           <h1>Title!</h1>
           {this.props.menu.selectedOption}
-          <div id='new'><h4>New Game</h4></div>
-          <div id ='load'><h4>Load</h4></div>
+          <div id='new'><h4>Continue</h4></div>
+          <div id ='load'><h4>Give Up</h4></div>
         </div>
       );
     }
@@ -97,9 +94,8 @@ class Title extends React.Component {
 }
 
 
-Title.propTypes = {
-  menu: PropTypes.object.isRequired,
-  handleStart: PropTypes.func
+GameOver.propTypes = {
+  menu: PropTypes.object.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
@@ -108,4 +104,4 @@ function mapDispatchToProps(dispatch) {
   }
 };
 
-export default withRouter(connect(mapDispatchToProps)(Title));
+export default withRouter(connect(mapDispatchToProps)(GameOver));
