@@ -50,7 +50,7 @@ class App extends React.Component {
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
       let cooldownTimer = setTimeout(() =>
         this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        200
+        250
       );
       this.move("north")
       //move down
@@ -58,7 +58,7 @@ class App extends React.Component {
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
       let cooldownTimer = setTimeout(() =>
         this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        200
+        250
       );
       this.move("south")
       //move right
@@ -66,7 +66,7 @@ class App extends React.Component {
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
       let cooldownTimer = setTimeout(() =>
         this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        200
+        250
       );
       this.move("east")
       //move left
@@ -74,7 +74,7 @@ class App extends React.Component {
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
       let cooldownTimer = setTimeout(() =>
         this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        200
+        250
       );
       this.move("west")
       //attack!
@@ -82,7 +82,7 @@ class App extends React.Component {
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
       let cooldownTimer = setTimeout(() =>
         this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        200
+        250
       );
       let newSprite = this.props.player.sprites.attack[this.props.player.direction];
       this.props.dispatch(levelModule.updateSprite(this.props.player.location, newSprite));
@@ -292,7 +292,7 @@ class App extends React.Component {
       if (squareCheck == 'moved' || squareCheck == 'slide'){
         //update player location and new square
         this.handleUpdatePlayerLocation(originalLocation, canMove);
-        if (direction == 'south' || direction == 'east'){
+        // if (direction == 'south' || direction == 'east'){
           //square content !== player
           this.handleUpdateSprite(originalLocation, '', '');
           //start walk animation
@@ -308,25 +308,24 @@ class App extends React.Component {
             }},
             200
           );
-        } else if (direction == 'north' || direction == 'west') {
-          //start walk animation
-          this.handleUpdateSprite(originalLocation, this.props.player.sprites.walk[direction], direction);
-          //after walking animation finishes, remove sprite from previous square & add to new one
-          let spriteClearTimer = setTimeout(() =>
-            {this.handleUpdateSprite(originalLocation, '', '');
-            this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
-            if(squareCheck == 'slide') {
-              this.move(direction);
-              this.props.dispatch(playerModule.updatePlayerStatus('sliding'));
-            } else {
-              this.props.dispatch(playerModule.updatePlayerStatus('normal'));
-            }},
-            200
-          );
-        }
+        // } else if (direction == 'north' || direction == 'west') {
+        //   //start walk animation
+        //   this.handleUpdateSprite(originalLocation, this.props.player.sprites.walk[direction], direction);
+        //   //after walking animation finishes, remove sprite from previous square & add to new one
+        //   let spriteClearTimer = setTimeout(() =>
+        //     {this.handleUpdateSprite(originalLocation, '', '');
+        //     this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
+        //     if(squareCheck == 'slide') {
+        //       this.move(direction);
+        //       this.props.dispatch(playerModule.updatePlayerStatus('sliding'));
+        //     } else {
+        //       this.props.dispatch(playerModule.updatePlayerStatus('normal'));
+        //     }},
+        //     100
+        //   );
+        // }
       }
     }
-    this.props.dispatch(playerModule.updatePlayerStatus('normal'));
   }
 
   dash() {
@@ -379,46 +378,49 @@ class App extends React.Component {
     let direction = this.props.player.direction;
     let newHealth = this.props.player.health -= 10;
     this.props.dispatch(playerModule.updatePlayerHealth(newHealth));
-    let originalLocation = this.props.player.location;
-    //handle knockback (1-2 spaces)
-    for (let i = 0; i < 1; i++) {
-      //check if player can be knocked back in this direction
-      let canMove = this.attemptMove(knockBackDirection, originalLocation)
-      if (canMove !== location) {
-        //check for effects of landing on new square
-        let squareCheck = this.playerSquareCheck(canMove, direction);
-        if (squareCheck === 'moved' || squareCheck === 'slide'){
-          //clear previous square
-          this.handleUpdatePlayerLocation(originalLocation, canMove)
-          if (knockBackDirection == 'south' || knockBackDirection == 'east'){
-            this.handleUpdateSprite(originalLocation, '', '');
-            //update player and new square
-            this.handleUpdateSprite(canMove, this.props.player.sprites.knockback[direction], knockBackDirection);
-            let spriteClearTimer = setTimeout(() =>
-              {this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
-              if(squareCheck == 'slide') {
-                this.move(direction);
-              } else {
-                this.props.dispatch(playerModule.updatePlayerStatus('normal'));
-              }},
-              500
-            );
-          } else if (knockBackDirection == 'north' || knockBackDirection == 'west'){
-            this.handleUpdateSprite(originalLocation, this.props.player.sprites.knockback[direction], knockBackDirection);
-            let spriteClearTimer = setTimeout(() =>
-              {this.handleUpdateSprite(originalLocation, '', '');
-              this.props.dispatch(levelModule.updateSprite(canMove, this.props.player.sprites.stand[direction]))
-              if(squareCheck == 'slide') {
-                this.move(direction);
-              } else {
-                this.props.dispatch(playerModule.updatePlayerStatus('normal'));
-              }},
-              200
-            );
+    this.playerHealthCheck();
+    if (this.props.player.health > 0){
+      let originalLocation = this.props.player.location;
+      //handle knockback (1-2 spaces)
+      for (let i = 0; i < 1; i++) {
+        //check if player can be knocked back in this direction
+        let canMove = this.attemptMove(knockBackDirection, originalLocation)
+        if (canMove !== location) {
+          //check for effects of landing on new square
+          let squareCheck = this.playerSquareCheck(canMove, direction);
+          if (squareCheck === 'moved' || squareCheck === 'slide'){
+            //clear previous square
+            this.handleUpdatePlayerLocation(originalLocation, canMove)
+            if (knockBackDirection == 'south' || knockBackDirection == 'east'){
+              this.handleUpdateSprite(originalLocation, '', '');
+              //update player and new square
+              this.handleUpdateSprite(canMove, this.props.player.sprites.knockback[direction], knockBackDirection);
+              let spriteClearTimer = setTimeout(() =>
+                {this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
+                if(squareCheck == 'slide') {
+                  this.move(direction);
+                } else {
+                  this.props.dispatch(playerModule.updatePlayerStatus('normal'));
+                }},
+                500
+              );
+            } else if (knockBackDirection == 'north' || knockBackDirection == 'west'){
+              this.handleUpdateSprite(originalLocation, this.props.player.sprites.knockback[direction], knockBackDirection);
+              let spriteClearTimer = setTimeout(() =>
+                {this.handleUpdateSprite(originalLocation, '', '');
+                this.props.dispatch(levelModule.updateSprite(canMove, this.props.player.sprites.stand[direction]))
+                if(squareCheck == 'slide') {
+                  this.move(direction);
+                } else {
+                  this.props.dispatch(playerModule.updatePlayerStatus('normal'));
+                }},
+                200
+              );
+            }
+          } else {
+            //if player can't move back, just trigger animation in current square
+            this.props.dispatch(levelModule.updateSprite(originalLocation, this.props.player.sprites.knockback[direction]));
           }
-        } else {
-          //if player can't move back, just trigger animation in current square
-          this.props.dispatch(levelModule.updateSprite(originalLocation, this.props.player.sprites.knockback[direction]));
         }
       }
     }
@@ -430,20 +432,23 @@ class App extends React.Component {
     //take damage
     let newHealth = this.props.player.health -= 10;
     this.props.dispatch(playerModule.updatePlayerHealth(newHealth));
-    //clear player from previous square
-    this.props.dispatch(levelModule.updateContent(playerLocation, 'empty', ''))
-    this.handleUpdateSprite(playerLocation, '', '');
-    //fall animation
-    this.handleUpdateSprite(pitLocation, this.props.player.sprites.fall, direction);
-    //clear pit and restart player on respawn point
-    let spriteClearTimer = setTimeout(() =>
-      {this.handleUpdateSprite(pitLocation, '', '');
-      this.props.dispatch(levelModule.updateSprite(this.props.game.respawnPoint, this.props.player.sprites.stand[direction]));
-      this.props.dispatch(playerModule.updatePlayerLocation(this.props.game.respawnPoint));
-      this.props.dispatch(levelModule.updateContent(this.props.game.respawnPoint, 'player', ''));
-      this.handleChangeGameState("active");},
-      600
-    );
+    this.playerHealthCheck();
+    if (this.props.player.health > 0) {
+      //clear player from previous square
+      this.props.dispatch(levelModule.updateContent(playerLocation, 'empty', ''))
+      this.handleUpdateSprite(playerLocation, '', '');
+      //fall animation
+      this.handleUpdateSprite(pitLocation, this.props.player.sprites.fall, direction);
+      //clear pit and restart player on respawn point
+      let spriteClearTimer = setTimeout(() =>
+        {this.handleUpdateSprite(pitLocation, '', '');
+        this.props.dispatch(levelModule.updateSprite(this.props.game.respawnPoint, this.props.player.sprites.stand[direction]));
+        this.props.dispatch(playerModule.updatePlayerLocation(this.props.game.respawnPoint));
+        this.props.dispatch(levelModule.updateContent(this.props.game.respawnPoint, 'player', ''));
+        this.handleChangeGameState("active");},
+        600
+      );
+    }
   }
 
   playerHealthCheck(){
@@ -900,15 +905,17 @@ class App extends React.Component {
   render(){
     return (
       <div>
-          <Route exact path='/' render={()=><Title handleStart={() => this.startGame()} menu={this.props.menu}/>} />
+          <Route exact path='/' render={()=><Title handleStart={() => this.startGame()} menu={this.props.menu}/>}/>
           <Route exact path='/end' render={()=><End />} />
           <Route exact path='/game' render={()=><Game
+            handleStart={() => this.startGame()}
             currentLevel={this.props.currentLevel}
             player={this.props.player}
             projectiles={this.props.projectiles}
             game={this.props.game}
             blocks={this.props.blocks}
-            doors={this.props.doors} />} />
+            doors={this.props.doors}
+            menu={this.props.menu} />} />
       </div>
     );
   }
@@ -946,7 +953,8 @@ function mapDispatchToProps(dispatch) {
     gameModule : bindActionCreators(gameModule, dispatch),
     levelModule : bindActionCreators(levelModule, dispatch),
     playerModule : bindActionCreators(playerModule, dispatch),
-    projectilesModule : bindActionCreators(projectileModule, dispatch)
+    projectilesModule : bindActionCreators(projectileModule, dispatch),
+    menuModule : bindActionCreators(menuModule, dispatch)
   }
 };
 

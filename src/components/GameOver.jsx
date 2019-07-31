@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as menuModule from './../redux/modules/menu';
+import * as playerModule from './../redux/modules/player';
 import {bindActionCreators} from 'redux';
 import { withRouter } from 'react-router-dom';
 
@@ -14,6 +15,10 @@ class GameOver extends React.Component {
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress, false);
     this.props.dispatch(menuModule.changeMenu('gameOver'));
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress, false);
   }
 
   handleKeyPress(event){
@@ -36,8 +41,8 @@ class GameOver extends React.Component {
 
   selectOption(){
     if (this.props.menu.selectedOption === 1) {
+    this.props.dispatch(playerModule.updatePlayerHealth(100));
     this.props.handleStart();
-    this.props.history.push('/game');
   } else if (this.props.menu.selectedOption === 2) {
     this.props.history.push('/');
     }
@@ -95,12 +100,15 @@ class GameOver extends React.Component {
 
 
 GameOver.propTypes = {
-  menu: PropTypes.object.isRequired
+  menu: PropTypes.object.isRequired,
+  player: PropTypes.object.isRequired,
+  handleStart: PropTypes.func.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    menuModule : bindActionCreators(menuModule, dispatch)
+    menuModule : bindActionCreators(menuModule, dispatch),
+    playerModule : bindActionCreators(playerModule, dispatch)
   }
 };
 

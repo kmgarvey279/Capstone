@@ -31,13 +31,13 @@ function Square(props){
       <div>
         <style jsx>{`
           @keyframes move {
-            0%  {bottom: 20px;}
-            25%  {bottom: 30px;}
-            50%  {bottom: 40px;}
-            75%  {bottom: 50px;}
+            0%  {top: 40px;}
+            25%  {top: 30px;}
+            50%  {top: 20px;}
+            75%  {top: 10px;}
           }
           div#spriteNorth{
-            z-index: 100;
+            z-index: 2;
             position: absolute;
             animation-name: move;
             animation-duration: 1s;

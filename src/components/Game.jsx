@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CurrentLevel from './CurrentLevel';
+import GameUIBottom from './GameUIBottom';
 import GameUITop from './GameUITop';
 import Map from './Map';
 import GameOver from './GameOver';
@@ -28,7 +29,24 @@ function Game(props){
   } else if (props.game.gameState === 'gameOver') {
     return (
       <div>
-      <GameOver/>
+      <GameOver
+      menu={props.menu}
+      player={props.player} 
+      handleStart={props.handleStart}/>
+      </div>
+    );
+  } else if (props.game.gameState === 'dialogue') {
+    return (
+      <div>
+      <style jsx>{`
+        div {
+          text-align: center;
+          background-color: black;
+        }
+        `}</style>
+        <GameUITop player={props.player}/>
+        <div id='level'><CurrentLevel currentLevel={props.currentLevel} player={props.player}/></div>
+        <GameUIBottom player={props.player}/>
       </div>
     );
   } else {
@@ -50,7 +68,8 @@ function Game(props){
 Game.propTypes = {
   currentLevel: PropTypes.object.isRequired,
   game: PropTypes.object.isRequired,
-  player: PropTypes.object.isRequired
+  player: PropTypes.object.isRequired,
+  menu: PropTypes.object.isRequired
 };
 
 export default Game;
