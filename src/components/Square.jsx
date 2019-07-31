@@ -26,18 +26,22 @@ function Square(props){
         <div id="tile">{props.tileImage}</div>
       </div>
     )
-  } else if (props.transition === 'north') {
+  } else if (props.transition === 'northExit') {
     return (
       <div>
         <style jsx>{`
           @keyframes move {
-            0%  {top: 40px;}
-            25%  {top: 30px;}
-            50%  {top: 20px;}
-            75%  {top: 10px;}
+            from{
+              margin-top: 30%;
+            }
+
+            to: {
+              margin-top: 0;
+            }
           }
-          div#spriteNorth{
-            z-index: 2;
+
+          div#sprite{
+            z-index: 100;
             position: absolute;
             animation-name: move;
             animation-duration: 1s;
@@ -45,44 +49,109 @@ function Square(props){
             right -13px;
           }
         `}</style>
-        <div id="spriteNorth">{props.sprite}</div>
+        <div id="sprite">{props.sprite}</div>
         <div id="tile">{props.tileImage}</div>
       </div>
     )
-  } else if (props.transition === 'east') {
+  } else if (props.transition === 'northEnter') {
+    return (
+      <div>
+        <style jsx>{`
+          @keyframes move {
+            from{
+              margin-bottom: 0px;
+            }
+
+            to: {
+              margin-bottom: 30px;
+            }
+          }
+
+          div#sprite{
+            border: solid green 2 px;
+            z-index: 100;
+            position: absolute;
+            animation-name: move;
+            animation-duration: 1s;
+            bottom: 15px;
+            right -13px;
+          }
+        `}</style>
+        <div id="sprite">{props.sprite}</div>
+        <div id="tile">{props.tileImage}</div>
+      </div>
+    )
+  } else if (props.transition === 'eastExit') {
       return (
         <div>
           <style jsx>{`
             @keyframes move {
-              0%  {right: 20px;}
-              25%  {right: 0px;}
-              50%  {right: -10px;}
-              75%  {right: -20px;}
+              from{
+                margin-right: 30%;
+              }
+
+              to: {
+                margin-right: 0;
+              }
             }
-            div#spriteEast{
+            div#sprite{
               bottom: 15px;
               right -13px;
               z-index: 100;
               position: absolute;
               animation-name: move;
               animation-duration: 1s;
+              border: solid red 2px;
             }
           `}</style>
-          <div id="spriteEast">{props.sprite}</div>
+          <div id="sprite">{props.sprite}</div>
           <div id="tile">{props.tileImage}</div>
         </div>
       )
-    } else if (props.transition === 'south') {
+    } else if (props.transition === 'eastEnter') {
       return (
         <div>
           <style jsx>{`
             @keyframes move {
-              0%  {top: -80px;}
-              25%  {top: -70px;}
-              50%  {top: -60px;}
-              75%  {top: -50px;}
+              from{
+                margin-left: 0;
+              }
+
+              to: {
+                margin-left: 30%;
+              }
             }
-            div#spriteSouth{
+
+            div#sprite{
+              z-index: 2;
+              position: absolute;
+              animation-name: move;
+              animation-duration: 1s;
+              bottom: 15px;
+              right -13px;
+              border: solid green 2px;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    } else if (props.transition === 'southExit') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              from{
+                margin-top: 0;
+              }
+
+              to: {
+                margin-bottom: 0;
+              }
+            }
+
+            div#sprite{
+              border: solid red 2px;
               z-index: 100;
               position: absolute;
               animation-name: move;
@@ -91,19 +160,77 @@ function Square(props){
               right -13px;
             }
           `}</style>
-          <div id="spriteSouth">{props.sprite}</div>
+          <div id="sprite">{props.sprite}</div>
           <div id="tile">{props.tileImage}</div>
         </div>
       )
-    } else if (props.transition === 'west') {
+    } else if (props.transition === 'southEnter') {
       return (
         <div>
           <style jsx>{`
             @keyframes move {
-              0%  {left: -80px;}
-              25%  {left: -70px;}
-              50%  {left: -60px;}
-              75%  {left: -50px;}
+              from{
+                margin-top: 0%;
+              }
+
+              to: {
+                margin-top: 30%;
+              }
+            }
+
+            div#sprite{
+              border: solid green 2px;
+              z-index: 100;
+              position: absolute;
+              animation-name: move;
+              animation-duration: 1s;
+              bottom: 15px;
+              right -13px;
+            }
+          `}</style>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    } else if (props.transition === 'westEnter') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              from{
+                margin-right: 0;
+              }
+
+              to: {
+                margin-right: 30%;
+              }
+            }
+
+            div#spriteNorth{
+              z-index: 100;
+              position: absolute;
+              animation-name: move;
+              animation-duration: 1s;
+              bottom: 15px;
+              right -13px;
+            }
+          `}</style>
+          <div id="spriteNorth">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
+    } else if (props.transition === 'westExit') {
+      return (
+        <div>
+          <style jsx>{`
+            @keyframes move {
+              from{
+                margin-left: 30%;
+              }
+
+              to: {
+                margin-left: 0;
+              }
             }
             div#spriteWest{
               bottom: 15px;

@@ -14,12 +14,12 @@ function CurrentLevel(props){
           -moz-column-count: 12;
           column-count: 12;
           column-gap: 0px;
-          width: 620px;
-          height: 640px;
-          max-height: 640px;
-          min-height: 640px;
-          max-width: 620px;
-          min-width: 620px;
+          width: 605px;
+          height: 624px;
+          max-height: 624px;
+          min-height: 624px;
+          max-width: 605px;
+          min-width: 605px;
         }
         div#inner {
           position: relative;

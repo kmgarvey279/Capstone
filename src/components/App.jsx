@@ -48,26 +48,14 @@ class App extends React.Component {
     //move up
     if(event.keyCode === 38 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-      let cooldownTimer = setTimeout(() =>
-        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        250
-      );
       this.move("north")
       //move down
     } else if(event.keyCode === 40 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-      let cooldownTimer = setTimeout(() =>
-        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        250
-      );
       this.move("south")
       //move right
     } else if (event.keyCode === 39 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-      let cooldownTimer = setTimeout(() =>
-        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        250
-      );
       this.move("east")
       //move left
     } else if (event.keyCode === 37 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
@@ -80,10 +68,6 @@ class App extends React.Component {
       //attack!
     } else if (event.keyCode === 32 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-      let cooldownTimer = setTimeout(() =>
-        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        250
-      );
       let newSprite = this.props.player.sprites.attack[this.props.player.direction];
       this.props.dispatch(levelModule.updateSprite(this.props.player.location, newSprite));
       this.attack();
@@ -128,13 +112,14 @@ class App extends React.Component {
 
 //Create Levels
   generateLevelFromTemplate(){
-    this.nullAll()
-    let levelTransitionTimer = setTimeout(() =>
-    {let levelTemplate = this.props.game.levelById[this.props.game.levelId];
+    this.nullAll();
+    let levelTemplate = this.props.game.levelById[this.props.game.levelId];
     for(let i = 0; i < levelTemplate.length; i++){
       this.handleAddingSquareToLevel(i+1, levelTemplate[i]);
-      this.handleChangeGameState("active");
-    }},
+    }
+    let levelTransitionTimer = setTimeout(() =>
+    {this.handleChangeGameState("active");
+    this.props.dispatch(playerModule.updatePlayerStatus('normal'));},
       500
     );
   }
@@ -292,39 +277,29 @@ class App extends React.Component {
       if (squareCheck == 'moved' || squareCheck == 'slide'){
         //update player location and new square
         this.handleUpdatePlayerLocation(originalLocation, canMove);
-        // if (direction == 'south' || direction == 'east'){
-          //square content !== player
-          this.handleUpdateSprite(originalLocation, '', '');
-          //start walk animation
-          this.handleUpdateSprite(canMove, this.props.player.sprites.walk[direction], direction);
-          //after walking animation finishes, remove sprite from previous square & add to new one
-          let spriteClearTimer = setTimeout(() =>
-            {this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
-            if(squareCheck == 'slide') {
-              this.move(direction);
-              this.props.dispatch(playerModule.updatePlayerStatus('sliding'));
-            } else {
-              this.props.dispatch(playerModule.updatePlayerStatus('normal'));
-            }},
-            200
-          );
-        // } else if (direction == 'north' || direction == 'west') {
-        //   //start walk animation
-        //   this.handleUpdateSprite(originalLocation, this.props.player.sprites.walk[direction], direction);
-        //   //after walking animation finishes, remove sprite from previous square & add to new one
-        //   let spriteClearTimer = setTimeout(() =>
-        //     {this.handleUpdateSprite(originalLocation, '', '');
-        //     this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
-        //     if(squareCheck == 'slide') {
-        //       this.move(direction);
-        //       this.props.dispatch(playerModule.updatePlayerStatus('sliding'));
-        //     } else {
-        //       this.props.dispatch(playerModule.updatePlayerStatus('normal'));
-        //     }},
-        //     100
-        //   );
-        // }
+        //sprite: exit current square
+        this.handleUpdateSprite(originalLocation, this.props.player.sprites.walk[direction], direction + "Exit");
+        let spriteEnterTimer = setTimeout(() =>
+          //clear sprite from previous square
+          {this.handleUpdateSprite(originalLocation, '', '');
+          //sprite: enter new square
+          this.handleUpdateSprite(canMove, this.props.player.sprites.walk[direction], direction + "Enter")},
+          200
+        );
+        // after walking animation finishes, remove sprite from previous square & add to new one
+        let spriteExitTimer = setTimeout(() =>
+          {this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.stand[direction], '');
+          if(squareCheck == 'slide') {
+            this.move(direction);
+            this.props.dispatch(playerModule.updatePlayerStatus('sliding'));
+          } else {
+            this.props.dispatch(playerModule.updatePlayerStatus('normal'));
+          }},
+          300
+        );
       }
+    } else {
+      this.props.dispatch(playerModule.updatePlayerStatus('normal'));
     }
   }
 
@@ -417,7 +392,7 @@ class App extends React.Component {
                 200
               );
             }
-          } else {
+          } else if (squareCheck !== 'exit') {
             //if player can't move back, just trigger animation in current square
             this.props.dispatch(levelModule.updateSprite(originalLocation, this.props.player.sprites.knockback[direction]));
           }
@@ -479,6 +454,7 @@ class App extends React.Component {
     } else {
       alert('fizzz...')
     }
+    this.props.dispatch(playerModule.updatePlayerStatus('normal'));
   };
 
   handleProjectile(name, direction, location, range, sprite) {
@@ -575,7 +551,7 @@ class App extends React.Component {
     let newLocation = originalLocation + difference;
     //check for pushable block
     if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[originalLocation].content === 'player'){
-      let blockMove = this.attemptMove(direction, newLocation + difference);
+      let blockMove = this.attemptMove(direction, newLocation);
       if (blockMove !== newLocation) {
         this.moveBlock(this.props.currentLevel[newLocation].contentId, direction, newLocation, newLocation + difference);
         return newLocation;

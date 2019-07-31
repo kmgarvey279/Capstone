@@ -31,7 +31,7 @@ function Game(props){
       <div>
       <GameOver
       menu={props.menu}
-      player={props.player} 
+      player={props.player}
       handleStart={props.handleStart}/>
       </div>
     );
@@ -47,6 +47,19 @@ function Game(props){
         <GameUITop player={props.player}/>
         <div id='level'><CurrentLevel currentLevel={props.currentLevel} player={props.player}/></div>
         <GameUIBottom player={props.player}/>
+      </div>
+    );
+  } else if (props.game.gameState === 'building') {
+    return (
+      <div>
+      <style jsx>{`
+        div {
+          height: 600px;
+          width: 600px;
+          text-align: center;
+          background-color: black;
+        }
+        `}</style>
       </div>
     );
   } else {
