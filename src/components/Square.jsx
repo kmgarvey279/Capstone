@@ -59,7 +59,7 @@ function Square(props){
         <style jsx>{`
           @keyframes move {
             from{
-              margin-bottom: 0px;
+              margin-bottom: 0;
             }
 
             to: {

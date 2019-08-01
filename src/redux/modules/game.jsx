@@ -129,7 +129,7 @@ const initialState = {
     }
   },
   miscSprites: {
-    block:  <img id="player" src={block} width="60" height="60"/>,
+    block:  <img id="player" src={block} width="80" height="80"/>,
     blockSink:  <img id="player" src={blockSink} width="60" height="60"/>
   }
 };

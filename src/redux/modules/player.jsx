@@ -1,18 +1,22 @@
 import React from 'react';
 import playerStandNorth from '../../assets/images/player/playerStandNorth.gif';
-import playerStandEast from '../../assets/images/player/playerStandEast.png';
+import playerStandEast from '../../assets/images/player/playerStandEast.gif';
 import playerStandSouth from '../../assets/images/player/playerStandSouth.gif';
-import playerStandWest from '../../assets/images/player/playerStandWest.png';
+import playerStandWest from '../../assets/images/player/playerStandWest.gif';
 
 import playerWalkNorth from '../../assets/images/player/playerWalkNorth.gif';
-import playerWalkEast from '../../assets/images/player/playerWalkEast.png';
+import playerWalkNorth2 from '../../assets/images/player/playerWalkNorth2.gif';
+import playerWalkEast1 from '../../assets/images/player/playerWalkEast.gif';
+import playerWalkEast2 from '../../assets/images/player/playerWalkEast2.gif';
 import playerWalkSouth from '../../assets/images/player/playerWalkSouth.gif';
-import playerWalkWest from '../../assets/images/player/playerWalkWest.png';
+import playerWalkSouth2 from '../../assets/images/player/playerWalkSouth2.gif';
+import playerWalkWest1 from '../../assets/images/player/playerWalkWest.gif';
+import playerWalkWest2 from '../../assets/images/player/playerWalkWest2.gif';
 
-import playerAttackNorth from '../../assets/images/player/playerAttackNorth.png';
-import playerAttackEast from '../../assets/images/player/playerAttackEast.png';
+import playerAttackNorth from '../../assets/images/player/playerWalkEast.gif';
+import playerAttackEast from '../../assets/images/player/playerAttackEast.gif';
 import playerAttackSouth from '../../assets/images/player/playerAttackSouth.gif';
-import playerAttackWest from '../../assets/images/player/playerAttackWest.png';
+import playerAttackWest from '../../assets/images/player/playerAttackWest.gif';
 
 import playerKnockbackSouth from '../../assets/images/player/playerKnockbackSouth.gif';
 import playerKnockbackNorth from '../../assets/images/player/playerKnockbackNorth.gif';
@@ -88,15 +92,19 @@ const initialState = {
     sprites: {
       stand: {
         north: <img id="player" src={playerStandNorth} width="80" height="80"/>,
-        east: <img id="player" src={playerStandEast} width="55" height="55"/>,
+        east: <img id="player" src={playerStandEast} width="80" height="80"/>,
         south: <img id="player" src={playerStandSouth} width="80" height="80"/>,
-        west: <img id="player" src={playerStandWest} width="55" height="55"/>,
+        west: <img id="player" src={playerStandWest} width="80" height="80"/>,
       },
       walk: {
         north: <img id="player" src={playerWalkNorth} width="80" height="80"/>,
-        east: <img id="player" src={playerWalkEast} width="50" height="55"/>,
+        north2: <img id="player" src={playerWalkNorth2} width="80" height="80"/>,
+        east: <img id="player" src={playerWalkEast1} width="80" height="80"/>,
+        east2: <img id="player" src={playerWalkEast2} width="80" height="80"/>,
         south: <img id="player" src={playerWalkSouth} width="80" height="80"/>,
-        west: <img id="player" src={playerWalkWest} width="50" height="55"/>,
+        south2: <img id="player" src={playerWalkSouth2} width="80" height="80"/>,
+        west: <img id="player" src={playerWalkWest1} width="80" height="80"/>,
+        west2: <img id="player" src={playerWalkWest2} width="80" height="80"/>,
       },
       knockback: {
         north: <img id="player" src={playerKnockbackNorth} width="80" height="80"/>,
@@ -106,9 +114,9 @@ const initialState = {
       },
       attack: {
         north: <img id="player" src={playerAttackNorth} width="80" height="80" />,
-        east: <img id="player" src={playerAttackEast} width="50" height="50" />,
+        east: <img id="player" src={playerAttackEast} width="80" height="80" />,
         south: <img id="player" src={playerAttackSouth} width="80" height="80" />,
-        west: <img id="player" src={playerAttackWest} width="50" height="50" />,
+        west: <img id="player" src={playerAttackWest} width="80" height="80" />,
       },
       dash: {
         north: <img id="player" src={playerDashSouth} width="80" height="80" />,
@@ -122,8 +130,8 @@ const initialState = {
         south: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
         west: <img id="player" src={playerParticleSouth} width="80" height="80"/>
       },
-      fall: <img id="player" src={playerStandEast} width="50" height="50"/>,
-      victory: <img id="player" src={playerStandEast} width="50" height="50"/>
+      fall: <img id="player" src={playerStandEast} width="80" height="80"/>,
+      victory: <img id="player" src={playerStandEast} width="80" height="80"/>
     },
     currentWeapon: 1,
     weapons: {
@@ -132,12 +140,12 @@ const initialState = {
         name: 'Taser Gun',
         range: 4,
         sprites: {
-          north: <img id="player" src={taser} width="50" height="50"/>,
-          west: <img id="player" src={taser} width="50" height="50"/>,
-          east: <img id="player" src={taser} width="50" height="50"/>,
-          south: <img id="player" src={taser} width="50" height="50"/>,
-          burst: <img id="player" src={taser} width="50" height="50"/>,
-          icon: <img id="player" src={taser} width="50" height="50"/>
+          north: <img id="player" src={taser} width="80" height="80"/>,
+          west: <img id="player" src={taser} width="80" height="80"/>,
+          east: <img id="player" src={taser} width="80" height="80"/>,
+          south: <img id="player" src={taser} width="80" height="80"/>,
+          burst: <img id="player" src={taser} width="80" height="80"/>,
+          icon: <img id="player" src={taser} width="80" height="80"/>
         }
       },
       2: {
@@ -149,8 +157,8 @@ const initialState = {
           west: <img id="player" src={cryostat} width="80" height="80"/>,
           east: <img id="player" src={cryostat} width="80" height="80"/>,
           south: <img id="player" src={cryostat} width="80" height="80"/>,
-          burst: <img id="player" src={taser} width="50" height="50"/>,
-          icon: <img id="player" src={taser} width="50" height="50"/>
+          burst: <img id="player" src={taser} width="80" height="80"/>,
+          icon: <img id="player" src={taser} width="80" height="80"/>
         }
       }
     }

@@ -18,7 +18,7 @@ import * as levelModule from './../redux/modules/level';
 import * as playerModule from './../redux/modules/player';
 import * as projectilesModule from './../redux/modules/projectiles';
 
-import ice from '../assets/images/spacetest.gif';
+import ice from '../assets/images/level/ice.png';
 import lava from '../assets/images/lava.gif';
 import coin from '../assets/images/coin.png';
 import wall from '../assets/images/wall.jpeg';
@@ -82,7 +82,6 @@ class App extends React.Component {
         this.props.dispatch(playerModule.changeCurrentWeapon(newWeaponId));
       //dash
     } else if (event.keyCode === 17 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
-        this.props.dispatch(playerModule.updatePlayerStatus('dash'));
         this.dash();
       //pause/unpause
     } else if (event.keyCode === 13 && (this.props.game.gameState == 'active' || this.props.game.gameState == 'paused')) {
@@ -278,12 +277,20 @@ class App extends React.Component {
         //update player location and new square
         this.handleUpdatePlayerLocation(originalLocation, canMove);
         //sprite: exit current square
-        this.handleUpdateSprite(originalLocation, this.props.player.sprites.walk[direction], direction + "Exit");
+        if (squareCheck == 'moved'){
+          this.handleUpdateSprite(originalLocation, this.props.player.sprites.walk[direction], direction + "Exit");
+        } else {
+            this.handleUpdateSprite(originalLocation, this.props.player.sprites.stand[direction], direction + "Exit");
+        }
         let spriteEnterTimer = setTimeout(() =>
           //clear sprite from previous square
           {this.handleUpdateSprite(originalLocation, '', '');
           //sprite: enter new square
-          this.handleUpdateSprite(canMove, this.props.player.sprites.walk[direction], direction + "Enter")},
+          if (squareCheck == 'moved'){
+            this.handleUpdateSprite(canMove, this.props.player.sprites.walk[direction + '2'], direction + "Enter");
+          } else {
+            this.handleUpdateSprite(canMove, this.props.player.sprites.stand[direction], direction + "Enter");
+          }},
           200
         );
         // after walking animation finishes, remove sprite from previous square & add to new one
@@ -304,18 +311,22 @@ class App extends React.Component {
   }
 
   dash() {
+    this.props.dispatch(playerModule.updatePlayerStatus('dash'));
     let direction = this.props.player.direction;
-    this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.dash[direction], direction);
+    let squareCheck
+    this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.dash[direction], direction + 'Exit');
     for (let i = 0; i < 3; i++) {
       //check if player can be knocked back in this direction
       let originalLocation = this.props.player.location;
       let canMove = this.attemptMove(direction, originalLocation);
       let last;
-      let squareCheck = this.playerSquareCheck(canMove, direction);
+      squareCheck = this.playerSquareCheck(canMove, direction);
       let next;
       if (squareCheck == 'slide') {
         this.move(direction);
         break;
+      } else if (squareCheck == 'fall') {
+        this.handleUpdateSprite(canMove, this.props.player.sprites.dash[direction], direction + 'Enter');
       } else if (canMove !== originalLocation && squareCheck == 'moved') {
         //check for effects of landing on new square
         if (this.props.currentLevel[canMove].content == 'enemy') {
@@ -324,7 +335,7 @@ class App extends React.Component {
         } else {
           //update player and new square
           this.handleUpdatePlayerLocation(originalLocation, canMove);
-          this.handleUpdateSprite(canMove, this.props.player.sprites.dash[direction], direction);
+          this.handleUpdateSprite(canMove, this.props.player.sprites.dash[direction], direction + 'Enter');
           next = this.attemptMove(direction, canMove);
           let afterImageTimer = setTimeout(() =>
             this.handleUpdateSprite(originalLocation, this.props.player.sprites.particle[direction], ''),
@@ -344,7 +355,9 @@ class App extends React.Component {
     }
     this.props.dispatch(playerModule.updatePlayerStatus('normal'));
     let spriteClearTimer = setTimeout(() =>
-      this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction])),
+    {if (squareCheck !== 'fall') {
+      this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.stand[direction], '')
+    }},
       400
     );
   }
@@ -354,55 +367,40 @@ class App extends React.Component {
     let newHealth = this.props.player.health -= 10;
     this.props.dispatch(playerModule.updatePlayerHealth(newHealth));
     this.playerHealthCheck();
-    if (this.props.player.health > 0){
+    if (this.props.player.health > 0) {
       let originalLocation = this.props.player.location;
-      //handle knockback (1-2 spaces)
-      for (let i = 0; i < 1; i++) {
-        //check if player can be knocked back in this direction
-        let canMove = this.attemptMove(knockBackDirection, originalLocation)
-        if (canMove !== location) {
-          //check for effects of landing on new square
-          let squareCheck = this.playerSquareCheck(canMove, direction);
-          if (squareCheck === 'moved' || squareCheck === 'slide'){
-            //clear previous square
-            this.handleUpdatePlayerLocation(originalLocation, canMove)
-            if (knockBackDirection == 'south' || knockBackDirection == 'east'){
-              this.handleUpdateSprite(originalLocation, '', '');
-              //update player and new square
-              this.handleUpdateSprite(canMove, this.props.player.sprites.knockback[direction], knockBackDirection);
-              let spriteClearTimer = setTimeout(() =>
-                {this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.stand[direction]))
-                if(squareCheck == 'slide') {
-                  this.move(direction);
-                } else {
-                  this.props.dispatch(playerModule.updatePlayerStatus('normal'));
-                }},
-                500
-              );
-            } else if (knockBackDirection == 'north' || knockBackDirection == 'west'){
-              this.handleUpdateSprite(originalLocation, this.props.player.sprites.knockback[direction], knockBackDirection);
-              let spriteClearTimer = setTimeout(() =>
-                {this.handleUpdateSprite(originalLocation, '', '');
-                this.props.dispatch(levelModule.updateSprite(canMove, this.props.player.sprites.stand[direction]))
-                if(squareCheck == 'slide') {
-                  this.move(direction);
-                } else {
-                  this.props.dispatch(playerModule.updatePlayerStatus('normal'));
-                }},
-                200
-              );
-            }
-          } else if (squareCheck !== 'exit') {
-            //if player can't move back, just trigger animation in current square
-            this.props.dispatch(levelModule.updateSprite(originalLocation, this.props.player.sprites.knockback[direction]));
+      //check if player can be knocked back in this direction
+      let canMove = this.attemptMove(knockBackDirection, originalLocation);
+      if (canMove !== originalLocation || this.props.currentLevel[canMove].value !== 'EX'){
+        let squareCheck = this.playerSquareCheck(canMove, direction);
+        if (squareCheck === 'moved' || squareCheck === 'slide'){
+          this.handleUpdatePlayerLocation(originalLocation, canMove);
+          this.handleUpdateSprite(originalLocation, this.props.player.sprites.knockback[direction], knockBackDirection + 'Exit');
+            let spriteEnterTimer = setTimeout(() =>
+              {this.handleUpdateSprite(originalLocation, '', '');
+              this.handleUpdateSprite(canMove, this.props.player.sprites.knockback[direction], knockBackDirection + 'Enter')},
+              200
+            );
+            let spriteExitTimer = setTimeout(() =>
+              {this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.stand[direction], '');
+              if(squareCheck == 'slide') {
+                this.move(direction);
+                this.props.dispatch(playerModule.updatePlayerStatus('sliding'));
+              } else {
+                this.props.dispatch(playerModule.updatePlayerStatus('normal'));
+              }},
+              400
+            );
           }
+        } else if (squareCheck !== 'fall') {
+          //if player can't move back, just trigger animation in current square
+          this.props.dispatch(levelModule.updateSprite(this.props.player.location, this.props.player.sprites.knockback[direction]));
         }
       }
     }
-  }
 
   fall(pitLocation, direction) {
-    this.handleChangeGameState("cutscene");
+    this.props.dispatch(playerModule.updatePlayerStatus('falling'));
     let playerLocation = this.props.player.location;
     //take damage
     let newHealth = this.props.player.health -= 10;
@@ -420,7 +418,7 @@ class App extends React.Component {
         this.props.dispatch(levelModule.updateSprite(this.props.game.respawnPoint, this.props.player.sprites.stand[direction]));
         this.props.dispatch(playerModule.updatePlayerLocation(this.props.game.respawnPoint));
         this.props.dispatch(levelModule.updateContent(this.props.game.respawnPoint, 'player', ''));
-        this.handleChangeGameState("active");},
+        this.props.dispatch(playerModule.updatePlayerStatus('normal'));},
         600
       );
     }
@@ -481,7 +479,7 @@ class App extends React.Component {
       } else {
         //update sprites
         this.handleUpdateSprite(location, '', '');
-        this.handleUpdateSprite(canMove, sprite, direction);
+        this.handleUpdateSprite(canMove, sprite, direction + 'Enter');
         location = canMove;
         setTimeout(function() {
           i++;
@@ -499,7 +497,7 @@ class App extends React.Component {
     laserLoop(name, direction, location, range, sprite) {
       let originalLocation = location;
       let next;
-      this.handleUpdateSprite(originalLocation, sprite, direction);
+      this.handleUpdateSprite(originalLocation, sprite, '');
       for (let i = 0; i < range; i++) {
         //check if player can be knocked back in this direction
         let canMove = this.attemptMove(direction, originalLocation);
@@ -586,8 +584,9 @@ class App extends React.Component {
       this.handleChangeGameState("building");
       return 'exit';
       //fall to your doom and respawn
-    } else if (squareToCheck.value == 'P' && this.props.player.status !== 'dash'){
+    } else if (squareToCheck.value == 'P'){
       this.fall(squareId, direction);
+      return 'fall';
     } else if (squareToCheck.value == 'I' && this.attemptMove(direction, squareId) !== squareId){
       return 'slide';
     } else if (squareToCheck.value == '$') {
@@ -743,26 +742,18 @@ class App extends React.Component {
       } else {
         //update enemy location and new square
         this.handleUpdateEnemyLocation(enemyId, currentLocation, canMove);
-        if (direction == 'south' || direction =='east') {
-          //clear original location sprite
-          this.handleUpdateSprite(currentLocation, '', '');
-          //start walk animation
-          this.handleUpdateSprite(canMove, this.props.enemies[enemyId].sprites.move[direction], direction);
+        //start walk animation
+        this.handleUpdateSprite(currentLocation, this.props.enemies[enemyId].sprites.move[direction], direction + 'Exit');
+        let EnemyEnterTimer = setTimeout(() =>
+          {this.handleUpdateSprite(currentLocation, '', '');
+          this.handleUpdateSprite(canMove, this.props.enemies[enemyId].sprites.move[direction], direction + 'Enter');},
+          200
+        );
         //after walking animation finishes, remove sprite from previous square & add to new one
-          let enemySpriteClearTimer = setTimeout(() =>
-            this.props.dispatch(levelModule.updateSprite(this.props.enemies[enemyId].location, this.props.enemies[enemyId].sprites.move[direction])),
-            200
-          );
-        } else if (direction == 'north' || direction == 'west') {
-          //start walk animation
-          this.handleUpdateSprite(currentLocation, this.props.enemies[enemyId].sprites.move[direction], direction);
-          //after walking animation finishes, remove sprite from previous square & add to new one
-          let spriteClearTimer = setTimeout(() =>
-            {this.handleUpdateSprite(currentLocation, '', '');
-            this.props.dispatch(levelModule.updateSprite(canMove, this.props.enemies[enemyId].sprites.move[direction]));},
-            200
-          );
-        }
+        let enemySpriteClearTimer = setTimeout(() =>
+          this.handleUpdateSprite(this.props.enemies[enemyId].location, this.props.enemies[enemyId].sprites.move[direction], ''),
+          200
+        );
       }
     }
   }
@@ -828,22 +819,24 @@ class App extends React.Component {
   enemyKnockBack(knockBackDirection, enemyId) {
     let direction = this.props.enemies[enemyId].direction;
     //handle knockback (1-2 spaces)
-    for (let i = 0; i < 2; i++) {
-      let originalLocation = this.props.enemies[enemyId].location;
-      let canMove = this.attemptMove(knockBackDirection, originalLocation);
-      if (canMove !== location) {
-        //update enemy and new square
-        this.handleUpdateEnemyLocation(enemyId, originalLocation, canMove);
-        this.handleUpdateSprite(originalLocation, '', '');
-        this.handleUpdateSprite(canMove, this.props.enemies[enemyId].sprites.knockback[direction], knockBackDirection);
-      } else {
-        //if enemy can't move back, just trigger animation in current square
-        this.props.dispatch(levelModule.updateSprite(canMove, this.props.enemies[enemyId].sprites.knockback[direction]));
-      }
-      let enemySpriteClearTimer = setTimeout(() =>
-        this.props.dispatch(levelModule.updateSprite(this.props.enemies[enemyId].location, this.props.enemies[enemyId].sprites.move[direction])),
-        600
+    let originalLocation = this.props.enemies[enemyId].location;
+    let canMove = this.attemptMove(knockBackDirection, originalLocation);
+    if (canMove !== location) {
+      //update enemy and new square
+      this.handleUpdateEnemyLocation(enemyId, originalLocation, canMove);
+      this.handleUpdateSprite(originalLocation, this.props.enemies[enemyId].sprites.knockback[direction], knockBackDirection + 'Exit');
+      let knockbackTimer = setTimeout(() =>
+        {this.handleUpdateSprite(originalLocation, '', '');
+        this.handleUpdateSprite(canMove, this.props.enemies[enemyId].sprites.knockback[direction], knockBackDirection + 'Enter');},
+        200
       );
+      let knockBackClearTimer = setTimeout(() =>
+        this.handleUpdateSprite(this.props.enemies[enemyId].location, this.props.enemies[enemyId].sprites.move[direction], ''),
+        300
+      );
+    } else {
+      //if enemy can't move back, just trigger animation in current square
+      this.props.dispatch(levelModule.updateSprite(canMove, this.props.enemies[enemyId].sprites.knockback[direction]));
     }
   }
 
