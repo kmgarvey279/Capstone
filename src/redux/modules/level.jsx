@@ -5,6 +5,7 @@ export const UPDATE_CONTENT = "UPDATE_CONTENT";
 export const UPDATE_VALUE = "UPDATE_VALUE";
 export const UPDATE_SPRITE = "UPDATE_SPRITE";
 export const UPDATE_TRANSITION = "UPDATE_TRANSITION";
+export const TOGGLE_ALERT = "TOGGLE_ALERT";
 
 //Action Creators
 
@@ -14,24 +15,23 @@ export function nullLevel() {
   };
 }
 
-export function addSquare(newSquareId, newValue, newContent, newContentId, newTileImage, newSprite, newTransition) {
+export function addSquare(newSquareId, newValue, newContent, newTileImage, newSprite, newTransition, newAlert) {
   return {
     type: ADD_SQUARE,
     squareId: newSquareId,
     value: newValue,
     content: newContent,
-    contentId: newContentId,
     tileImage: newTileImage,
     sprite: newSprite,
-    transition: newTransition
+    transition: newTransition,
+    alert: newAlert
   };
 }
-export function updateContent(squareId, newContent, newContentId) {
+export function updateContent(squareId, newContent) {
   return {
     type: UPDATE_CONTENT,
     squareId: squareId,
     content: newContent,
-    contentId: newContentId
   };
 }
 
@@ -59,13 +59,20 @@ export function updateValue(squareIdToUpdate, newValue, newTileImage) {
   };
 }
 
+export function toggleAlert(squareId, alertBool){
+  return {
+    type: TOGGLE_ALERT,
+    alert: alertBool
+  }
+}
+
 //Initial State
 
 //Reducer
 const levelReducer = (state = {}, action) => {
   let newState;
   let newSquare;
-  const { squareId, value, content, contentId, tileImage, sprite, transition} = action;
+  const { squareId, value, content, tileImage, sprite, transition, alert} = action;
 
   switch (action.type) {
     case NULL_LEVEL:
@@ -77,10 +84,10 @@ const levelReducer = (state = {}, action) => {
             squareId: squareId,
             value: value,
             content: content,
-            contentId: contentId,
             tileImage: tileImage,
             sprite: sprite,
             transition: transition,
+            alert: alert
           }
         });
         return newState;
@@ -91,13 +98,19 @@ const levelReducer = (state = {}, action) => {
       });
         return newState;
     case UPDATE_CONTENT:
-      newSquare = Object.assign({}, state[squareId], {content, contentId});
+      newSquare = Object.assign({}, state[squareId], {content});
       newState = Object.assign({}, state, {
         [squareId]: newSquare
       });
         return newState;
     case UPDATE_SPRITE:
       newSquare = Object.assign({}, state[squareId], {sprite});
+      newState = Object.assign({}, state, {
+        [squareId]: newSquare
+      });
+        return newState;
+    case TOGGLE_ALERT:
+      newSquare = Object.assign({}, state[squareId], {alert});
       newState = Object.assign({}, state, {
         [squareId]: newSquare
       });

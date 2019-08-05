@@ -11,11 +11,18 @@ import blobKnockbackWest from '../../assets/images/enemies/blob-front-knockback.
 
 import block from '../../assets/images/level/block.png';
 import blockSink from '../../assets/images/level/blockSink.gif';
+import switchOn from '../../assets/images/level/switchOn.gif';
+import switchOff from '../../assets/images/level/switchOff.png';
+import platformOffNS from '../../assets/images/level/platformOffNS.png';
+import platformOnNS from '../../assets/images/level/platformOnNS.gif';
+import platformOffEW from '../../assets/images/level/platformOffEW.png';
+import platformOnEW from '../../assets/images/level/platformOnEW.gif';
 //Constants
 export const SET_LEVELID = "SET_LEVELID";
 export const SET_PREVIOUS_LEVELID = "SET_PREVIOUS_LEVELID";
 export const CHANGE_GAMESTATE = "CHANGE_GAMESTATE";
 export const SET_RESPAWNPOINT = "SET_RESPAWNPOINT";
+export const SET_ACTIVETEXT = "SET_ACTIVETEXT";
 
 //Action Creators
 export function changeGameState(newGameState) {
@@ -44,6 +51,13 @@ export function setRespawnPoint(newRespawnPoint) {
   }
 }
 
+export function setActiveText(newActiveText) {
+  return {
+    type: SET_ACTIVETEXT,
+    activeText: newActiveText
+  }
+}
+
 //Initial State
 const initialState = {
   levelId: 1,
@@ -51,20 +65,21 @@ const initialState = {
   gameState: 'title',
   respawnPoint: '',
   enemyTimers: [],
+  activeText: [],
   levelById: {
-    // key: W = wall, D = door, P = pit, L = lava, B = block, E =  enemy
+    // key: W = wall, D = door, P = pit, L = lava, B = block, E = enemy, S = switch, M = moving platform, T = terminal
     1:[
         ['W'], ['W'], ['W'], ['D','1-A',2,'locked'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
-        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['P'], ['M', 'north'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W'],
         ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['L'], ['W'],
         ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['0'], ['W'],
         ['W'], ['W'], ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['L'], ['0'], ['W'],
         ['W'], ['0'], ['0'], ['W'], ['E',1], ['0'], ['E',1], ['0'], ['0'], ['L'], ['L'], ['W'],
         ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
-        ['W'], ['0'], ['W'], ['W'], ['$'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
+        ['W'], ['S', 18, 5000], ['W'], ['W'], ['$'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
         ['W'], ['0'], ['B'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['$'], ['0'], ['W'],
         ['W'], ['0'], ['0'], ['I'], ['I'], ['I'], ['I'], ['0'], ['0'], ['0'], ['0'], ['W'],
-        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['0'], ['W'],
+        ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['T', 1], ['W'],
         ['W'], ['W'], ['W'], ['W'], ['W'], ['D','1-B',3,'open'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
       ],
        /////////////////////////////////////////////////
@@ -98,6 +113,10 @@ const initialState = {
         ['W'], ['W'], ['W'], ['W'], ['W'], ['D','3-B',2,'open'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
       ]
   },
+  map: { 1: [10, 9, -2, 8,
+              -1, 7, 6, 5,
+              4, 3, 2, 1]
+        },
   enemyById: {
     1: {
       kind: 'Slime',
@@ -130,7 +149,13 @@ const initialState = {
   },
   miscSprites: {
     block:  <img id="player" src={block} width="80" height="80"/>,
-    blockSink:  <img id="player" src={blockSink} width="60" height="60"/>
+    blockSink: <img id="player" src={blockSink} width="60" height="60"/>,
+    switchOff: <img id="player" src={switchOff} width="50" height="50"/>,
+    switchOn: <img id="player" src={switchOn} width="50" height="50"/>,
+    platformOffNS: <img id="player" src={platformOffNS} width="50" height="50"/>,
+    platformOnNS: <img id="player" src={platformOnNS} width="50" height="50"/>,
+    platformOffEW: <img id="player" src={platformOffEW} width="50" height="50"/>,
+    platformOnEW: <img id="player" src={platformOnEW} width="50" height="50"/>
   }
 };
 
@@ -169,7 +194,7 @@ const enemySpriteList = {
 //Reducer
 const gameReducer = (state = initialState, action) => {
   let newState;
-  const { gameState, coolDown, levelId, respawnPoint, previousLevelId } = action;
+  const { gameState, coolDown, levelId, respawnPoint, previousLevelId, activeText } = action;
 
   switch (action.type) {
     case CHANGE_GAMESTATE:
@@ -190,6 +215,11 @@ const gameReducer = (state = initialState, action) => {
     case SET_RESPAWNPOINT:
       newState = Object.assign({}, state, {
         respawnPoint: respawnPoint
+      });
+      return newState;
+    case SET_ACTIVETEXT:
+      newState = Object.assign({}, state, {
+        activeText: activeText
       });
       return newState;
   default:

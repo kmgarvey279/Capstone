@@ -16,13 +16,18 @@ import * as enemiesModule from './../redux/modules/enemies';
 import * as gameModule from './../redux/modules/game';
 import * as levelModule from './../redux/modules/level';
 import * as playerModule from './../redux/modules/player';
-import * as projectilesModule from './../redux/modules/projectiles';
+import * as switchesModule from './../redux/modules/switches';
+import * as platformsModule from './../redux/modules/platforms';
+import * as mapModule from './../redux/modules/map';
+
+import logs from './../text/logs.jsx'
 
 import ice from '../assets/images/level/ice.png';
 import lava from '../assets/images/lava.gif';
 import coin from '../assets/images/coin.png';
 import wall from '../assets/images/wall.jpeg';
 import tile from '../assets/images/tile.png';
+import stairs from '../assets/images/stairs.png';
 import wallCorner1 from '../assets/images/level/wall-corner1.png';
 import wallCorner2 from '../assets/images/level/wall-corner2.png';
 import wallCorner3 from '../assets/images/level/wall-corner3.png';
@@ -60,17 +65,15 @@ class App extends React.Component {
       //move left
     } else if (event.keyCode === 37 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-      let cooldownTimer = setTimeout(() =>
-        this.props.dispatch(playerModule.updatePlayerStatus('normal')),
-        250
-      );
       this.move("west")
       //attack!
     } else if (event.keyCode === 32 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
-      this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
-      let newSprite = this.props.player.sprites.attack[this.props.player.direction];
-      this.props.dispatch(levelModule.updateSprite(this.props.player.location, newSprite));
-      this.attack();
+      if (this.props.currentLevel[this.props.player.location].value == 'T') {
+        this.activateTerminal(this.props.player.location);
+      } else {
+        this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
+        this.attack();
+      }
       //change selected weapon
     } else if (event.keyCode === 16 && this.props.game.gameState == 'active') {
         let newWeaponId;
@@ -84,8 +87,12 @@ class App extends React.Component {
     } else if (event.keyCode === 17 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
         this.dash();
       //pause/unpause
-    } else if (event.keyCode === 13 && (this.props.game.gameState == 'active' || this.props.game.gameState == 'paused')) {
-      this.pauseGame();
+    } else if (event.keyCode === 13) {
+      if (this.props.game.gameState == 'active' || this.props.game.gameState == 'paused') {
+        this.pauseGame();
+      } else if (this.props.game.gameState == 'dialogue') {
+        this.endDialogue();
+      }
     }
   }
 
@@ -94,6 +101,7 @@ class App extends React.Component {
 //Change Level State
   startGame(){
     this.handleChangeGameState('active')
+    this.generateMapFromTemplate();
     this.generateLevelFromTemplate();
   }
 
@@ -107,6 +115,14 @@ class App extends React.Component {
 
   handleChangeGameState(newGameState){
     this.props.dispatch(gameModule.changeGameState(newGameState));
+  }
+
+//create map
+  generateMapFromTemplate(){
+    let mapTemplate = this.props.game.map[1];
+    for(let i = 0; i < mapTemplate.length; i++){
+      this.props.dispatch(mapModule.addMapSquare(i, mapTemplate[i]));
+    }
   }
 
 //Create Levels
@@ -130,7 +146,8 @@ class App extends React.Component {
     }
     this.props.dispatch(enemiesModule.nullAllEnemies());
     this.props.dispatch(blocksModule.nullAllBlock());
-    this.props.dispatch(projectilesModule.nullAllProjectiles());
+    this.props.dispatch(switchesModule.nullAllSwitches());
+    this.props.dispatch(platformsModule.nullAllPlatforms());
   }
 
   getTileDirection(thisSquareId) {
@@ -158,14 +175,13 @@ class App extends React.Component {
   handleAddingSquareToLevel(thisSquareId, squareArr) {
     let squareValue = squareArr[0];
     let squareImage;
-    let content = 'empty';
-    let contentId = '';
+    let content = [];
     let sprite = '';
     let transition = '';
+    let alert = false;
     //create door
     if (squareValue == 'D') {
-      content = 'door';
-      contentId = squareArr[1];
+      content.push(['door', squareArr[1]]);
       let doorDirection = this.getTileDirection(thisSquareId);
       //check if door exists in state, if not, create it
       if (!this.props.doors.hasOwnProperty(squareArr[1])) {
@@ -183,12 +199,12 @@ class App extends React.Component {
       } else if (doorDirection == 'south') {
         exit = thisSquareId + 1;
       }
-      this.props.dispatch(levelModule.addSquare(exit, 'EX', 'exit', squareArr[1], '', '', ''));
+      this.props.dispatch(levelModule.addSquare(exit, 'EX', [['exit', squareArr[1]]], '', ''));
       //check if it's the door the player entered from, if so add player and set respawn point
       if (squareArr[2] == this.props.game.previousLevelId) {
         this.props.dispatch(gameModule.setRespawnPoint(thisSquareId));
         sprite = this.props.player.sprites.stand[this.reverseDirection(doorDirection)];
-        content = 'player';
+        content.push(['player']);
         this.props.dispatch(playerModule.updatePlayerLocation(thisSquareId));
       }
       if (squareArr[3] == 'locked') {
@@ -239,7 +255,27 @@ class App extends React.Component {
     //create ice tile
     } else if (squareValue == 'I') {
       squareImage = <img id="tile" src={ice} weight="50" height="50" />;
-    //create empty tile
+    //create moving tile
+  } else if (squareValue == 'M') {
+      let contentId = v4();
+      content.push(['platform', contentId]);
+      let direction = squareArr[1];
+      if (direction == 'north' || direction == 'south'){
+        squareImage = this.props.game.miscSprites['platformOffNS'];
+      } else {
+        squareImage = this.props.game.miscSprites['platformOffEW'];
+      }
+      this.props.dispatch(platformsModule.createPlatform(contentId, thisSquareId, thisSquareId, direction, false));
+    //spawn switch
+    } else if (squareValue == 'S') {
+      squareImage = this.props.game.miscSprites['switchOff'];
+      let contentId = v4();
+      content.push(['switch', contentId]);
+      this.props.dispatch(switchesModule.createSwitch(contentId, thisSquareId, false, squareArr[1], squareArr[2]));
+    } else if (squareValue == 'T'){
+      squareImage = <img id="tile" src={stairs} weight="50" height="50" />;
+      content.push(['terminal', logs[squareArr[1]]]);
+      alert = true;
     } else {
       squareImage = <img id="tile" src={tile} weight="50" height="50" />;
     }
@@ -247,24 +283,22 @@ class App extends React.Component {
     if (squareValue == 'E') {
       let newEnemyId = this.handleCreateNewEnemy(thisSquareId, squareArr[1]);
       sprite = this.props.enemies[newEnemyId].sprites.move['south'];
-      content =  'enemy';
-      contentId = newEnemyId;
+      content.push(['enemy', newEnemyId]);
     }
     //spawn block
     if (squareValue == 'B') {
       sprite = this.props.game.miscSprites['block'];
-      content = 'block';
-      contentId = v4();
+      let contentId = v4();
+      content.push(['block', contentId]);
       this.props.dispatch(blocksModule.createBlock(contentId));
     }
-    this.props.dispatch(levelModule.addSquare(thisSquareId, squareValue, content, contentId, squareImage, sprite, transition));
+    this.props.dispatch(levelModule.addSquare(thisSquareId, squareValue, content, squareImage, sprite, transition, alert));
   }
 
 
 //Handle Movement
   move(direction){
     let originalLocation = this.props.player.location;
-    //direction always updates
     this.props.dispatch(playerModule.updatePlayerDirection(direction));
     this.props.dispatch(levelModule.updateSprite(originalLocation, this.props.player.sprites.stand[direction]));
     //check if move is legal, if not return original location
@@ -280,12 +314,10 @@ class App extends React.Component {
         if (squareCheck == 'moved'){
           this.handleUpdateSprite(originalLocation, this.props.player.sprites.walk[direction], direction + "Exit");
         } else {
-            this.handleUpdateSprite(originalLocation, this.props.player.sprites.stand[direction], direction + "Exit");
+          this.handleUpdateSprite(originalLocation, this.props.player.sprites.stand[direction], direction + "Exit");
         }
         let spriteEnterTimer = setTimeout(() =>
-          //clear sprite from previous square
           {this.handleUpdateSprite(originalLocation, '', '');
-          //sprite: enter new square
           if (squareCheck == 'moved'){
             this.handleUpdateSprite(canMove, this.props.player.sprites.walk[direction + '2'], direction + "Enter");
           } else {
@@ -293,7 +325,6 @@ class App extends React.Component {
           }},
           200
         );
-        // after walking animation finishes, remove sprite from previous square & add to new one
         let spriteExitTimer = setTimeout(() =>
           {this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.stand[direction], '');
           if(squareCheck == 'slide') {
@@ -313,15 +344,15 @@ class App extends React.Component {
   dash() {
     this.props.dispatch(playerModule.updatePlayerStatus('dash'));
     let direction = this.props.player.direction;
-    let squareCheck
+    let squareCheck;
     this.handleUpdateSprite(this.props.player.location, this.props.player.sprites.dash[direction], direction + 'Exit');
     for (let i = 0; i < 3; i++) {
       //check if player can be knocked back in this direction
       let originalLocation = this.props.player.location;
       let canMove = this.attemptMove(direction, originalLocation);
       let last;
-      squareCheck = this.playerSquareCheck(canMove, direction);
       let next;
+      squareCheck = this.playerSquareCheck(canMove, direction);
       if (squareCheck == 'slide') {
         this.move(direction);
         break;
@@ -408,20 +439,24 @@ class App extends React.Component {
     this.playerHealthCheck();
     if (this.props.player.health > 0) {
       //clear player from previous square
-      this.props.dispatch(levelModule.updateContent(playerLocation, 'empty', ''))
+      this.props.dispatch(levelModule.updateContent(playerLocation, []));
       this.handleUpdateSprite(playerLocation, '', '');
       //fall animation
-      this.handleUpdateSprite(pitLocation, this.props.player.sprites.fall, direction);
+      this.handleUpdateSprite(pitLocation, this.props.player.sprites.fall, direction+'Enter');
       //clear pit and restart player on respawn point
       let spriteClearTimer = setTimeout(() =>
         {this.handleUpdateSprite(pitLocation, '', '');
-        this.props.dispatch(levelModule.updateSprite(this.props.game.respawnPoint, this.props.player.sprites.stand[direction]));
-        this.props.dispatch(playerModule.updatePlayerLocation(this.props.game.respawnPoint));
-        this.props.dispatch(levelModule.updateContent(this.props.game.respawnPoint, 'player', ''));
-        this.props.dispatch(playerModule.updatePlayerStatus('normal'));},
+        this.respawn();},
         600
       );
     }
+  }
+
+  respawn(){
+    this.props.dispatch(levelModule.updateSprite(this.props.game.respawnPoint, this.props.player.sprites.stand['south']));
+    this.props.dispatch(playerModule.updatePlayerLocation(this.props.game.respawnPoint));
+    this.props.dispatch(levelModule.updateContent(this.props.game.respawnPoint, ['player']));
+    this.props.dispatch(playerModule.updatePlayerStatus('normal'));
   }
 
   playerHealthCheck(){
@@ -433,6 +468,8 @@ class App extends React.Component {
   //Handle Projectiles
 
   attack() {
+    let newSprite = this.props.player.sprites.attack[this.props.player.direction];
+    this.props.dispatch(levelModule.updateSprite(this.props.player.location, newSprite));
     let direction = this.props.player.direction;
     let playerLocation = this.props.player.location;
     let name = this.props.player.weapons[this.props.player.currentWeapon].name;
@@ -505,8 +542,8 @@ class App extends React.Component {
         next = this.attemptMove(direction, canMove);
         if (canMove !== originalLocation) {
           //check for effects of landing on new square
-          if (this.props.currentLevel[canMove].content == 'enemy') {
-            let enemyId = this.props.currentLevel[canMove].contentId;
+          if (this.props.currentLevel[canMove].content[0] == 'enemy') {
+            let enemyId = this.props.currentLevel[canMove].content[1];
             this.handleEnemyDamage(name, direction, this.props.currentLevel[canMove].contentId);
           } else {
             //update new square
@@ -531,8 +568,14 @@ class App extends React.Component {
 //movement helper functions
 
   handleUpdatePlayerLocation(originalLocation, newLocation) {
-    this.props.dispatch(levelModule.updateContent(originalLocation, 'empty', ''));
-    this.props.dispatch(levelModule.updateContent(newLocation, 'player', ''));
+    let previousContentArr =  this.props.currentLevel[originalLocation].content;
+    let filteredContentArr = previousContentArr.filter(function(content) {
+      return content[0] !== 'player';
+    });
+    this.props.dispatch(levelModule.updateContent(originalLocation, filteredContentArr));
+    let newContentArr = this.props.currentLevel[newLocation].content;
+    newContentArr.push(["player"]);
+    this.props.dispatch(levelModule.updateContent(newLocation, newContentArr));
     this.props.dispatch(playerModule.updatePlayerLocation(newLocation));
   }
 
@@ -548,16 +591,16 @@ class App extends React.Component {
     //and new square id #
     let newLocation = originalLocation + difference;
     //check for pushable block
-    if (this.props.currentLevel[newLocation].content === 'block' && this.props.currentLevel[originalLocation].content === 'player'){
+    if (this.props.currentLevel[newLocation].content[0] === 'block' && this.props.currentLevel[originalLocation].content[0] === 'player'){
       let blockMove = this.attemptMove(direction, newLocation);
       if (blockMove !== newLocation) {
-        this.moveBlock(this.props.currentLevel[newLocation].contentId, direction, newLocation, newLocation + difference);
+        this.moveBlock(this.props.currentLevel[newLocation].content[1], direction, newLocation, newLocation + difference);
         return newLocation;
       } else {
         return originalLocation
       }
     //check if move is possible
-    } else if (this.props.currentLevel[newLocation].content !== 'block'
+  } else if (this.props.currentLevel[newLocation].content[0] !== 'block'
     && this.props.currentLevel[newLocation].value !== 'W'
     && this.props.currentLevel[newLocation].value !== 'LD') {
       return newLocation;
@@ -569,19 +612,13 @@ class App extends React.Component {
   //check for effects caused by landing on square
   playerSquareCheck(squareId, direction) {
     let squareToCheck = this.props.currentLevel[squareId];
-    //take damage + knockback if not invincible
-    if ((squareToCheck.content === 'enemy' && this.props.player.status !== 'dash') || squareToCheck.content === 'projectile' || squareToCheck.value == 'L') {
+    if ((squareToCheck.content[0] === 'enemy' && this.props.player.status !== 'dash') || squareToCheck.value == 'L') {
       let knockBackDirection = this.reverseDirection(direction);
       this.knockBack(knockBackDirection);
       return 'knockback';
       //switch levels
     } else if (squareToCheck.value == 'EX') {
-      let newLevel = this.props.doors[squareToCheck.contentId].leadsTo;
-      let thisLevel = this.props.game.levelId;
-      this.props.dispatch(gameModule.setPreviousLevelId(thisLevel));
-      this.props.dispatch(gameModule.setLevelId(newLevel));
-      this.generateLevelFromTemplate();
-      this.handleChangeGameState("building");
+      this.changelevel(squareId);
       return 'exit';
       //fall to your doom and respawn
     } else if (squareToCheck.value == 'P'){
@@ -589,14 +626,50 @@ class App extends React.Component {
       return 'fall';
     } else if (squareToCheck.value == 'I' && this.attemptMove(direction, squareId) !== squareId){
       return 'slide';
+    } else if (squareToCheck.value == 'S') {
+      this.handleSwitch(squareToCheck);
+      return 'moved';
     } else if (squareToCheck.value == '$') {
-      this.props.dispatch(playerModule.updateScore(this.props.player.score + 1));
-      this.props.dispatch(levelModule.updateValue(squareId, '0', <img id="tile" src={tile} weight="50" height="50" />));
+      this.getCoin(squareToCheck);
+      return 'moved';
+    } else if (squareToCheck.value == 'T'){
       return 'moved';
     } else {
       //move to square as normal
       return 'moved';
     }
+  }
+
+  changeLevel(location) {
+    let newLevel = this.props.doors[location.content[1]].leadsTo;
+    let thisLevel = this.props.game.levelId;
+    this.props.dispatch(gameModule.setPreviousLevelId(thisLevel));
+    this.props.dispatch(gameModule.setLevelId(newLevel));
+    this.generateLevelFromTemplate();
+    this.handleChangeGameState("building");
+  }
+
+  getCoin(location){
+    this.props.dispatch(playerModule.updateScore(this.props.player.score + 1));
+    this.props.dispatch(levelModule.updateValue(location, '0', <img id="tile" src={tile} weight="50" height="50" />));
+  }
+
+  activateTerminal(location){
+    let contentArr =  this.props.currentLevel[location].content;
+    let terminalArr = contentArr.find(function(content) {
+      return content[0] == 'terminal';
+    });
+    this.triggerDialogue(terminalArr[1])
+  }
+
+  triggerDialogue(textContent){
+    this.props.dispatch(gameModule.setActiveText(textContent));
+    this.props.dispatch(gameModule.changeGameState('dialogue'));
+  }
+
+  endDialogue() {
+    this.props.dispatch(gameModule.setActiveText([]));
+    this.props.dispatch(gameModule.changeGameState('active'));
   }
 
   getDifference(direction) {
@@ -623,6 +696,91 @@ class App extends React.Component {
     }
   }
 
+  handleSwitch(location) {
+    this.props.dispatch(levelModule.updateValue(location.squareId, 'S', this.props.game.miscSprites['switchOn']));
+    let filteredContentArr;
+    let switchArr = location.content.find(function(content) {
+      return content[0] == 'switch';
+    });
+    let thisSwitch = this.props.switches[switchArr[1]]
+    this.props.dispatch(switchesModule.pushSwitch(thisSwitch, true));
+    let effectLocation = this.props.currentLevel[thisSwitch.effectLocation];
+    let effectArr = effectLocation.content.find(function(content) {
+      return content[0] == 'door' || 'platform';
+    });
+    if (effectArr[0] == 'platform'){
+      this.props.dispatch(platformsModule.activatePlatform(effectArr[1], true));
+      this.platformStart(effectArr[1]);
+      let switchTimer = setTimeout(() =>
+        {this.props.dispatch(switchesModule.pushSwitch(thisSwitch.switchId, false));
+        this.props.dispatch(platformsModule.activatePlatform(effectArr[1], false));},
+      thisSwitch.timer
+      );
+    } else if (effectObjectArr[0] == 'door') {
+      this.props.dispatch(doorsModule.openDoor(effectObjectArr[1], true));
+      let switchTimer = setTimeout(() =>
+        {this.props.dispatch(switchesModule.pushSwitch(thisSwitch.switchId, false));
+        this.props.dispatch(levelModule.updateValue(effectLocation.squareId, 'S', this.props.game.miscSprites['switchOff']));
+        this.props.dispatch(doorsModule.openDoor(effectArr[1], false));},
+      thisSwitch.timer
+      );
+    }
+  }
+
+  platformStart(platformId){
+    let thisPlatform = this.props.platforms[platformId];
+    let platformTimer = setInterval(() =>
+      {if (thisPlatform.isActive == true){
+        this.platformMove(platformId)
+      } else {
+        this.platformReturn(platformId)
+      }},
+      1000
+      );
+    }
+
+  platformMove(platformId){
+    if (this.props.game.gameState == 'active'){
+      let platform = this.props.platforms[platformId];
+      let originalLocation = platform.location;
+      let canMove = this.attemptMove(platform.direction, originalLocation);
+      if (canMove == originalLocation || this.props.currentLevel[canMove].value !== "P"){
+        let newDirection = this.reverseDirection(platform.direction);
+        this.props.dispatch(platformsModule.updatePlatformDirection(platform.platformId, newDirection));
+      } else {
+        this.handleUpdatePlatformLocation(platform.platformId, originalLocation, canMove);
+      }
+      if (canMove == platform.start){
+        let newDirection = this.reverseDirection(platform.direction);
+        this.props.dispatch(platformsModule.updatePlatformDirection(platform.platformId, newDirection));
+      }
+    }
+  };
+
+  handleUpdatePlatformLocation(platformId, originalLocation, newLocation){
+    let platform = this.props.platforms[platformId];
+    //set new tile images
+    let image;
+    if (platform.direction == 'north' || platform.direction == 'south') {
+      image = this.props.game.miscSprites['platformOnNS'];
+    } else {
+      image = this.props.game.miscSprites['platformOnEW']
+    }
+    this.props.dispatch(levelModule.updateValue(originalLocation, 'P', ''));
+    this.props.dispatch(levelModule.updateValue(newLocation, 'M', image));
+    //remove platform from content array
+    let previousContentArr = this.props.currentLevel[originalLocation].content;
+    let filteredContentArr = previousContentArr.filter(function(content) {
+      return content[0] !== 'platform';
+    });
+    this.props.dispatch(levelModule.updateContent(originalLocation, filteredContentArr));
+    //add platform to new contant array
+    let newContentArr = this.props.currentLevel[newLocation].content;
+    newContentArr.push(["platform", platformId]);
+    this.props.dispatch(levelModule.updateContent(newLocation, newContentArr));
+    this.props.dispatch(platformsModule.updatePlatformLocation(newLocation));
+  }
+
 //Handle Blocks
   moveBlock(blockId, direction, originalLocation, newLocation) {
     //move animation
@@ -631,27 +789,24 @@ class App extends React.Component {
     let blockCheck = this.props.currentLevel[newLocation];
     //if new square is a pit
     if (blockCheck.value == 'P') {
-      this.props.dispatch(levelModule.updateContent(originalLocation, 'empty', ''));
+      this.props.dispatch(levelModule.updateContent(originalLocation, []));
       this.handleUpdateSprite(originalLocation, '', '');
       this.blockFall(blockId, newLocation, direction);
     //if new square is lava
   } else if (blockCheck.value == 'L') {
-      this.props.dispatch(levelModule.updateContent(originalLocation, 'empty', ''));
+      this.props.dispatch(levelModule.updateContent(originalLocation, []));
       this.handleUpdateSprite(originalLocation, '', '');
       this.blockSink(blockId, newLocation, direction);
     //if new square is an enemy...
   } else if (blockCheck.content === 'enemy') {
         //...and the enemy is able to be pushed back
         if (this.attemptMove(direction, newLocation) !== newLocation) {
-          this.enemyKnockBack(this.props.enemies[square.contentId], direction);
-        //...if it can't be pushed back
-        } else {
-          alert("stuck");
+          this.enemyKnockBack(this.props.enemies[square.content[1]], direction);
         }
   } else {
       //update location
-      this.props.dispatch(levelModule.updateContent(originalLocation, 'empty', ''));
-      this.props.dispatch(levelModule.updateContent(newLocation, 'block', blockId));
+      this.props.dispatch(levelModule.updateContent(originalLocation, []));
+      this.props.dispatch(levelModule.updateContent(newLocation, ['block', blockId]));
       this.props.dispatch(blocksModule.updateBlockLocation(blockId, newLocation));
       let spriteClearTimer = setTimeout(() =>
         {this.handleUpdateSprite(originalLocation, '', '');
@@ -728,6 +883,10 @@ class App extends React.Component {
         direction = 'west'
       }
     }
+    this.executeEnemyMove(enemyId, currentLocation, direction);
+  }
+
+  executeEnemyMove(enemyId, currentLocation, direction) {
     this.props.dispatch(enemiesModule.updateEnemyDirection(enemyId, direction));
     this.props.dispatch(levelModule.updateSprite(currentLocation, this.props.enemies[enemyId].sprites.move[direction]));
     //check if move is legal, if not return original location
@@ -737,7 +896,7 @@ class App extends React.Component {
     && this.props.currentLevel[canMove].value !== 'P'
     && this.props.currentLevel[canMove].value !== 'EX'){
       //hurt player, but don't move if they can't be knocked back to another square
-      if (this.props.currentLevel[canMove].content == 'player') {
+      if (this.props.currentLevel[canMove].content[0] == 'player') {
         this.knockBack(direction);
       } else {
         //update enemy location and new square
@@ -759,8 +918,14 @@ class App extends React.Component {
   }
 
   handleUpdateEnemyLocation(enemyId, originalLocation, newLocation) {
-    this.props.dispatch(levelModule.updateContent(originalLocation, 'empty', ''));
-    this.props.dispatch(levelModule.updateContent(newLocation, 'enemy', enemyId));
+    let previousContentArr =  this.props.currentLevel[originalLocation].content;
+    let filteredContentArr = previousContentArr.filter(function(content) {
+      return content[1] !== enemyId;
+    });
+    this.props.dispatch(levelModule.updateContent(originalLocation, filteredContentArr));
+    let newContentArr = this.props.currentLevel[newLocation].content;
+    newContentArr.push(["enemy", enemyId]);
+    this.props.dispatch(levelModule.updateContent(newLocation, newContentArr));
     this.props.dispatch(enemiesModule.updateEnemyLocation(enemyId, newLocation));
   }
 
@@ -809,7 +974,7 @@ class App extends React.Component {
     this.props.dispatch(enemiesModule.updateEnemyStatus(enemyId, 'dead'));
     let statusTimer = setTimeout(() =>
       {this.handleUpdateSprite(location, '', '');
-      this.props.dispatch(levelModule.updateContent(location, ''));
+      this.props.dispatch(levelModule.updateContent(location, []));
       this.props.dispatch(enemiesModule.nullEnemy(enemyId));
       this.props.dispatch(levelModule.updateValue(location, '$', <img id="tile" src={coin} weight="50" height="50" />));},
       600
@@ -884,7 +1049,8 @@ class App extends React.Component {
             game={this.props.game}
             blocks={this.props.blocks}
             doors={this.props.doors}
-            menu={this.props.menu} />} />
+            menu={this.props.menu}
+            map={this.props.map}/>} />
       </div>
     );
   }
@@ -894,11 +1060,13 @@ App.propTypes = {
   currentLevel: PropTypes.object,
   game: PropTypes.object,
   player: PropTypes.object,
-  projectiles: PropTypes.object,
   enemies: PropTypes.object,
   blocks: PropTypes.object,
   doors: PropTypes.object,
-  menu: PropTypes.object
+  menu: PropTypes.object,
+  switches: PropTypes.object,
+  platforms: PropTypes.object,
+  map: PropTypes.object
 };
 
 const mapStateToProps = state => {
@@ -906,11 +1074,13 @@ const mapStateToProps = state => {
     currentLevel: state.currentLevel,
     game: state.game,
     player: state.player,
-    projectiles: state.projectiles,
     enemies: state.enemies,
     blocks: state.blocks,
     doors: state.doors,
-    menu: state.menu
+    menu: state.menu,
+    switches: state.switches,
+    platforms: state.platforms,
+    map: state.map
   }
 };
 
@@ -922,10 +1092,11 @@ function mapDispatchToProps(dispatch) {
     gameModule : bindActionCreators(gameModule, dispatch),
     levelModule : bindActionCreators(levelModule, dispatch),
     playerModule : bindActionCreators(playerModule, dispatch),
-    projectilesModule : bindActionCreators(projectileModule, dispatch),
-    menuModule : bindActionCreators(menuModule, dispatch)
+    menuModule : bindActionCreators(menuModule, dispatch),
+    platformsModule : bindActionCreators(platformsModule, dispatch),
+    switchesModule : bindActionCreators(switchesModule, dispatch),
+    mapModule: bindActionCreators(mapModule, dispatch)
   }
 };
-
 
 export default withRouter(connect(mapStateToProps)(App));

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-function GameUIBottom(props) {
+function TextBoxes(props) {
   return (
     <div id='wrap'>
       <style jsx>{`
@@ -32,7 +32,7 @@ function GameUIBottom(props) {
         }
       `}</style>
       <div id='content'>
-        <p>Voice: I am the voice. I say the things.</p>
+        {props.game.activeText}
       </div>
       <div id='content'>
         <p>Another Voice: What if I was also the voice?</p>
@@ -44,9 +44,9 @@ function GameUIBottom(props) {
   );
 }
 
-GameUIBottom.propTypes = {
+TextBoxes.propTypes = {
   game: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired
 };
 
-export default connect()(GameUIBottom);
+export default connect()(TextBoxes);

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import alert from '../assets/images/level/alert.png';
 
 function Square(props){
-  if (props.transition !== '' && props.value == 'P' && !(props.player.status == 'dash' && props.content == 'player')) {
+  if (props.transition !== '' && props.value == 'P') {
     return (
       <div>
         <style jsx>{`
@@ -245,6 +246,38 @@ function Square(props){
           <div id="tile">{props.tileImage}</div>
         </div>
       )
+  } else if (props.alert == true && props.player.location == props.squareId) {
+    return (
+      <div>
+        <style jsx>{`
+          div#sprite{
+            z-index: 100;
+            position: absolute;
+            bottom: 15px;
+            right -13px;
+          }
+          @keyframes alert {
+            0%  {bottom: 90px; transform: scale(1.0);}
+            25%  {bottom: 100px; transform: scale(1.2);}
+            50%  {bottom: 90px; transform: scale(1.0);}
+            75%  {bottom 100px; transform: scale(1.2);}
+          }
+
+          div#alert{
+            z-index 500;
+            position: absolute;
+            left: 10px;
+            bottom: 90px;
+            animation-iteration-count:infinite;
+            animation-name: alert;
+            animation-duration: 2s;
+          }
+          `}</style>
+          <div id="alert"><img src={alert} weight="50" height="50" /></div>
+          <div id="sprite">{props.sprite}</div>
+          <div id="tile">{props.tileImage}</div>
+        </div>
+      )
   } else {
     return (
       <div>
@@ -265,12 +298,12 @@ function Square(props){
 
 Square.propTypes = {
   value: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  contentId: PropTypes.string.isRequired,
+  content: PropTypes.array.isRequired,
   squareId: PropTypes.number.isRequired,
   tileImage: PropTypes.object.isRequired,
   sprite: PropTypes.object,
   transition: PropTypes.string,
+  alert: PropTypes.bool,
   player: PropTypes.object
 };
 

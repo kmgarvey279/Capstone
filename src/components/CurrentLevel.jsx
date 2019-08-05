@@ -38,12 +38,12 @@ function CurrentLevel(props){
         var square = props.currentLevel[squareId];
         return <div id="inner"><Square value={square.value}
             content={square.content}
-            contentId={square.contentId}
             key={squareId}
             squareId={parseInt(squareId)}
             tileImage={square.tileImage}
             sprite={square.sprite}
             transition={square.transition}
+            alert={square.alert}
             player={props.player}/>
         </div>;
       })}

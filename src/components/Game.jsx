@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CurrentLevel from './CurrentLevel';
-import GameUIBottom from './GameUIBottom';
+import Textboxes from './Textboxes';
 import GameUITop from './GameUITop';
 import Map from './Map';
 import GameOver from './GameOver';
@@ -21,7 +21,7 @@ function Game(props){
           filter: blur(5px) grayscale(100%) sepia(100%) hue-rotate(130deg);
         }
         `}</style>
-        <Map game={props.game} />
+        <Map map={props.map} game={props.game} />
         <GameUITop player={props.player}/>
         <div id='level'><CurrentLevel currentLevel={props.currentLevel} player={props.player}/></div>
       </div>
@@ -46,7 +46,7 @@ function Game(props){
         `}</style>
         <GameUITop player={props.player}/>
         <div id='level'><CurrentLevel currentLevel={props.currentLevel} player={props.player}/></div>
-        <GameUIBottom player={props.player}/>
+        <Textboxes game={props.game} player={props.player}/>
       </div>
     );
   } else if (props.game.gameState === 'building') {
@@ -82,7 +82,8 @@ Game.propTypes = {
   currentLevel: PropTypes.object.isRequired,
   game: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
-  menu: PropTypes.object.isRequired
+  menu: PropTypes.object.isRequired,
+  map: PropTypes.object.isRequired
 };
 
 export default Game;
