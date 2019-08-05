@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import profile from '../assets/images/profileplaceholder.png';
-import weapon from '../assets/images/FlareGun.png';
+import * as playerConsts from './../redux/modules/player/playerConstants';
 
 function GameUITop(props) {
   return (
@@ -18,7 +17,7 @@ function GameUITop(props) {
           z-index: 10;
         }
       `}</style>
-        <h3>Health: {props.player.health}/100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Score: {props.player.score} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Weapon: &nbsp; &nbsp;{props.player.weapons[props.player.currentWeapon].name}</h3>
+        <h3>Health: {props.player.health}/100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Score: {props.player.score} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Weapon: &nbsp; &nbsp;{playerConsts.weapons[props.player.currentWeapon].name}</h3>
     </div>
   );
 }

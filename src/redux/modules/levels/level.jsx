@@ -8,7 +8,6 @@ export const UPDATE_TRANSITION = "UPDATE_TRANSITION";
 export const TOGGLE_ALERT = "TOGGLE_ALERT";
 
 //Action Creators
-
 export function nullLevel() {
   return {
     type: NULL_LEVEL,

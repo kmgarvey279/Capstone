@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as menuModule from './../redux/modules/menu';
-import * as playerModule from './../redux/modules/player';
+import * as playerModule from './../redux/modules/player/player';
 import {bindActionCreators} from 'redux';
 import { withRouter } from 'react-router-dom';
 
