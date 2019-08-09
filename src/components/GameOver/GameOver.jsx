@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as menuModule from './../redux/modules/menu';
+import * as menuModule from '../../redux/modules/menu';
+import * as playerModule from '../../redux/modules/player/player';
 import {bindActionCreators} from 'redux';
 import { withRouter } from 'react-router-dom';
+import './GameOver.css';
 
-class Title extends React.Component {
+class GameOver extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -13,6 +15,7 @@ class Title extends React.Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress, false);
+    this.props.dispatch(menuModule.changeMenu('gameOver'));
   }
 
   componentWillUnmount() {
@@ -39,10 +42,10 @@ class Title extends React.Component {
 
   selectOption(){
     if (this.props.menu.selectedOption === 1) {
+    this.props.dispatch(playerModule.updatePlayerHealth(100));
     this.props.handleStart();
-    this.props.history.push('/game');
   } else if (this.props.menu.selectedOption === 2) {
-      //select Mmnu
+    this.props.history.push('/');
     }
   }
 
@@ -50,46 +53,26 @@ class Title extends React.Component {
     if(this.props.menu.selectedOption === 1) {
       return (
         <div>
-          <style jsx>{`
-            div#new {
-              border: solid red 2px;
-            }
-            div#load {
-            }
-          `}</style>
           <h1>Title!</h1>
-          <div id='new'><h4>New Game</h4></div>
-          <div id ='load'><h4>Load</h4></div>
+          <div id='select'><h4>Continue</h4></div>
+          <div><h4>Give Up</h4></div>
         </div>
       );
     } else if (this.props.menu.selectedOption === 2) {
       return (
         <div>
-          <style jsx>{`
-            div#new {
-            }
-            div#load {
-              border solid red 2px;
-            }
-          `}</style>
           <h1>Title!</h1>
-          <div id='new'><h4>New Game</h4></div>
-          <div id ='load'><h4>Load</h4></div>
+          <div><h4>Continue</h4></div>
+          <div id ='select'><h4>Give Up</h4></div>
         </div>
       );
     } else {
       return (
         <div>
-          <style jsx>{`
-            div#new {
-            }
-            div#load {
-            }
-          `}</style>
           <h1>Title!</h1>
           {this.props.menu.selectedOption}
-          <div id='new'><h4>New Game</h4></div>
-          <div id ='load'><h4>Load</h4></div>
+          <div><h4>Continue</h4></div>
+          <div><h4>Give Up</h4></div>
         </div>
       );
     }
@@ -97,15 +80,17 @@ class Title extends React.Component {
 }
 
 
-Title.propTypes = {
+GameOver.propTypes = {
   menu: PropTypes.object.isRequired,
-  handleStart: PropTypes.func
+  player: PropTypes.object.isRequired,
+  handleStart: PropTypes.func.isRequired
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    menuModule : bindActionCreators(menuModule, dispatch)
+    menuModule : bindActionCreators(menuModule, dispatch),
+    playerModule : bindActionCreators(playerModule, dispatch)
   }
 };
 
-export default withRouter(connect(mapDispatchToProps)(Title));
+export default withRouter(connect(mapDispatchToProps)(GameOver));

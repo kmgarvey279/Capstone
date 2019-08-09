@@ -1,0 +1,19 @@
+div#game {
+  text-align: center;
+  background-color: black;
+  padding-top: 30px;
+}
+
+div#pause {
+  -webkit-filter: blur(5px);
+  filter: blur(5px) grayscale(100%) sepia(100%) hue-rotate(130deg);
+  text-align: center;
+  background-color: black;
+}
+
+div#loading {
+  height: 600px;
+  width: 600px;
+  text-align: center;
+  background-color: black;
+}

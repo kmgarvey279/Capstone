@@ -5,19 +5,19 @@ export const CHANGE_VISITED = "CHANGE_VISITED";
 export const ADD_MAP_SQUARE = "ADD_MAP_SQUARE";
 
 //Action Creators
-export function addMapSquare(mapId, levelId) {
+export function addMapSquare(mapsId, roomId) {
   return {
     type: ADD_MAP_SQUARE,
-    mapId: mapId,
-    levelId: levelId,
+    mapsId: mapsId,
+    roomId: roomId,
     visited: false
   }
 }
 
-export function changeVisited(mapId) {
+export function changeVisited(mapsId) {
   return {
     type: CHANGE_VISITED,
-    mapId: mapId,
+    mapsId: mapsId,
     visited: true
   }
 }
@@ -26,23 +26,23 @@ export function changeVisited(mapId) {
 
 //Reducer
 const mapReducer = (state = {}, action) => {
-  const { mapId, levelId, visited } = action;
+  const { mapsId, roomId, visited } = action;
   let newState;
   let newSquare;
   switch (action.type) {
     case ADD_MAP_SQUARE:
       newState = Object.assign({}, state, {
-        [mapId]: {
-          mapId: mapId,
-          levelId: levelId,
+        [mapsId]: {
+          mapsId: mapsId,
+          roomId: roomId,
           visited: visited
         }
       });
       return newState;
     case CHANGE_VISITED:
-    newSquare = Object.assign({}, state[mapId], {visited});
+    newSquare = Object.assign({}, state[mapsId], {visited});
       newState = Object.assign({}, state, {
-        [mapId]: newSquare
+        [mapsId]: newSquare
       });
       return newState;
   default:

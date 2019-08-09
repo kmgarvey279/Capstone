@@ -1,28 +1,45 @@
 import React from 'react';
 
-import blobNorth from '../../../assets/images/enemies/blob-back.png';
+import blobNorth from '../../../assets/images/enemies/blob-back.gif';
 import blobEast from '../../../assets/images/enemies/blob.gif';
 import blobSouth from '../../../assets/images/enemies/blob.gif';
-import blobWest from '../../../assets/images/enemies/blob-back2.png';
+import blobWest from '../../../assets/images/enemies/blob-back.gif';
 import blobKnockbackNorth from '../../../assets/images/enemies/blob-front-knockback.gif';
 import blobKnockbackEast from '../../../assets/images/enemies/blob-front-knockback.gif';
 import blobKnockbackSouth from '../../../assets/images/enemies/blob-front-knockback.gif';
 import blobKnockbackWest from '../../../assets/images/enemies/blob-front-knockback.gif';
+import blobShock from '../../../assets/images/enemies/blob-shock.gif';
+import blobFrozen from '../../../assets/images/enemies/blob-frozen.png';
+
+import bossNorth from '../../../assets/images/enemies/boss1.gif';
+import bossEast from '../../../assets/images/enemies/boss1.gif';
+import bossSouth from '../../../assets/images/enemies/boss1.gif';
+import bossWest from '../../../assets/images/enemies/boss1.gif';
 
 export const sprites = {
   //Blob Type
   slime: {
     move: {
-      north: <img id="player" src={blobNorth} width="50" height="50"/>,
-      east: <img id="player" src={blobEast} width="50" height="50"/>,
-      south: <img id="player" src={blobSouth} width="50" height="50"/>,
-      west: <img id="player" src={blobWest} width="50" height="50"/>
+      north: <img id="player" src={blobNorth} width="80" height="80"/>,
+      east: <img id="player" src={blobEast} width="80" height="80"/>,
+      south: <img id="player" src={blobSouth} width="80" height="80"/>,
+      west: <img id="player" src={blobWest} width="80" height="80"/>
     },
     knockback: {
       north: <img id="player" src={blobNorth} width="40" height="40"/>,
       east: <img id="player" src={blobEast} width="40" height="40"/>,
       south: <img id="player" src={blobSouth} width="40" height="40"/>,
       west: <img id="player" src={blobWest} width="40" height="40"/>
+    },
+    frozen: <img id="player" src={blobFrozen} width="90" height="90"/>,
+    shock: <img id="player" src={blobShock} width="90" height="90"/>
+  },
+  boss: {
+    move: {
+      north: <img id="player" src={bossNorth} width="300" height="300"/>,
+      east: <img id="player" src={bossEast} width="300" height="300"/>,
+      south: <img id="player" src={bossSouth} width="300" height="300"/>,
+      west: <img id="player" src={bossWest} width="300" height="300"/>
     }
   }
 };
@@ -40,5 +57,10 @@ export const enemies = {
   alien: {
     kind: 'Alien',
     health: 80
+  },
+  boss: {
+    kind: 'Boss',
+    sprites: sprites['boss'],
+    health: 1000
   }
 };

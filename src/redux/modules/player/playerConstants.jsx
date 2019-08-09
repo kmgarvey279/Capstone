@@ -18,11 +18,16 @@ import playerAttackSouth from '../../../assets/images/player/playerAttackSouth.g
 import playerAttackWest from '../../../assets/images/player/playerAttackWest.gif';
 import playerKnockbackSouth from '../../../assets/images/player/playerKnockbackSouth.gif';
 import playerKnockbackNorth from '../../../assets/images/player/playerKnockbackNorth.gif';
-import playerDashSouth from '../../../assets/images/player/playerDashSouth.gif'
-import playerParticleSouth from '../../../assets/images/player/playerParticleSouth.gif'
+import playerDashSouth from '../../../assets/images/player/playerDashSouth.gif';
+import playerParticleSouth from '../../../assets/images/player/playerParticleSouth.gif';
+import playerPunchSouth from '../../../assets/images/player/playerPunchSouth.gif';
+import playerPunchNorth from '../../../assets/images/player/playerPunchSouth.gif';
+import playerPunchEast from '../../../assets/images/player/playerPunchSouth.gif';
+import playerPunchWest from '../../../assets/images/player/playerPunchSouth.gif';
 
 import taser from '../../../assets/images/projectiles/taser.png';
 import cryostat from '../../../assets/images/projectiles/cryostatEast.gif';
+import punchImpact from '../../../assets/images/player/punch.gif';
 
 export const sprites = {
   stand: {
@@ -59,12 +64,19 @@ export const sprites = {
     west: <img id="player" src={playerDashSouth} width="80" height="80" />,
     south: <img id="player" src={playerDashSouth} width="80" height="80" />,
   },
+  punch: {
+    north: <img id="player" src={playerPunchNorth} width="80" height="80" />,
+    east: <img id="player" src={playerPunchEast} width="80" height="80" />,
+    west: <img id="player" src={playerPunchWest} width="80" height="80" />,
+    south: <img id="player" src={playerPunchSouth} width="80" height="80" />,
+  },
   particle: {
     north: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
     east: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
     south: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
     west: <img id="player" src={playerParticleSouth} width="80" height="80"/>
   },
+  punchImpact: <img id="player" src={punchImpact} width="80" height="80"/>,
   fall: <img id="player" src={playerStandEast} width="80" height="80"/>,
   victory: <img id="player" src={playerStandEast} width="80" height="80"/>
 };

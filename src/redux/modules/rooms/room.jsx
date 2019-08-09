@@ -1,5 +1,5 @@
 //Constants
-export const NULL_LEVEL = "NULL_LEVEL";
+export const NULL_ROOM = "NULL_ROOM";
 export const ADD_SQUARE = "ADD_SQUARE";
 export const UPDATE_CONTENT = "UPDATE_CONTENT";
 export const UPDATE_VALUE = "UPDATE_VALUE";
@@ -8,9 +8,9 @@ export const UPDATE_TRANSITION = "UPDATE_TRANSITION";
 export const TOGGLE_ALERT = "TOGGLE_ALERT";
 
 //Action Creators
-export function nullLevel() {
+export function nullRoom() {
   return {
-    type: NULL_LEVEL,
+    type: NULL_ROOM,
   };
 }
 
@@ -68,13 +68,13 @@ export function toggleAlert(squareId, alertBool){
 //Initial State
 
 //Reducer
-const levelReducer = (state = {}, action) => {
+const roomReducer = (state = {}, action) => {
   let newState;
   let newSquare;
   const { squareId, value, content, tileImage, sprite, transition, alert} = action;
 
   switch (action.type) {
-    case NULL_LEVEL:
+    case NULL_ROOM:
       newState = {};
       return newState;
     case ADD_SQUARE:
@@ -125,4 +125,4 @@ const levelReducer = (state = {}, action) => {
   }
 };
 
-export default levelReducer;
+export default roomReducer;

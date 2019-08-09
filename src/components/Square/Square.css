@@ -1,0 +1,15 @@
+  @keyframes alert {
+  0%  {bottom: 90px; transform: scale(1.0);}
+  25%  {bottom: 100px; transform: scale(1.2);}
+  50%  {bottom: 90px; transform: scale(1.0);}
+  75%  {bottom: 100px; transform: scale(1.2);}
+}
+div#alert{
+  z-index: 500;
+  position: absolute;
+  left: 10px;
+  bottom: 90px;
+  animation-iteration-count:infinite;
+  animation-name: alert;
+  animation-duration: 2s;
+}

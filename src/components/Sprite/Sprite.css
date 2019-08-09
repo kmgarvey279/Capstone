@@ -1,0 +1,123 @@
+div#sprite{
+  z-index: 100;
+  position: absolute;
+  bottom: 15px;
+  right: -13px;
+}
+
+@keyframes fall {
+  0%  {transform: rotate(90deg) scale(1.0);}
+  25%  {transform: rotate(180deg) scale(0.5);}
+  50%  {transform: rotate(270deg) scale(0.0);}
+  75%  {transform: rotate(360deg) scale(-0.5);}
+}
+div#fall{
+  right: 4px;
+  bottom: 5px;
+  animation-name: fall;
+  animation-duration: 1s;
+}
+
+@keyframes exitNorth {
+  from{
+    margin-top: 30%;
+  }
+  to: {
+    margin-top: 0;
+  }
+}
+div#northExit{
+  animation-name: exitNorth;
+  animation-duration: 1s;
+}
+@keyframes enterNorth {
+  from{
+    margin-bottom: 0;
+  }
+  to: {
+    margin-bottom: 30%;
+  }
+}
+div#NorthEnter{
+  animation-name: enterNorth;
+  animation-duration: 1s;
+}
+
+@keyframes exitEast {
+  from{
+    margin-right: 30%;
+  }
+  to: {
+    margin-right: 0%;
+  }
+}
+div#eastExit{
+  animation-name: exitEast;
+  animation-duration: 1s;
+}
+@keyframes enterEast {
+  from{
+    margin-left: 0%;
+  }
+  to: {
+    margin-left: 30%;
+  }
+}
+div#eastEnter{
+  animation-name: enterEast;
+  animation-duration: 1s;
+}
+
+@keyframes enterSouth {
+  from{
+    margin-top: 0%;
+  }
+
+  to: {
+    margin-top: 30%;
+  }
+}
+div#southEnter{
+  animation-name: enterSouth;
+  animation-duration: 1s;
+}
+@keyframes exitSouth {
+  from{
+    margin-bottom: 30%;
+  }
+
+  to: {
+    margin-bottom: 0%;
+  }
+}
+div#southExit{
+  animation-name: exitSouth;
+  animation-duration: 1s;
+}
+
+@keyframes enterWest {
+  from{
+    margin-right: 0%;
+  }
+
+  to: {
+    margin-right: 30%;
+  }
+}
+div#westEnter{
+  animation-name: enterWest;
+  animation-duration: 1s;
+}
+@keyframes exitWest {
+  from{
+    margin-left: 30%;
+  }
+
+  to: {
+    margin-left: 0%;
+  }
+}
+div#westExit{
+  animation-name: exitWest;
+  animation-duration: 1s;
+}

@@ -1,4 +1,4 @@
-import levelReducer from './levels/level';
+import roomReducer from './rooms/room';
 import gameReducer from './game';
 import playerReducer from './player/player';
 import enemyReducer from './enemies/enemies';
@@ -12,7 +12,7 @@ import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
   player: playerReducer,
-  currentLevel: levelReducer,
+  currentRoom: roomReducer,
   game: gameReducer,
   enemies: enemyReducer,
   doors: doorReducer,
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   menu: menuReducer,
   platforms: platformReducer,
   switches: switchReducer,
-  map: mapReducer
+  maps: mapReducer
 });
 
 export default rootReducer;

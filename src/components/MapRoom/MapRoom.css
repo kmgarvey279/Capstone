@@ -1,0 +1,66 @@
+div#empty{
+  display: none;
+  margin: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  max-width: 105px;
+  min-width: 105px;
+  max-height: 105px;
+  min-height: 105px;
+  vertical-align: top;
+  display: inline-block;
+  z-index: 2000;
+}
+
+@keyframes current {
+  0%  {background-color: lightblue; text-shadow: 0 0 3px white;}
+  25%  {background-color: Azure; text-shadow: 0 0 1px lightblue;}
+  50%  {background-color: lightblue; text-shadow: 0 0 3px white;}
+  75%  {background-color: Azure; text-shadow: 0 0 1px lightblue;}
+}
+div#current {
+  background-color: lightblue;
+  margin: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  max-width: 105px;
+  min-width: 105px;
+  max-height: 105px;
+  min-height: 105px;
+  vertical-align: top;
+  display: inline-block;
+  z-index: 2000;
+  animation: current 4s infinite;
+}
+
+div#visited {
+  background-color: lightgray;
+  margin: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  max-width: 105px;
+  min-width: 105px;
+  max-height: 105px;
+  min-height: 105px;
+  vertical-align: top;
+  display: inline-block;
+  z-index: 2000;
+}
+
+div#unvisited {
+  background-color: DarkSlateGray;
+  margin: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  max-width: 105px;
+  min-width: 105px;
+  max-height: 105px;
+  min-height: 105px;
+  vertical-align: top;
+  display: inline-block;
+  z-index: 2000;
+}

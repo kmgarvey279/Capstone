@@ -8,6 +8,7 @@ export const UPDATE_PLAYER_DIRECTION = "UPDATE_PLAYER_DIRECTION";
 export const TOGGLE_INVINCIBILITY = "TOGGLE_INVINCIBILITY";
 export const UPDATE_SCORE = "UPDATE_SCORE";
 export const CHANGE_CURRENT_WEAPON = "CHANGE_CURRENT_WEAPON";
+export const ADD_WEAPON_TO_INVENTORY = "ADD_WEAPON_TO_INVENTORY";
 
 //Action Creators
 export function updatePlayerHealth(newHealth) {
@@ -50,7 +51,13 @@ export function updatePlayerStatus(status) {
   return {
     type: UPDATE_PLAYER_STATUS,
     status: status
-  }
+  };
+}
+export function addWeaponToInventory(weapons) {
+  return {
+    type: ADD_WEAPON_TO_INVENTORY,
+    weapons: weapons
+  };
 }
 
 
@@ -61,13 +68,14 @@ const initialState = {
     score: 0,
     direction: 'north',
     location: null,
-    currentWeapon: 1
+    currentWeapon: 1,
+    weapons: [1, 2]
   };
 
 //Reducer
 export default function playerReducer(state = initialState, action){
   let newState;
-  const { health, location, direction, invincibility, score, currentWeapon, status } = action;
+  const { health, location, direction, invincibility, score, currentWeapon, status, weapons } = action;
 
   switch (action.type) {
     case UPDATE_PLAYER_HEALTH:
@@ -98,6 +106,11 @@ export default function playerReducer(state = initialState, action){
     case CHANGE_CURRENT_WEAPON:
       newState = Object.assign({}, state, {
         currentWeapon: currentWeapon
+      });
+      return newState;
+    case ADD_WEAPON_TO_INVENTORY:
+      newState = Object.assign({}, state, {
+        weapons: weapons
       });
       return newState;
     case UPDATE_PLAYER_STATUS:
