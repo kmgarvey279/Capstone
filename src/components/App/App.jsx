@@ -19,6 +19,8 @@ import * as platformsModule from '../../redux/modules/platforms';
 import * as mapsModule from '../../redux/modules/map';
 
 import logs from '../../text/logs.jsx';
+import examine from '../../text/examine.jsx';
+
 import * as playerConsts from '../../redux/modules/player/playerConstants';
 import * as enemyConsts from '../../redux/modules/enemies/enemyConstants';
 import * as roomConsts from '../../redux/modules/rooms/roomConstants';
@@ -30,7 +32,6 @@ class App extends React.Component {
     super(props);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
-    // this.repeat = this.onRepeat.bind(this);
   }
 
 //Handle Input
@@ -66,10 +67,14 @@ class App extends React.Component {
     } else if (event.keyCode === 37  && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
       this.props.dispatch(gameModule.toggleWest(true));
       //attack!
-    } else if (event.keyCode === 32 && this.props.game.gameState == 'active' && this.props.player.status =='normal' && this.props.game.bulletCount < 4) {
-      if (this.props.currentRoom[this.props.player.location].value == 'T') {
-        this.activateTerminal(this.props.player.location);
-      } else {
+    } else if (event.keyCode === 32 && this.props.game.gameState == 'active' && this.props.player.status =='normal') {
+      let contentArr =  this.props.currentRoom[this.props.player.location].content;
+      let interactArr = contentArr.find(function(content) {
+        return content[0] == 'interact';
+      });
+      if (interactArr !== undefined) {
+        this.triggerDialogue(interactArr);
+      } else if (this.props.game.bulletCount < 4) {
         this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
         this.attack();
       }
@@ -151,12 +156,28 @@ class App extends React.Component {
     for(let i = 0; i < roomTemplate.length; i++){
       this.handleAddingSquareToRoom(i+1, roomTemplate[i]);
     }
+    this.setAlerts();
     let roomTransitionTimer = setTimeout(() =>
     {this.handleChangeGameState("active");
     this.props.dispatch(playerModule.updatePlayerStatus('normal'));},
       600
     );
   }
+
+  setAlerts(){
+    let squareArr = Object.values(this.props.currentRoom);
+    let filteredSquareArr = squareArr.filter(function(square) {
+      return square.value == 'T';
+    });
+    filteredSquareArr.forEach(square => {
+      let text = square.content.find(function(content) {
+        return content[0] == 'interact';
+      });
+      this.props.dispatch(roomModule.updateContent(square.squareId + 1, [text]));
+      this.props.dispatch(roomModule.toggleAlert(square.squareId + 1, true));
+    });
+  }
+
 
   nullAll() {
     this.props.dispatch(roomModule.nullRoom());
@@ -185,11 +206,10 @@ class App extends React.Component {
       squareImage = roomConsts.sprites['tile'];
     } else if (squareValue == 'D') {
       content.push(['door', squareArr[1]]);
-      let doorDirection = helpers.getTileDirection(thisSquareId);
       //check if door exists in state, if not, create it
       if (!this.props.doors.hasOwnProperty(squareArr[1])) {
         //id, location, leadsTo, locked/open, direction
-        this.props.dispatch(doorsModule.createDoor(squareArr[1], thisSquareId, squareArr[2], squareArr[3], doorDirection));
+        this.props.dispatch(doorsModule.createDoor(squareArr[1], thisSquareId, squareArr[2], squareArr[3], squareArr[4]));
       }
       //check if it's the door the player entered from, if so add player and set respawn point
       if (squareArr[2] == this.props.game.previousRoomId) {
@@ -198,20 +218,7 @@ class App extends React.Component {
         content.push(['player']);
         this.props.dispatch(playerModule.updatePlayerLocation(thisSquareId));
       }
-      if (squareArr[3] == 'locked') {
-        squareValue == 'LD'
-        if (doorDirection == 'north') {
-          squareImage = roomConsts.sprites['ice'];
-        } else if (doorDirection == 'west') {
-          squareImage = roomConsts.sprites['ice'];
-        } else if (doorDirection == 'east') {
-          squareImage = roomConsts.sprites['ice'];
-        } else if (doorDirection == 'south') {
-          squareImage = roomConsts.sprites['ice'];
-        }
-      } else {
-        squareImage = roomConsts.sprites['tile'];
-      }
+      squareImage = roomConsts.sprites['tile'];
     //create lava
     } else if (squareValue == 'L') {
       squareImage = roomConsts.sprites['lava'];
@@ -220,12 +227,12 @@ class App extends React.Component {
       squareImage = '';
     //create wall
     } else if (squareValue == 'W') {
-      let wallType = helpers.getTileDirection(thisSquareId);
+      let wallType = squareArr[1];
       if (wallType == 'northWest') {
         squareImage = roomConsts.sprites['wallCorner1'];
-      } else if (wallType == 'northEast') {
-        squareImage = roomConsts.sprites['wallCorner3'];
       } else if (wallType == 'southWest') {
+        squareImage = roomConsts.sprites['wallCorner3'];
+      } else if (wallType == 'northEast') {
         squareImage = roomConsts.sprites['wallCorner2'];
       } else if (wallType == 'southEast') {
         squareImage = roomConsts.sprites['wallCorner4'];
@@ -264,9 +271,15 @@ class App extends React.Component {
       content.push(['switch', contentId]);
       this.props.dispatch(switchesModule.createSwitch(contentId, thisSquareId, false, squareArr[1], squareArr[2]));
     } else if (squareValue == 'T'){
-      squareImage = roomConsts.sprites['terminal'];
-      content.push(['terminal', logs[squareArr[1]]]);
-      alert = true;
+      let type = squareArr[1];
+      if (type == 'terminal') {
+        squareImage = roomConsts.sprites[type];
+        content.push(['interact', logs[squareArr[2]]]);
+      } else {
+        squareImage = roomConsts.sprites['tile'];
+        sprite = roomConsts.sprites[type];
+        content.push(['interact', examine[type]]);
+      }
     } else {
       squareImage = roomConsts.sprites['tile'];
     }
@@ -653,6 +666,7 @@ class App extends React.Component {
     //check if move is possible
   } else if (hasBlock == undefined
     && this.props.currentRoom[newLocation].value !== 'W'
+    && this.props.currentRoom[newLocation].value !== 'T'
     && this.props.currentRoom[newLocation].value !== 'LD') {
       return newLocation;
     } else {
@@ -683,8 +697,6 @@ class App extends React.Component {
     } else if (squareToCheck.value == '$') {
       this.getCoin(squareId);
       return 'moved';
-    } else if (squareToCheck.value == 'T'){
-      return 'moved';
     } else {
       return 'moved';
     }
@@ -709,16 +721,8 @@ class App extends React.Component {
     this.props.dispatch(roomModule.updateValue(location, '0', roomConsts.sprites.tile));
   }
 
-  activateTerminal(location){
-    let contentArr =  this.props.currentRoom[location].content;
-    let terminalArr = contentArr.find(function(content) {
-      return content[0] == 'terminal';
-    });
-    this.triggerDialogue(terminalArr[1])
-  }
-
-  triggerDialogue(textContent){
-    this.props.dispatch(gameModule.setActiveText(textContent));
+  triggerDialogue(interactArr){
+    this.props.dispatch(gameModule.setActiveText(interactArr[1]));
     this.props.dispatch(gameModule.changeGameState('dialogue'));
   }
 

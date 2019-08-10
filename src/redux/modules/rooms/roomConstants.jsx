@@ -5,7 +5,13 @@ import lava from '../../../assets/images/lava.gif';
 import coin from '../../../assets/images/coin.png';
 import wall from '../../../assets/images/room/wall-inner-horizontal.png';
 import tile from '../../../assets/images/tile.png';
+
 import terminal from '../../../assets/images/room/terminal.gif';
+import tank from '../../../assets/images/room/cryoTank.gif';
+import uglyBed from '../../../assets/images/room/uglyBed.png';
+import uglyBed1 from '../../../assets/images/room/uglyBed1.png';
+import uglyBed2 from '../../../assets/images/room/uglyBed2.png';
+
 import wallCorner1 from '../../../assets/images/room/wall-corner1.png';
 import wallCorner2 from '../../../assets/images/room/wall-corner2.png';
 import wallCorner3 from '../../../assets/images/room/wall-corner3.png';
@@ -22,36 +28,24 @@ import platformOffNS from '../../../assets/images/room/platformOffNS.png';
 import platformOnNS from '../../../assets/images/room/platformOnNS.gif';
 import platformOffEW from '../../../assets/images/room/platformOffEW.png';
 import platformOnEW from '../../../assets/images/room/platformOnEW.gif';
+import lockedDoorNorth from '../../../assets/images/room/door-locked-north.png';
+import lockedDoorEast from '../../../assets/images/room/door-locked-east.png';
 
 export const rooms = {
   // key: W = wall, D = door, P = pit, L = lava, B = block, E = enemy, S = switch, M = moving platform, T = terminal
-  // 0:[
-  //     ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
-  //     ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
-  //     ['P'], ['P'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['P'], ['P'],
-  //     ['P'], ['P'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['P'], ['P'],
-  //     ['P'], ['P'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['L'], ['P'], ['P'],
-  //     ['P'], ['P'], ['0'], ['P'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'],
-  //     ['0'], ['P'], ['0'], ['P'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'],
-  //     ['P'], ['P'], ['0'], ['P'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'],
-  //     ['P'], ['P'], ['B'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['$'], ['P'], ['P'],
-  //     ['P'], ['P'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'],
-  //     ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
-  //     ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P']
-  //   ],
   1:[
-      ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
-      ['W'], ['P'], ['P'], ['P'], ['P'], ['M', 'north'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W'],
-      ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['L'], ['W'],
-      ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['0'], ['W'],
-      ['W'], ['W'], ['W'], ['W'], ['0'], ['0'], ['0'], ['E', 'boss'], ['0'], ['L'], ['0'], ['W'],
-      ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['E', 'slime'], ['0'], ['0'], ['0'], ['1'], ['W'],
-      ['D','1-A',2,'open'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
-      ['W'], ['S', 18, 5000], ['0'], ['W'], ['$'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
-      ['W'], ['0'], ['B'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['$'], ['0'], ['W'],
-      ['W'], ['0'], ['0'], ['I'], ['I'], ['I'], ['I'], ['0'], ['0'], ['0'], ['0'], ['W'],
-      ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['T', 1], ['W'],
-      ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
+      ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
+      ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'northWest'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'southWest'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['T', 'terminal', 1], ['0'], ['0'], ['0'], ['T', 'uglyBed1'], ['1'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['D','1-A',2, true, 'north'], ['0'], ['0'], ['0'], ['0'], ['T', 'uglyBed2'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['$'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'northEast'], ['D','1-B',2, true, 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'southEast'], ['P'], ['P'],
+      ['P'], ['P'], ['P' ], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
+      ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P']
     ],
   2:[
       ['W'], ['W'], ['W'], ['D','2-C',6,'locked'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
@@ -188,6 +182,10 @@ export const sprites = {
   wall: <img id="player" src={wall} width="50" height="50"/>,
   tile: <img id="player" src={tile} width="50" height="50"/>,
   terminal: <img id="player" src={terminal} width="50" height="50"/>,
+  tank: <img id="player" src={tank} width="70" height="90"/>,
+  uglyBed: <img id="player" src={uglyBed} width="120" height="90"/>,
+  uglyBed1: <img id="player" src={uglyBed1} width="70" height="90"/>,
+  uglyBed2: <img id="player" src={uglyBed2} width="70" height="90"/>,
   wallCorner1: <img id="player" src={wallCorner1} width="50" height="50"/>,
   wallCorner2: <img id="player" src={wallCorner2} width="50" height="50"/>,
   wallCorner3: <img id="player" src={wallCorner3} width="50" height="50"/>,
@@ -203,7 +201,9 @@ export const sprites = {
   platformOffNS: <img id="player" src={platformOffNS} width="50" height="50"/>,
   platformOnNS: <img id="player" src={platformOnNS} width="50" height="50"/>,
   platformOffEW: <img id="player" src={platformOffEW} width="50" height="50"/>,
-  platformOnEW: <img id="player" src={platformOnEW} width="50" height="50"/>
+  platformOnEW: <img id="player" src={platformOnEW} width="50" height="50"/>,
+  lockedDoorNorth: <img id="player" src={lockedDoorNorth} width="55" height="65"/>,
+  lockedDoorEast: <img id="player" src={lockedDoorEast} width="55" height="65"/>
 };
 
 export const maps = {

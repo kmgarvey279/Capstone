@@ -14,7 +14,7 @@ function Game(props){
       <div id="game">
         <Map maps={props.maps} game={props.game} />
         <GameUITop player={props.player}/>
-        <div id='pause'><CurrentRoom currentRoom={props.currentRoom} player={props.player}/></div>
+        <div id='pause'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
       </div>
     );
   } else if (props.game.gameState === 'gameOver') {
@@ -30,7 +30,7 @@ function Game(props){
     return (
       <div id="game">
         <GameUITop player={props.player}/>
-        <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player}/></div>
+        <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
         <Textboxes game={props.game} player={props.player}/>
       </div>
     );
@@ -43,7 +43,7 @@ function Game(props){
     return (
       <div id="game">
         <GameUITop player={props.player}/>
-        <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player}/></div>
+        <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
       </div>
     );
   }
@@ -54,7 +54,8 @@ Game.propTypes = {
   game: PropTypes.object.isRequired,
   player: PropTypes.object.isRequired,
   menu: PropTypes.object.isRequired,
-  maps: PropTypes.object.isRequired
+  maps: PropTypes.object.isRequired,
+  doors: PropTypes.object.isRequired
 };
 
 export default Game;

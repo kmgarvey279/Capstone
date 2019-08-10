@@ -7,7 +7,6 @@
 div#alert{
   z-index: 500;
   position: absolute;
-  left: 10px;
   bottom: 90px;
   animation-iteration-count:infinite;
   animation-name: alert;

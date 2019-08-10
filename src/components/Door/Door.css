@@ -1,0 +1,6 @@
+div#door {
+  z-index: 500;
+  position: absolute;
+  bottom: -5px;
+  left: -2px;
+}

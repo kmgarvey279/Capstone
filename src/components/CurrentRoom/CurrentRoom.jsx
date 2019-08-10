@@ -8,18 +8,6 @@ function CurrentRoom(props){
     <div id="outer">
       {Object.keys(props.currentRoom).map(function(squareId) {
         var square = props.currentRoom[squareId];
-        if (square.value == 'D'){
-          return <div id="innerDoor"><Square value={square.value}
-              content={square.content}
-              key={squareId}
-              squareId={parseInt(squareId)}
-              tileImage={square.tileImage}
-              sprite={square.sprite}
-              transition={square.transition}
-              alert={square.alert}
-              player={props.player}/>
-          </div>;
-        } else {
         return <div id="inner"><Square value={square.value}
             content={square.content}
             key={squareId}
@@ -27,10 +15,9 @@ function CurrentRoom(props){
             tileImage={square.tileImage}
             sprite={square.sprite}
             transition={square.transition}
-            alert={square.alert}
-            player={props.player}/>
+            player={props.player}
+            doors={props.doors}/>
         </div>;
-      }
       })}
     </div>
   );
@@ -38,7 +25,8 @@ function CurrentRoom(props){
 
 CurrentRoom.propTypes = {
   currentRoom: PropTypes.object.isRequired,
-  player: PropTypes.object
+  player: PropTypes.object,
+  doors: PropTypes.object
 };
 
 export default CurrentRoom;

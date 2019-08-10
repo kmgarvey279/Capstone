@@ -14,7 +14,7 @@ export function nullRoom() {
   };
 }
 
-export function addSquare(newSquareId, newValue, newContent, newTileImage, newSprite, newTransition, newAlert) {
+export function addSquare(newSquareId, newValue, newContent, newTileImage, newSprite, newTransition, alertBool) {
   return {
     type: ADD_SQUARE,
     squareId: newSquareId,
@@ -23,7 +23,7 @@ export function addSquare(newSquareId, newValue, newContent, newTileImage, newSp
     tileImage: newTileImage,
     sprite: newSprite,
     transition: newTransition,
-    alert: newAlert
+    alert: alertBool
   };
 }
 export function updateContent(squareId, newContent) {
@@ -61,6 +61,7 @@ export function updateValue(squareIdToUpdate, newValue, newTileImage) {
 export function toggleAlert(squareId, alertBool){
   return {
     type: TOGGLE_ALERT,
+    squareId: squareId,
     alert: alertBool
   }
 }
