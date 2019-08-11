@@ -166,15 +166,42 @@ class App extends React.Component {
 
   setAlerts(){
     let squareArr = Object.values(this.props.currentRoom);
-    let filteredSquareArr = squareArr.filter(function(square) {
+    let filteredSquareArrT = squareArr.filter(function(square) {
       return square.value == 'T';
     });
-    filteredSquareArr.forEach(square => {
+    filteredSquareArrT.forEach(square => {
       let text = square.content.find(function(content) {
         return content[0] == 'interact';
       });
       this.props.dispatch(roomModule.updateContent(square.squareId + 1, [text]));
       this.props.dispatch(roomModule.toggleAlert(square.squareId + 1, true));
+    });
+
+    let filteredSquareArrD = squareArr.filter(function(square) {
+      return square.value == 'D';
+    });
+    filteredSquareArrD.forEach(square => {
+      let doorArr = square.content.find(function(content) {
+        return content[0] == 'door';
+      });
+      let door = this.props.doors[doorArr[1]];
+      if (door.direction == 'north') {
+        let contentArr = this.props.currentRoom[square.squareId + 1].content;
+        contentArr.push(['doorTrigger', door.doorId]);
+        this.props.dispatch(roomModule.updateContent(square.squareId + 1, contentArr));
+      } else if (door.direction == 'east') {
+        let contentArr = this.props.currentRoom[square.squareId - 12].content;
+        contentArr.push(['doorTrigger', door.doorId]);
+        this.props.dispatch(roomModule.updateContent(square.squareId - 12, contentArr));
+      } else if (door.direction == 'south') {
+        let contentArr = this.props.currentRoom[square.squareId - 1].content;
+        contentArr.push(['doorTrigger', door.doorId]);
+        this.props.dispatch(roomModule.updateContent(square.squareId - 1, contentArr));
+      } else if (door.direction == 'west') {
+        let contentArr = this.props.currentRoom[square.squareId + 12].content;
+        contentArr.push(['doorTrigger', door.doorId]);
+        this.props.dispatch(roomModule.updateContent(square.squareId + 12, contentArr));
+      }
     });
   }
 
@@ -209,7 +236,7 @@ class App extends React.Component {
       //check if door exists in state, if not, create it
       if (!this.props.doors.hasOwnProperty(squareArr[1])) {
         //id, location, leadsTo, locked/open, direction
-        this.props.dispatch(doorsModule.createDoor(squareArr[1], thisSquareId, squareArr[2], squareArr[3], squareArr[4]));
+        this.props.dispatch(doorsModule.createDoor(squareArr[1], thisSquareId, squareArr[2], 'closed', squareArr[3], squareArr[4]));
       }
       //check if it's the door the player entered from, if so add player and set respawn point
       if (squareArr[2] == this.props.game.previousRoomId) {
@@ -637,6 +664,18 @@ class App extends React.Component {
     newContentArr.push(["player"]);
     this.props.dispatch(roomModule.updateContent(newLocation, newContentArr));
     this.props.dispatch(playerModule.updatePlayerLocation(newLocation));
+    //check to trigger close door animation
+    let trigger = previousContentArr.find(function(content) {
+      return content[0] == 'doorTrigger';
+    });
+    let door = newContentArr.find(function(content) {
+      return content[0] == 'door';
+    });
+    //if new spot isn't a door, but previous was a trigger, close door
+    if (trigger !== undefined && door == undefined){
+      this.closeDoor(trigger[1]);
+    }
+
   }
 
   handleUpdateSprite(location, sprite, direction) {
@@ -681,11 +720,17 @@ class App extends React.Component {
     let hasEnemy = squareToCheck.content.find(function(content) {
       return content[0] == 'enemy';
     });
+    let hasDoorTrigger = squareToCheck.content.find(function(content) {
+      return content[0] == 'doorTrigger';
+    });
     if ((hasEnemy !== undefined && this.props.player.status !== 'dash') || squareToCheck.value == 'L') {
       let knockBackDirection = helpers.reverseDirection(direction);
       this.knockBack(knockBackDirection);
       return 'knockback';
       //fall to your doom and respawn
+    } else if (hasDoorTrigger !== undefined) {
+      this.attemptOpen(hasDoorTrigger[1]);
+      return 'moved';
     } else if (squareToCheck.value == 'P'){
       this.fall(squareId, direction);
       return 'fall';
@@ -700,6 +745,27 @@ class App extends React.Component {
     } else {
       return 'moved';
     }
+  }
+
+  attemptOpen(doorId) {
+    let door = this.props.doors[doorId];
+    if (door.isLocked == true) {
+      alert("locked")
+    } else if (door.status !== 'open') {
+      this.props.dispatch(doorsModule.updateDoorStatus(doorId, 'opening'));
+      let doorTimer = setTimeout(() =>
+        this.props.dispatch(doorsModule.updateDoorStatus(doorId, 'open')),
+        600
+      );
+    }
+  }
+
+  closeDoor(doorId){
+    this.props.dispatch(doorsModule.updateDoorStatus(doorId, 'closing'));
+    let doorTimer = setTimeout(() =>
+      this.props.dispatch(doorsModule.updateDoorStatus(doorId, 'closed')),
+      600
+    );
   }
 
   changeRoom(door) {

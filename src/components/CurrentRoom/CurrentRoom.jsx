@@ -15,6 +15,7 @@ function CurrentRoom(props){
             tileImage={square.tileImage}
             sprite={square.sprite}
             transition={square.transition}
+            alert={square.alert}
             player={props.player}
             doors={props.doors}/>
         </div>;

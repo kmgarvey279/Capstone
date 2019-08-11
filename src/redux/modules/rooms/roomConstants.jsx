@@ -28,7 +28,12 @@ import platformOffNS from '../../../assets/images/room/platformOffNS.png';
 import platformOnNS from '../../../assets/images/room/platformOnNS.gif';
 import platformOffEW from '../../../assets/images/room/platformOffEW.png';
 import platformOnEW from '../../../assets/images/room/platformOnEW.gif';
+
 import lockedDoorNorth from '../../../assets/images/room/door-locked-north.png';
+import unlockedDoorNorth from '../../../assets/images/room/door-unlocked-north.png';
+import openingDoorNorth from '../../../assets/images/room/door-open-north.gif';
+import openDoorNorth from '../../../assets/images/room/door-open-north.png';
+import closingDoorNorth from '../../../assets/images/room/door-close-north.gif';
 import lockedDoorEast from '../../../assets/images/room/door-locked-east.png';
 
 export const rooms = {
@@ -40,8 +45,8 @@ export const rooms = {
       ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
       ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
       ['P'], ['P'], ['W', 'north'], ['T', 'terminal', 1], ['0'], ['0'], ['0'], ['T', 'uglyBed1'], ['1'], ['W', 'south'], ['P'], ['P'],
-      ['P'], ['P'], ['D','1-A',2, true, 'north'], ['0'], ['0'], ['0'], ['0'], ['T', 'uglyBed2'], ['0'], ['W', 'south'], ['P'], ['P'],
-      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['$'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['D','1-A',2, false, 'north'], ['0'], ['0'], ['0'], ['0'], ['T', 'uglyBed2'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['0'], ['$'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
       ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
       ['P'], ['P'], ['W', 'northEast'], ['D','1-B',2, true, 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'southEast'], ['P'], ['P'],
       ['P'], ['P'], ['P' ], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
@@ -202,8 +207,14 @@ export const sprites = {
   platformOnNS: <img id="player" src={platformOnNS} width="50" height="50"/>,
   platformOffEW: <img id="player" src={platformOffEW} width="50" height="50"/>,
   platformOnEW: <img id="player" src={platformOnEW} width="50" height="50"/>,
-  lockedDoorNorth: <img id="player" src={lockedDoorNorth} width="55" height="65"/>,
-  lockedDoorEast: <img id="player" src={lockedDoorEast} width="55" height="65"/>
+
+  lockedDoorNorth: <img id="player" src={lockedDoorNorth} width="55" height="58"/>,
+  unlockedDoorNorth: <img id="player" src={unlockedDoorNorth} width="55" height="58"/>,
+  openingDoorNorth: <img id="player" src={openingDoorNorth} width="55" height="58"/>,
+  openDoorNorth: <img id="player" src={openDoorNorth} width="55" height="58"/>,
+  closingDoorNorth: <img id="player" src={closingDoorNorth} width="55" height="58"/>,
+
+  lockedDoorEast: <img id="player" src={lockedDoorEast} width="58" height="50"/>
 };
 
 export const maps = {

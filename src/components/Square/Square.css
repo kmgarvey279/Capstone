@@ -12,3 +12,7 @@ div#alert{
   animation-name: alert;
   animation-duration: 2s;
 }
+
+div#test {
+  border: solid red 2px;
+}
