@@ -2,12 +2,14 @@ import roomReducer from './rooms/room';
 import gameReducer from './game';
 import playerReducer from './player/player';
 import enemyReducer from './enemies/enemies';
+import textReducer from './text/text';
 import blockReducer from './blocks';
 import doorReducer from './doors';
 import menuReducer from './menu';
 import platformReducer from './platforms';
 import switchReducer from './switches';
 import mapReducer from './map';
+import flagReducer from './flags';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
@@ -20,7 +22,9 @@ const rootReducer = combineReducers({
   menu: menuReducer,
   platforms: platformReducer,
   switches: switchReducer,
-  maps: mapReducer
+  maps: mapReducer,
+  flags: flagReducer,
+  text: textReducer
 });
 
 export default rootReducer;

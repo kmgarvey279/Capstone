@@ -1,6 +1,6 @@
 //Constants
 export const CREATE_DOOR = "CREATE_DOOR";
-export const OPEN_DOOR = "OPEN_DOOR";
+export const UPDATE_DOOR_LOCK = "UPDATE_DOOR_LOCK";
 export const UPDATE_DOOR_STATUS = "UPDATE_DOOR_STATUS";
 
 //Action Creators
@@ -16,9 +16,9 @@ export function createDoor(doorId, location, leadsTo, status, isLocked, directio
   }
 }
 
-export function openDoor(doorId, newBool) {
+export function updateDoorLock(doorId, newBool) {
   return {
-    type: OPEN_DOOR,
+    type: UPDATE_DOOR_LOCK,
     doorId: doorId,
     isLocked: newBool
   }
@@ -53,7 +53,7 @@ const doorReducer = (state = {}, action) => {
         }
       });
       return newState;
-    case OPEN_DOOR:
+    case UPDATE_DOOR_LOCK:
       newDoor = Object.assign({}, state[doorId], {isLocked});
       newState = Object.assign({}, state, {
         [doorId]: newDoor

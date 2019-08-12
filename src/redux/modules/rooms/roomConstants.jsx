@@ -1,10 +1,10 @@
 import React from 'react';
 
 import ice from '../../../assets/images/room/ice.png';
-import lava from '../../../assets/images/lava.gif';
+import lava from '../../../assets/images/room/lava.gif';
 import coin from '../../../assets/images/coin.png';
 import wall from '../../../assets/images/room/wall-inner-horizontal.png';
-import tile from '../../../assets/images/tile.png';
+import tile from '../../../assets/images/room/tile.png';
 
 import terminal from '../../../assets/images/room/terminal.gif';
 import tank from '../../../assets/images/room/cryoTank.gif';
@@ -42,13 +42,13 @@ export const rooms = {
       ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
       ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
       ['P'], ['P'], ['W', 'northWest'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'southWest'], ['P'], ['P'],
-      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['$', 'item', 'health'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
       ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
       ['P'], ['P'], ['W', 'north'], ['T', 'terminal', 1], ['0'], ['0'], ['0'], ['T', 'uglyBed1'], ['1'], ['W', 'south'], ['P'], ['P'],
-      ['P'], ['P'], ['D','1-A',2, false, 'north'], ['0'], ['0'], ['0'], ['0'], ['T', 'uglyBed2'], ['0'], ['W', 'south'], ['P'], ['P'],
-      ['P'], ['P'], ['W', 'north'], ['0'], ['$'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
-      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
-      ['P'], ['P'], ['W', 'northEast'], ['D','1-B',2, true, 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'southEast'], ['P'], ['P'],
+      ['P'], ['P'], ['D','1-A',2, true, 'north'], ['0'], ['0'], ['0'], ['0'], ['T', 'uglyBed2'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['0'], ['$', 'weapon', 'Taser'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'north'], ['T', 'tank'], ['0'], ['0'], ['0'], ['0'], ['$', 'item', 'keyCard1'], ['W', 'south'], ['P'], ['P'],
+      ['P'], ['P'], ['W', 'northEast'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'southEast'], ['P'], ['P'],
       ['P'], ['P'], ['P' ], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'],
       ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P']
     ],

@@ -31,7 +31,7 @@ function Game(props){
       <div id="game">
         <GameUITop player={props.player}/>
         <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
-        <Textboxes game={props.game} player={props.player}/>
+        <Textboxes text={props.text}/>
       </div>
     );
   } else if (props.game.gameState === 'building') {
@@ -55,7 +55,8 @@ Game.propTypes = {
   player: PropTypes.object.isRequired,
   menu: PropTypes.object.isRequired,
   maps: PropTypes.object.isRequired,
-  doors: PropTypes.object.isRequired
+  doors: PropTypes.object.isRequired,
+  text: PropTypes.object.isRequired
 };
 
 export default Game;

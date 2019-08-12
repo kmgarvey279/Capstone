@@ -55,6 +55,8 @@ const switchReducer = (state = {}, action) => {
         [switchId]: newSwitch
       });
       return newState;
+    case NULL_ALL_SWITCHES:
+      return {};
   default:
     return state;
   }

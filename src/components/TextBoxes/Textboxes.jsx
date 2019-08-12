@@ -4,24 +4,37 @@ import { connect } from 'react-redux';
 import './Textboxes.css'
 
 function TextBoxes(props) {
-  return (
-    <div id='wrap'>
-      <div id='content'>
-        {props.game.activeText}
+  let textArr = props.text.activeText[props.text.paragraph];
+  let speaker;
+  let text;
+
+  if (textArr.length > 1) {
+    text = textArr[1].split("|");
+    speaker = textArr[0];
+  } else {
+    text = textArr[0].split("|");
+  }
+  if (speaker !== undefined) {
+    return (
+      <div id='wrap'>
+        <div id='content'>
+        {speaker + ":"} {text[props.text.line]}
+        </div>
       </div>
-      <div id='content'>
-        <p>Another Voice: What if I was also the voice?</p>
+    );
+  } else {
+    return (
+      <div id='wrap'>
+        <div id='content'>
+          {text}
+        </div>
       </div>
-      <div id='options'>
-        <h5>[SPACE/RETURN]: Next [UP]: Log [SHIFT]: Skip</h5>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 TextBoxes.propTypes = {
-  game: PropTypes.object.isRequired,
-  player: PropTypes.object.isRequired
+  text: PropTypes.object.isRequired
 };
 
 export default connect()(TextBoxes);

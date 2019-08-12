@@ -25,8 +25,6 @@ import playerPunchNorth from '../../../assets/images/player/playerPunchSouth.gif
 import playerPunchEast from '../../../assets/images/player/playerPunchSouth.gif';
 import playerPunchWest from '../../../assets/images/player/playerPunchSouth.gif';
 
-import taser from '../../../assets/images/projectiles/taser.png';
-import cryostat from '../../../assets/images/projectiles/cryostatEast.gif';
 import punchImpact from '../../../assets/images/player/punch.gif';
 
 export const sprites = {
@@ -79,33 +77,4 @@ export const sprites = {
   punchImpact: <img id="player" src={punchImpact} width="80" height="80"/>,
   fall: <img id="player" src={playerStandEast} width="80" height="80"/>,
   victory: <img id="player" src={playerStandEast} width="80" height="80"/>
-};
-
-export const weapons = {
-  1: {
-    id: 1,
-    name: 'Taser Gun',
-    range: 4,
-    sprites: {
-      north: <img id="player" src={taser} width="80" height="80"/>,
-      west: <img id="player" src={taser} width="80" height="80"/>,
-      east: <img id="player" src={taser} width="80" height="80"/>,
-      south: <img id="player" src={taser} width="80" height="80"/>,
-      burst: <img id="player" src={taser} width="80" height="80"/>,
-      icon: <img id="player" src={taser} width="80" height="80"/>
-    }
-  },
-  2: {
-    id: 2,
-    name: 'Cryostat',
-    range: 3,
-    sprites: {
-      north: <img id="player" src={cryostat} width="80" height="80"/>,
-      west: <img id="player" src={cryostat} width="80" height="80"/>,
-      east: <img id="player" src={cryostat} width="80" height="80"/>,
-      south: <img id="player" src={cryostat} width="80" height="80"/>,
-      burst: <img id="player" src={taser} width="80" height="80"/>,
-      icon: <img id="player" src={taser} width="80" height="80"/>
-    }
-  }
 };

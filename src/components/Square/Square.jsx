@@ -1,6 +1,7 @@
 import React from 'react';
 import Sprite from '../Sprite/Sprite';
 import Door from '../Door/Door';
+import Item from '../Item/Item';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import alert from '../../assets/images/room/alert.png';
@@ -19,6 +20,14 @@ function Square(props){
     return (
       <div id="square">
         <Door content={props.content} doors={props.doors}/>
+        <Sprite sprite={props.sprite} transition={props.transition}/>
+        <div id="tile">{props.tileImage}</div>
+      </div>
+      )
+  } else if (props.value == '$') {
+    return (
+      <div id="square">
+        <Item content={props.content}/>
         <Sprite sprite={props.sprite} transition={props.transition}/>
         <div id="tile">{props.tileImage}</div>
       </div>

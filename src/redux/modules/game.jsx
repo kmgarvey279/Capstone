@@ -5,7 +5,6 @@ export const SET_ROOMID = "SET_ROOMID";
 export const SET_PREVIOUS_ROOMID = "SET_PREVIOUS_ROOMID";
 export const CHANGE_GAMESTATE = "CHANGE_GAMESTATE";
 export const SET_RESPAWNPOINT = "SET_RESPAWNPOINT";
-export const SET_ACTIVETEXT = "SET_ACTIVETEXT";
 export const TOGGLE_WEST = "TOGGLE_WEST";
 export const TOGGLE_EAST = "TOGGLE_EAST";
 export const TOGGLE_NORTH = "TOGGLE_NORTH";
@@ -37,13 +36,6 @@ export function setRespawnPoint(newRespawnPoint) {
   return {
     type: SET_RESPAWNPOINT,
     respawnPoint: newRespawnPoint
-  }
-}
-
-export function setActiveText(newActiveText) {
-  return {
-    type: SET_ACTIVETEXT,
-    activeText: newActiveText
   }
 }
 
@@ -90,7 +82,6 @@ const initialState = {
   gameState: 'title',
   respawnPoint: '',
   enemyTimers: [],
-  activeText: [],
   east: false,
   west: false,
   south: false,
@@ -122,11 +113,6 @@ const gameReducer = (state = initialState, action) => {
     case SET_RESPAWNPOINT:
       newState = Object.assign({}, state, {
         respawnPoint: respawnPoint
-      });
-      return newState;
-    case SET_ACTIVETEXT:
-      newState = Object.assign({}, state, {
-        activeText: activeText
       });
       return newState;
     case TOGGLE_NORTH:
