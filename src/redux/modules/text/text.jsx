@@ -1,13 +1,16 @@
 //Constants
-export const SET_ACTIVETEXT = "SET_ACTIVETEXT";
+export const SET_ACTIVE_TEXT = "SET_ACTIVE_TEXT";
 export const SET_LINE = "SET_LINE";
 export const SET_PARAGRAPH = "SET_PARAGRAPH";
+export const SET_OPTIONS = "SET_OPTIONS";
+export const SELECT_OPTION = "SELECT_OPTION";
 
 //Action Creators
-export function setActiveText(newActiveText) {
+export function setActiveText(newActiveText, newType) {
   return {
-    type: SET_ACTIVETEXT,
-    activeText: newActiveText
+    type: SET_ACTIVE_TEXT,
+    activeText: newActiveText,
+    activeTextType: newType
   }
 }
 
@@ -25,22 +28,40 @@ export function setParagraph(newParagraph) {
   }
 }
 
+export function setOptions(newOptions) {
+  return {
+    type: SET_OPTIONS,
+    options: newOptions
+  }
+}
+
+export function selectOption(option) {
+  return {
+    type: SELECT_OPTION,
+    selectedOption: option
+  }
+}
+
 //Initial State
 const initialState = {
-  activeText: [],
+  activeText: null,
+  activeTextType: null,
   line: 0,
-  paragraph: 1
+  paragraph: 1,
+  options: [],
+  selectedOption: null
 }
 
 //Reducer
 const textReducer = (state = initialState, action) => {
   let newState;
-  const { activeText, line, paragraph } = action;
+  const { activeText, activeTextType, line, paragraph, options, selectedOption} = action;
 
   switch (action.type) {
-    case SET_ACTIVETEXT:
+    case SET_ACTIVE_TEXT:
       newState = Object.assign({}, state, {
-        activeText: activeText
+        activeText: activeText,
+        activeTextType: activeTextType
       });
       return newState;
     case SET_LINE:
@@ -51,6 +72,16 @@ const textReducer = (state = initialState, action) => {
     case SET_PARAGRAPH:
       newState = Object.assign({}, state, {
         paragraph: paragraph
+      });
+      return newState;
+    case SET_OPTIONS:
+      newState = Object.assign({}, state, {
+        options: options
+      });
+      return newState;
+    case SELECT_OPTION:
+      newState = Object.assign({}, state, {
+        selectedOption: selectedOption
       });
       return newState;
   default:

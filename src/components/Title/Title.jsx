@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as menuModule from '../../redux/modules/menu';
+import * as soundsModule from '../../redux/modules/sounds';
 import {bindActionCreators} from 'redux';
 import { withRouter } from 'react-router-dom';
 import './Title.css'
@@ -18,6 +19,7 @@ class Title extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress, false);
+    this.props.dispatch(soundsModule.changeMusic('title'));
   }
 
   handleKeyPress(event){
@@ -31,6 +33,7 @@ class Title extends React.Component {
   }
 
   cycleOption() {
+    this.props.dispatch(soundsModule.changeEffect('select'));
     if (this.props.menu.selectedOption === 1) {
       this.props.dispatch(menuModule.changeOption(2));
     } else if (this.props.menu.selectedOption === 2){
@@ -43,53 +46,40 @@ class Title extends React.Component {
     this.props.handleStart();
     this.props.history.push('/game');
   } else if (this.props.menu.selectedOption === 2) {
-      //select Mmnu
     }
   }
 
   render() {
+    let newGame;
+    let load;
     if(this.props.menu.selectedOption === 1) {
-      return (
-        <div>
-          <style jsx>{`
-          `}</style>
-          <h1>Title!</h1>
-          <div id='selected'><h4>New Game</h4></div>
-          <div><h4>Load</h4></div>
-        </div>
-      );
-    } else if (this.props.menu.selectedOption === 2) {
-      return (
-        <div>
-          <h1>Title!</h1>
-          <div><h4>New Game</h4></div>
-          <div id ='selected'><h4>Load</h4></div>
-        </div>
-      );
+      newGame = <div id='selected'><h4>New Game</h4></div>;
+      load = <div><h4>Load</h4></div>;
     } else {
-      return (
-        <div>
-          <style jsx>{`
-          `}</style>
-          <h1>Title!</h1>
-          {this.props.menu.selectedOption}
-          <div><h4>New Game</h4></div>
-          <div><h4>Load</h4></div>
-        </div>
-      );
+      newGame = <div><h4>New Game</h4></div>;
+      load = <div id='selected'><h4>Load</h4></div>;
     }
+    return (
+      <div>
+        <h1>Title!</h1>
+        {newGame}
+        {load}
+      </div>
+    );
   }
 }
 
 
 Title.propTypes = {
   menu: PropTypes.object.isRequired,
-  handleStart: PropTypes.func
+  handleStart: PropTypes.func,
+  sounds: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    menuModule : bindActionCreators(menuModule, dispatch)
+    menuModule : bindActionCreators(menuModule, dispatch),
+    soundsModule : bindActionCreators(soundsModule, dispatch)
   }
 };
 

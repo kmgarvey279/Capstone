@@ -5,7 +5,10 @@ import Textboxes from '../Textboxes/Textboxes';
 import GameUITop from '../GameUITop/GameUITop';
 import Map from '../Map/Map';
 import GameOver from '../GameOver/GameOver';
+import ItemGet from '../ItemGet/ItemGet';
 import './Game.css';
+import Music from '../Music/Music';
+import SFX from '../SFX/SFX';
 
 function Game(props){
 
@@ -31,12 +34,20 @@ function Game(props){
       <div id="game">
         <GameUITop player={props.player}/>
         <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
-        <Textboxes text={props.text}/>
+        <Textboxes text={props.text} game={props.game} menu={props.menu}/>
       </div>
     );
   } else if (props.game.gameState === 'building') {
     return (
       <div id="loading">
+      </div>
+    );
+  } else if (props.game.gameState === 'itemGet') {
+    return (
+      <div id="game">
+      <GameUITop player={props.player}/>
+      <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
+      <ItemGet newItem={props.player.newItem}/>
       </div>
     );
   } else {
@@ -56,7 +67,8 @@ Game.propTypes = {
   menu: PropTypes.object.isRequired,
   maps: PropTypes.object.isRequired,
   doors: PropTypes.object.isRequired,
-  text: PropTypes.object.isRequired
+  text: PropTypes.object.isRequired,
+  sounds: PropTypes.object.isRequired
 };
 
 export default Game;

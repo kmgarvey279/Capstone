@@ -1,20 +1,24 @@
 export const examine = {
-  tank: {1: ['Some sort of storage tank. | You can make out a human-like shape through the frosted glass.']},
-  uglyBed1: {1: ['A truely hideous bed. | Just looking at it hurts your eyes.']},
-  uglyBed2: {1: ['A truely hideous bed. | Just looking at it hurts your eyes.']}
+  tank: {1: ['Some sort of storage tank.', 'You can barely make out a human-like shape through the frosted glass.']},
+  uglyBed1: {1: ['A truely hideous bed.', 'Just looking at it hurts your eyes.']},
+  uglyBed2: {1: ['A truely hideous bed.', 'Just looking at it hurts your eyes.']},
+  terminal1: {1: ['Guest %*#@*# successfully revitalized. All vital signs normal. Stored belongings have been returned to the guest.', 'Inventory: 1) fresh as hell rags. 2) wicked ass boots.'],
+              2: ['options', 'Please input new door lock status:', ['Lock','Unlock']],
+              3: ['results', ['Door Lock Engaged.','Door Lock Disengaged.']],
+              4: ['Logging Out...']}
 }
-
-export const logs = {
-  1: {1: ['Guest %*#@*# successfully revitalized. All vital signs normal. Stored belongings have been returned to the guest. Inventory: 1) fresh as hell rags. 2) wicked ass boots.']}
-}
-
 
 export const dialogue = {
   1: {
-    1: ['???', 'As I am sure you\'ve noticed, the door to this room is locked. | The terminal next to you should be able to override the lock. | I\'d do it myself, but I have limited access to this facility\'s security system.'],
-    2: ['???', '\.\.\.'],
-    3: ['???', 'No doubt you have a number of questions. | They will be answered in due time. | Right now my primary concern is your survival.']
+    1: ['???', ['As I am sure you\'ve noticed, the door to this room is locked.', 'The terminal next to you should be able to override the lock.', 'I\'d do it myself, but I have limited access to this facility\'s security system.']],
+    2: ['???', ['...']],
+    3: ['???', ['No doubt you have a number of questions.', 'They will be answered in due time.', 'Right now my primary concern is your survival.']]
   }
+}
+
+export const flavorText = {
+  keyCard1: ['You found a keycard!', 'It\'s labeled: "Security Clearance: Level 1". Hopefully it will at least get you into the lunchroom, you\'re starving.'],
+  Taser: ['You found the Taser Gun!', 'A weapon designed for non-lethal self-defense that fires bolts of electricty. It can also be used to temporarily charge electronic equipment.']
 }
 
 // const dialogue2 = {

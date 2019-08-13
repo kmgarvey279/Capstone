@@ -10,6 +10,7 @@ import platformReducer from './platforms';
 import switchReducer from './switches';
 import mapReducer from './map';
 import flagReducer from './flags';
+import soundsReducer from './sounds';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   switches: switchReducer,
   maps: mapReducer,
   flags: flagReducer,
-  text: textReducer
+  text: textReducer,
+  sounds: soundsReducer
 });
 
 export default rootReducer;

@@ -2,6 +2,8 @@ import React from "react";
 import Title from "../Title/Title";
 import End from "../End/End";
 import Game from "../Game/Game";
+import SFX from '../SFX/SFX';
+import Music from '../Music/Music';
 import { Switch, Route, withRouter, Redirect, BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -20,6 +22,7 @@ import * as platformsModule from '../../redux/modules/platforms';
 import * as mapsModule from '../../redux/modules/map';
 import * as flagsModule from '../../redux/modules/flags';
 import * as textModule from '../../redux/modules/text/text';
+import * as soundsModule from '../../redux/modules/sounds';
 //resources
 import * as playerConsts from '../../redux/modules/player/playerConstants';
 import * as enemyConsts from '../../redux/modules/enemies/enemyConstants';
@@ -78,7 +81,7 @@ class App extends React.Component {
         return content[0] == 'interact';
       });
       if (interactArr !== undefined) {
-        this.triggerDialogue(interactArr[1]);
+        this.triggerDialogue('interact', interactArr[1]);
       } else if (this.props.game.bulletCount < 4 && this.props.player.currentWeapon !== 0) {
         this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
         this.attack();
@@ -101,6 +104,8 @@ class App extends React.Component {
         this.pauseGame();
       } else if (this.props.game.gameState == 'dialogue') {
         this.endDialogue();
+      } else if (this.props.game.gameState == 'itemGet') {
+        this.closeItemGet();
       }
     } else if (event.keyCode === 90 && this.props.player.status =='normal' && this.props.game.gameState === 'active'){
       this.props.dispatch(playerModule.updatePlayerStatus('cooldown'));
@@ -307,14 +312,17 @@ class App extends React.Component {
       content.push(['switch', contentId]);
       this.props.dispatch(switchesModule.createSwitch(contentId, thisSquareId, false, squareArr[1], squareArr[2]));
     } else if (squareValue == 'T'){
+      //square contains text
       let type = squareArr[1];
       if (type == 'terminal') {
+        //create terminal
         squareImage = roomConsts.sprites[type];
-        content.push(['interact', textConsts.logs[squareArr[2]]]);
+        content.push(['interact', squareArr[2]]);
       } else {
+        //create examinable object
         squareImage = roomConsts.sprites['tile'];
         sprite = roomConsts.sprites[type];
-        content.push(['interact', textConsts.examine[type]]);
+        content.push(['interact', type]);
       }
     } else {
       squareImage = roomConsts.sprites['tile'];
@@ -709,11 +717,10 @@ class App extends React.Component {
 
   triggerEvent(eventNum){
     this.props.dispatch(flagsModule.triggerFlag(eventNum));
-    if (eventNum == 1){
+    if (eventNum == 1 && !this.props.flags.hasOwnProperty(eventNum)){
       this.props.dispatch(doorsModule.updateDoorLock('1-A', false));
     }
-    this.props.dispatch(textModule.setActiveText(textConsts.dialogue[eventNum]));
-    this.props.dispatch(gameModule.changeGameState('dialogue'));
+    this.triggerDialogue('event', eventNum);
   }
 
   //check if move is possible
@@ -791,7 +798,9 @@ class App extends React.Component {
   attemptOpen(doorId) {
     let door = this.props.doors[doorId];
     if (door.isLocked == true) {
+      this.props.dispatch(soundsModule.changeEffect('doorLocked'));
     } else if (door.status !== 'open') {
+      this.props.dispatch(soundsModule.changeEffect('doorOpen'));
       this.props.dispatch(doorsModule.updateDoorStatus(doorId, 'opening'));
       let doorTimer = setTimeout(() =>
         this.props.dispatch(doorsModule.updateDoorStatus(doorId, 'open')),
@@ -832,6 +841,8 @@ class App extends React.Component {
       weaponArr.push(itemArr[1]);
       this.props.dispatch(playerModule.addWeaponToInventory(weaponArr));
       this.props.dispatch(playerModule.changeCurrentWeapon(itemArr[1]));
+      this.props.dispatch(playerModule.updateNewItem(itemArr[1]));
+      this.props.dispatch(gameModule.changeGameState("itemGet"));
     } else {
       if (itemArr[1] == 'health') {
         let newHealth = this.props.player.health + 10;
@@ -840,6 +851,8 @@ class App extends React.Component {
         let inventoryArr = this.props.player.items;
         inventoryArr.push(itemArr[1]);
         this.props.dispatch(playerModule.addItemToInventory(inventoryArr));
+        this.props.dispatch(playerModule.updateNewItem(itemArr[1]));
+        this.props.dispatch(gameModule.changeGameState("itemGet"));
       }
     }
     let newContent = square.content.filter(function(content) {
@@ -848,48 +861,59 @@ class App extends React.Component {
     this.props.dispatch(roomModule.updateContent(square.squareId, newContent));
   }
 
-  // getItem(item){
-  //   if (item)
-  // }
+  closeItemGet(){
+    this.props.dispatch(gameModule.changeGameState('active'));
+    this.props.dispatch(playerModule.updateNewItem(''));
+  }
 
-  triggerDialogue(text){
-    this.props.dispatch(textModule.setActiveText(text));
+  triggerDialogue(type, textKey){
+    this.props.dispatch(textModule.setActiveText(textKey, type));
     this.props.dispatch(gameModule.changeGameState('dialogue'));
   }
 
-  advanceLine(){
-    if (Object.keys(this.props.text.activeText).length > 1){
-      if(this.props.text.line < this.props.text.activeText[this.props.text.paragraph][1].split('|').length - 1){
-        let newLine = this.props.text.line + 1;
-        this.props.dispatch(textModule.setLine(newLine));
-      } else {
-        this.props.dispatch(textModule.setLine(0));
-        this.advanceParagraph();
-      }
+  endDialogue() {
+    this.props.dispatch(gameModule.changeGameState('active'));
+    this.props.dispatch(textModule.setActiveText(null, null));
+    this.props.dispatch(textModule.setLine(0));
+    this.props.dispatch(textModule.setParagraph(1));
+  }
+
+  advanceLine() {
+    //get current paragraph
+    let activeParagraph;
+    if (this.props.text.activeTextType == 'dialogue') {
+      activeParagraph = textConsts.dialogue[this.props.text.activeText][this.props.text.paragraph][1];
+    } else {
+      activeParagraph = textConsts.examine[this.props.text.activeText][this.props.text.paragraph];
+    }
+    if (activeParagraph[0] == 'options') {
+      this.props.dispatch(textModule.setOptions(activeParagraph[2]));
     } else {
       let newLine = this.props.text.line + 1;
-      if(newLine < this.props.text.activeText[this.props.text.paragraph][0].split('|').length - 1){
-        this.props.dispatch(textModule.setLine(newLine));
+      //if you've reached the end of the current paragraph...
+      if (newLine >= activeParagraph.length || activeParagraph[0] == 'results') {
+        this.advanceParagraph();
       } else {
-        this.endDialogue()
+        this.props.dispatch(textModule.setLine(newLine));
       }
     }
   }
 
   advanceParagraph(){
-    if(this.props.text.paragraph < Object.keys(this.props.text.activeText).length){
-      let newParagraph = this.props.text.paragraph + 1;
-      this.props.dispatch(textModule.setParagraph(newParagraph));
+    //get current text chunk
+    let activeTextChunk;
+    let newParagraph = this.props.text.paragraph + 1;
+    if (this.props.text.activeTextType == 'dialogue') {
+      activeTextChunk = textConsts.dialogue[this.props.text.activeText];
     } else {
-      this.endDialogue();
+      activeTextChunk = textConsts.examine[this.props.text.activeText];
     }
-  }
-
-  endDialogue() {
-    this.props.dispatch(gameModule.changeGameState('active'));
-    this.props.dispatch(textModule.setActiveText([]));
-    this.props.dispatch(textModule.setLine(0));
-    this.props.dispatch(textModule.setParagraph(1));
+    if (newParagraph > Object.keys(activeTextChunk).length) {
+      this.endDialogue();
+    } else {
+      this.props.dispatch(textModule.setParagraph(newParagraph));
+      this.props.dispatch(textModule.setLine(0));
+    }
   }
 
   handleSwitch(location) {
@@ -1274,7 +1298,12 @@ class App extends React.Component {
   render(){
     return (
       <div>
-          <Route exact path='/' render={()=><Title handleStart={() => this.startGame()} menu={this.props.menu}/>}/>
+          <Music sounds={this.props.sounds}/>
+          <SFX sounds={this.props.sounds}/>
+          <Route exact path='/' render={()=><Title
+            handleStart={() => this.startGame()}
+            menu={this.props.menu}
+            sounds={this.props.sounds}/>}/>
           <Route exact path='/end' render={()=><End />} />
           <Route exact path='/game' render={()=><Game
             handleStart={() => this.startGame()}
@@ -1286,7 +1315,8 @@ class App extends React.Component {
             menu={this.props.menu}
             maps={this.props.maps}
             text={this.props.text}
-            flags={this.props.flags}/>} />
+            flags={this.props.flags}
+            sounds={this.props.sounds}/>} />
       </div>
     );
   }
@@ -1304,7 +1334,8 @@ App.propTypes = {
   platforms: PropTypes.object,
   maps: PropTypes.object,
   flages: PropTypes.object,
-  text: PropTypes.object
+  text: PropTypes.object,
+  sounds: PropTypes.object
 };
 
 const mapStateToProps = state => {
@@ -1320,7 +1351,8 @@ const mapStateToProps = state => {
     platforms: state.platforms,
     maps: state.maps,
     flags: state.flags,
-    text: state.text
+    text: state.text,
+    sounds: state.sounds
   }
 };
 
@@ -1337,7 +1369,8 @@ function mapDispatchToProps(dispatch) {
     switchesModule : bindActionCreators(switchesModule, dispatch),
     mapsModule: bindActionCreators(mapsModule, dispatch),
     textModule: bindActionCreators(textModule, dispatch),
-    flagsModule: bindActionCreators(flagsModule, dispatch)
+    flagsModule: bindActionCreators(flagsModule, dispatch),
+    soundsModule: bindActionCreators(soundsModule, dispatch)
   }
 };
 

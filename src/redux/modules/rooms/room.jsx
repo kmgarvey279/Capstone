@@ -13,7 +13,6 @@ export function nullRoom() {
     type: NULL_ROOM,
   };
 }
-
 export function addSquare(newSquareId, newValue, newContent, newTileImage, newSprite, newTransition, alertBool) {
   return {
     type: ADD_SQUARE,
@@ -33,7 +32,6 @@ export function updateContent(squareId, newContent) {
     content: newContent,
   };
 }
-
 export function updateSprite(squareIdToUpdate, newSprite) {
   return {
     type: UPDATE_SPRITE,
@@ -48,7 +46,6 @@ export function updateTransition(squareIdToUpdate, newTransition) {
     transition: newTransition
   };
 }
-
 export function updateValue(squareIdToUpdate, newValue, newTileImage) {
   return {
     type: UPDATE_VALUE,
@@ -57,7 +54,6 @@ export function updateValue(squareIdToUpdate, newValue, newTileImage) {
     tileImage: newTileImage
   };
 }
-
 export function toggleAlert(squareId, alertBool){
   return {
     type: TOGGLE_ALERT,
@@ -65,7 +61,6 @@ export function toggleAlert(squareId, alertBool){
     alert: alertBool
   }
 }
-
 //Initial State
 
 //Reducer

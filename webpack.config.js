@@ -46,6 +46,15 @@ module.exports = {
         loader: ['style-loader', 'css-loader'],
       },
       {
+        test: /\.(mp3|wav)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            name: 'sounds/[hash]-[name].[ext]',
+          }
+        }
+      },
+      {
         test: /\.jsx?$/,
         loader: "babel-loader",
         exclude: /node_modules/,
