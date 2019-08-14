@@ -6,6 +6,7 @@ import * as gameModule from '../../redux/modules/game';
 import * as textModule from '../../redux/modules/text/text';
 import './Textboxes.css'
 import Options from '../Options/Options';
+import Input from '../Input/Input';
 import * as textConsts from '../../redux/modules/text/textConstants';
 
 class TextBoxes extends React.Component {
@@ -18,7 +19,7 @@ class TextBoxes extends React.Component {
     let activeSpeaker = '';
     //get paragraph and speaker (if applicable)
     if (this.props.text.activeTextType == 'dialogue') {
-      activeSpeaker = textConsts.dialogue[this.props.text.activeText][this.props.text.paragraph][0];
+      activeSpeaker = textConsts.dialogue[this.props.text.activeText][this.props.text.paragraph][0] + ": ";
       paragraphToRender = textConsts.dialogue[this.props.text.activeText][this.props.text.paragraph][1];
     } else {
       paragraphToRender = textConsts.examine[this.props.text.activeText][this.props.text.paragraph];
@@ -28,11 +29,22 @@ class TextBoxes extends React.Component {
       lineToRender = paragraphToRender[this.props.text.line + 1];
     } else if (paragraphToRender[this.props.text.line] == 'results') {
       lineToRender = paragraphToRender[1][this.props.text.selectedOption];
+    } else if (paragraphToRender[this.props.text.line] == 'textInput') {
+      lineToRender = paragraphToRender[this.props.text.line + 1];
     } else {
       lineToRender = paragraphToRender[this.props.text.line];
     }
 
-    if (this.props.text.options.length > 1) {
+    if (this.props.text.textInput == true) {
+      return (
+        <div id="wrap">
+          <div id="content">
+            {lineToRender}
+            <Input text={this.props.text} menu={this.props.menu}/>
+          </div>
+        </div>
+      )
+    } else if (this.props.text.options.length > 1) {
       return (
         <div id="wrap">
           <div id="content">

@@ -77,6 +77,7 @@ export function updateNewItem(newItem){
 
 //Initial State
 const initialState = {
+    name: null,
     health: 100,
     status: 'normal',
     score: 0,

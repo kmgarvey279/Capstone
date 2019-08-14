@@ -5,6 +5,7 @@ import lava from '../../../assets/images/room/lava.gif';
 import coin from '../../../assets/images/coin.png';
 import wall from '../../../assets/images/room/wall-inner-horizontal.png';
 import tile from '../../../assets/images/room/tile.png';
+import goo from '../../../assets/images/room/goo.png';
 
 import terminal from '../../../assets/images/room/terminal.gif';
 import tank from '../../../assets/images/room/cryoTank.gif';
@@ -34,7 +35,24 @@ import unlockedDoorNorth from '../../../assets/images/room/door-unlocked-north.p
 import openingDoorNorth from '../../../assets/images/room/door-open-north.gif';
 import openDoorNorth from '../../../assets/images/room/door-open-north.png';
 import closingDoorNorth from '../../../assets/images/room/door-close-north.gif';
+
 import lockedDoorEast from '../../../assets/images/room/door-locked-east.png';
+import unlockedDoorEast from '../../../assets/images/room/door-unlocked-east.png';
+import openingDoorEast from '../../../assets/images/room/door-open-east.gif';
+import openDoorEast from '../../../assets/images/room/door-open-east.png';
+import closingDoorEast from '../../../assets/images/room/door-close-east.gif';
+
+import lockedDoorWest from '../../../assets/images/room/door-locked-west.png';
+import unlockedDoorWest from '../../../assets/images/room/door-unlocked-west.png';
+import openingDoorWest from '../../../assets/images/room/door-open-west.gif';
+import openDoorWest from '../../../assets/images/room/door-open-west.png';
+import closingDoorWest from '../../../assets/images/room/door-close-west.gif';
+
+import lockedDoorSouth from '../../../assets/images/room/door-locked-south.png';
+import unlockedDoorSouth from '../../../assets/images/room/door-unlocked-south.png';
+import openingDoorSouth from '../../../assets/images/room/door-open-south.gif';
+import openDoorSouth from '../../../assets/images/room/door-open-south.png';
+import closingDoorSouth from '../../../assets/images/room/door-close-south.gif';
 
 export const rooms = {
   // key: W = wall, D = door, P = pit, L = lava, B = block, E = enemy, S = switch, M = moving platform, T = terminal
@@ -53,18 +71,18 @@ export const rooms = {
       ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P'], ['P']
     ],
   2:[
-      ['W'], ['W'], ['W'], ['D','2-C',6,'locked'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
-      ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W'],
-      ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['L'], ['W'],
-      ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['0'], ['W'],
-      ['W'], ['0'], ['W'], ['W'], ['W'], ['0'], ['0'], ['0'], ['0'], ['L'], ['0'], ['W'],
-      ['W'], ['0'], ['0'], ['W'], ['E', 'slime'], ['0'], ['E', 'slime'], ['0'], ['0'], ['L'], ['L'], ['W'],
-      ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['D','2-A',1,'open'],
-      ['W'], ['0'], ['0'], ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
-      ['W'], ['0'], ['B'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['0'], ['0'], ['W'],
-      ['W'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'],
-      ['D','2-B',3,'locked'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W'], ['0'], ['0'], ['W'],
-      ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W']
+      ['W', 'northWest'], ['W', 'west'], ['W', 'west'], ['D','2-C',6, true, 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'west'], ['W', 'southWest'],
+      ['W', 'north'], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['P'], ['L'], ['0'], ['0'], ['W', 'south'],
+      ['W', 'north'], ['S', 4, 100], ['0'], ['0'], ['0'], ['0'], ['0'], ['P'], ['L'], ['0'], ['L'], ['W', 'south'],
+      ['W', 'north'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['B'], ['L'], ['L'], ['0'], ['W', 'south'],
+      ['W', 'north'], ['0'], ['W', 'center'], ['W', 'center'], ['W', 'center'], ['0'], ['0'], ['0'], ['0'], ['L'], ['0'], ['W', 'south'],
+      ['W', 'north'], ['0'], ['0'], ['0'], ['E', 'slime'], ['0'], ['E', 'slime'], ['0'], ['0'], ['L'], ['L'], ['W', 'south'],
+      ['W', 'north'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['D','2-A',1, false, 'south'],
+      ['W', 'north'], ['0'], ['0'], ['0'], ['0'], ['B'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'],
+      ['W', 'north'], ['0'], ['B'], ['W', 'center'], ['W', 'center'], ['W', 'center'], ['W', 'center'], ['W', 'center'], ['W', 'center'], ['0'], ['0'], ['W', 'south'],
+      ['W', 'north'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'south'],
+      ['D','2-B',3, true, 'north'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['0'], ['W', 'center'], ['0'], ['0'], ['W', 'south'],
+      ['W', 'northEast'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'east'], ['W', 'southEast']
     ],
   3:[
       ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'], ['W'],
@@ -181,40 +199,59 @@ export const rooms = {
 };
 
 export const sprites = {
-  ice: <img id="player" src={ice} width="50" height="50"/>,
-  lava: <img id="player" src={lava} width="50" height="50"/>,
-  coin: <img id="player" src={coin} width="50" height="50"/>,
-  wall: <img id="player" src={wall} width="50" height="50"/>,
-  tile: <img id="player" src={tile} width="50" height="50"/>,
-  terminal: <img id="player" src={terminal} width="50" height="50"/>,
-  tank: <img id="player" src={tank} width="70" height="90"/>,
-  uglyBed: <img id="player" src={uglyBed} width="120" height="90"/>,
-  uglyBed1: <img id="player" src={uglyBed1} width="70" height="90"/>,
-  uglyBed2: <img id="player" src={uglyBed2} width="70" height="90"/>,
-  wallCorner1: <img id="player" src={wallCorner1} width="50" height="50"/>,
-  wallCorner2: <img id="player" src={wallCorner2} width="50" height="50"/>,
-  wallCorner3: <img id="player" src={wallCorner3} width="50" height="50"/>,
-  wallCorner4: <img id="player" src={wallCorner4} width="50" height="50"/>,
-  wallTop: <img id="player" src={wallTop} width="50" height="50"/>,
-  wallBottom: <img id="player" src={wallBottom} width="50" height="50"/>,
-  wallLeft: <img id="player" src={wallLeft} width="50" height="50"/>,
-  wallRight: <img id="player" src={wallRight} width="50" height="50"/>,
-  block:  <img id="player" src={block} width="80" height="80"/>,
-  blockSink: <img id="player" src={blockSink} width="60" height="60"/>,
-  switchOff: <img id="player" src={switchOff} width="50" height="50"/>,
-  switchOn: <img id="player" src={switchOn} width="50" height="50"/>,
-  platformOffNS: <img id="player" src={platformOffNS} width="50" height="50"/>,
-  platformOnNS: <img id="player" src={platformOnNS} width="50" height="50"/>,
-  platformOffEW: <img id="player" src={platformOffEW} width="50" height="50"/>,
-  platformOnEW: <img id="player" src={platformOnEW} width="50" height="50"/>,
+  ice: <img src={ice} width="50" height="50"/>,
+  lava: <img src={lava} width="50" height="50"/>,
+  coin: <img src={coin} width="50" height="50"/>,
+  wall: <img src={wall} width="50" height="50"/>,
+  tile: <img src={tile} width="50" height="50"/>,
+  goo: <img src={goo} width="50" height="50"/>,
 
-  lockedDoorNorth: <img id="player" src={lockedDoorNorth} width="55" height="58"/>,
-  unlockedDoorNorth: <img id="player" src={unlockedDoorNorth} width="55" height="58"/>,
-  openingDoorNorth: <img id="player" src={openingDoorNorth} width="55" height="58"/>,
-  openDoorNorth: <img id="player" src={openDoorNorth} width="55" height="58"/>,
-  closingDoorNorth: <img id="player" src={closingDoorNorth} width="55" height="58"/>,
+  terminal: <img src={terminal} width="50" height="50"/>,
+  tank: <img src={tank} width="70" height="90"/>,
+  uglyBed: <img src={uglyBed} width="120" height="90"/>,
+  uglyBed1: <img src={uglyBed1} width="70" height="90"/>,
+  uglyBed2: <img src={uglyBed2} width="70" height="90"/>,
 
-  lockedDoorEast: <img id="player" src={lockedDoorEast} width="58" height="50"/>
+  wallCorner1: <img src={wallCorner1} width="50" height="50"/>,
+  wallCorner2: <img src={wallCorner2} width="50" height="50"/>,
+  wallCorner3: <img src={wallCorner3} width="50" height="50"/>,
+  wallCorner4: <img src={wallCorner4} width="50" height="50"/>,
+  wallTop: <img src={wallTop} width="50" height="50"/>,
+  wallBottom: <img src={wallBottom} width="50" height="50"/>,
+  wallLeft: <img src={wallLeft} width="50" height="50"/>,
+  wallRight: <img src={wallRight} width="50" height="50"/>,
+  block:  <img src={block} width="80" height="80"/>,
+  blockSink: <img src={blockSink} width="60" height="60"/>,
+  switchOff: <img src={switchOff} width="50" height="50"/>,
+  switchOn: <img src={switchOn} width="50" height="50"/>,
+  platformOffNS: <img src={platformOffNS} width="50" height="50"/>,
+  platformOnNS: <img src={platformOnNS} width="50" height="50"/>,
+  platformOffEW: <img src={platformOffEW} width="50" height="50"/>,
+  platformOnEW: <img src={platformOnEW} width="50" height="50"/>,
+
+  lockedDoorNorth: <img src={lockedDoorNorth} width="55" height="58"/>,
+  unlockedDoorNorth: <img src={unlockedDoorNorth} width="55" height="58"/>,
+  openingDoorNorth: <img src={openingDoorNorth} width="55" height="58"/>,
+  openDoorNorth: <img src={openDoorNorth} width="55" height="58"/>,
+  closingDoorNorth: <img src={closingDoorNorth} width="55" height="58"/>,
+
+  lockedDoorEast: <img src={lockedDoorEast} width="58" height="50"/>,
+  unlockedDoorEast: <img src={unlockedDoorEast} width="58" height="50"/>,
+  openingDoorEast: <img src={openingDoorEast} width="58" height="50"/>,
+  openDoorEast: <img src={openDoorEast} width="58" height="50"/>,
+  closingDoorEast: <img src={closingDoorEast} width="58" height="50"/>,
+
+  lockedDoorSouth: <img src={lockedDoorSouth} width="55" height="58"/>,
+  unlockedDoorSouth: <img src={unlockedDoorSouth} width="55" height="58"/>,
+  openingDoorSouth: <img src={openingDoorSouth} width="55" height="58"/>,
+  openDoorSouth: <img src={openDoorSouth} width="55" height="58"/>,
+  closingDoorSouth: <img src={closingDoorSouth} width="55" height="58"/>,
+
+  lockedDoorWest: <img src={lockedDoorWest} width="58" height="50"/>,
+  unlockedDoorWest: <img src={unlockedDoorWest} width="58" height="50"/>,
+  openingDoorWest: <img src={openingDoorWest} width="58" height="50"/>,
+  openDoorWest: <img src={openDoorWest} width="58" height="50"/>,
+  closingDoorWest: <img src={closingDoorWest} width="58" height="50"/>,
 };
 
 export const maps = {

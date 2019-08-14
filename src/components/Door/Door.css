@@ -11,3 +11,17 @@ div#doorEast {
   bottom: -4px;
   left: -2px;
 }
+
+div#doorSouth {
+  z-index: 500;
+  position: absolute;
+  bottom: -10px;
+  left: -2px;
+}
+
+div#doorWest {
+  z-index: 500;
+  position: absolute;
+  bottom: -4px;
+  left: -5px;
+}

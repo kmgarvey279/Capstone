@@ -27,7 +27,10 @@ class Options extends React.Component {
     } else if(event.keyCode === 37){
       this.cycleOption();
     } else if (event.keyCode === 32 || event.keyCode === 13) {
-      this.props.dispatch(textModule.selectOption(this.props.menu.selectedOption));
+      if (this.props.text.activeText.includes("terminal")){
+        this.props.dispatch(soundsModule.changeEffect('confirm'));
+      }
+      this.props.dispatch(textModule.selectOption(this.props.menu.selectedOption - 1));
       this.props.dispatch(textModule.setParagraph(this.props.text.paragraph + 1));
       this.props.dispatch(textModule.setLine(0));
       this.props.dispatch(textModule.setOptions([]));

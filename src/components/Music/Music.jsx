@@ -10,7 +10,7 @@ function Music(props){
     return (
       <div>
        <Sound
-        url={bmg2}
+
         playStatus={Sound.status.PLAYING}/>
       </div>
     );

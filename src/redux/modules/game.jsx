@@ -9,6 +9,7 @@ export const TOGGLE_WEST = "TOGGLE_WEST";
 export const TOGGLE_EAST = "TOGGLE_EAST";
 export const TOGGLE_NORTH = "TOGGLE_NORTH";
 export const TOGGLE_SOUTH = "TOGGLE_SOUTH";
+export const TOGGLE_FIRE = "TOGGLE_FIRE";
 export const UPDATE_BULLET_COUNT = "UPDATE_BULLET_COUNT";
 
 
@@ -67,6 +68,13 @@ export function toggleSouth(newBool) {
   }
 }
 
+export function toggleFire(newBool) {
+  return {
+    type: TOGGLE_FIRE,
+    fire: newBool
+  }
+}
+
   export function updateBulletCount(newCount) {
     return {
       type: UPDATE_BULLET_COUNT,
@@ -86,13 +94,14 @@ const initialState = {
   west: false,
   south: false,
   north: false,
+  fire: false,
   bulletCount: 0
 }
 
 //Reducer
 const gameReducer = (state = initialState, action) => {
   let newState;
-  const { gameState, coolDown, roomId, respawnPoint, previousRoomId, activeText, north, east, west, south, bulletCount } = action;
+  const { gameState, coolDown, roomId, respawnPoint, previousRoomId, activeText, north, east, west, south, fire, bulletCount } = action;
 
   switch (action.type) {
     case CHANGE_GAMESTATE:
@@ -133,6 +142,11 @@ const gameReducer = (state = initialState, action) => {
     case TOGGLE_WEST:
       newState = Object.assign({}, state, {
         west: west
+      });
+      return newState;
+    case TOGGLE_FIRE:
+      newState = Object.assign({}, state, {
+        fire: fire
       });
       return newState;
     case UPDATE_BULLET_COUNT:

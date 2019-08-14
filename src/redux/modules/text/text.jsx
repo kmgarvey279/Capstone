@@ -4,6 +4,7 @@ export const SET_LINE = "SET_LINE";
 export const SET_PARAGRAPH = "SET_PARAGRAPH";
 export const SET_OPTIONS = "SET_OPTIONS";
 export const SELECT_OPTION = "SELECT_OPTION";
+export const TOGGLE_TEXT_INPUT = "TOGGLE_TEXT_INPUT";
 
 //Action Creators
 export function setActiveText(newActiveText, newType) {
@@ -42,6 +43,13 @@ export function selectOption(option) {
   }
 }
 
+export function toggleTextInput(textInput) {
+  return {
+    type: TOGGLE_TEXT_INPUT,
+    textInput: textInput
+  }
+}
+
 //Initial State
 const initialState = {
   activeText: null,
@@ -49,13 +57,14 @@ const initialState = {
   line: 0,
   paragraph: 1,
   options: [],
-  selectedOption: null
+  selectedOption: null,
+  textInput: false,
 }
 
 //Reducer
 const textReducer = (state = initialState, action) => {
   let newState;
-  const { activeText, activeTextType, line, paragraph, options, selectedOption} = action;
+  const { activeText, activeTextType, line, paragraph, options, selectedOption, textInput} = action;
 
   switch (action.type) {
     case SET_ACTIVE_TEXT:
@@ -82,6 +91,11 @@ const textReducer = (state = initialState, action) => {
     case SELECT_OPTION:
       newState = Object.assign({}, state, {
         selectedOption: selectedOption
+      });
+      return newState;
+    case TOGGLE_TEXT_INPUT:
+      newState = Object.assign({}, state, {
+        textInput: textInput
       });
       return newState;
   default:
