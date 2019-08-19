@@ -1,8 +1,7 @@
 div#doorNorth {
   z-index: 500;
   position: absolute;
-  bottom: -6px;
-  left: -2px;
+  bottom: -3px;
 }
 
 div#doorEast {

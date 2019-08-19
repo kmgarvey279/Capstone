@@ -11,6 +11,8 @@ export const TOGGLE_NORTH = "TOGGLE_NORTH";
 export const TOGGLE_SOUTH = "TOGGLE_SOUTH";
 export const TOGGLE_FIRE = "TOGGLE_FIRE";
 export const UPDATE_BULLET_COUNT = "UPDATE_BULLET_COUNT";
+export const UPDATE_PLATFORM_TIMERS = "UPDATE_PLATFORM_TIMERS";
+export const CLEAR_TIMERS = "CLEAR_TIMERS";
 
 
 //Action Creators
@@ -82,6 +84,22 @@ export function toggleFire(newBool) {
     }
   }
 
+  export function updatePlatformTimers(newTimerArr) {
+    return {
+      type: UPDATE_PLATFORM_TIMERS,
+      platformTimers: newTimerArr
+    }
+  }
+
+  export function clearTimers() {
+    return {
+      type: CLEAR_TIMERS,
+      enemyTimers: [],
+      switchTimers: [],
+      platformTimers: []
+    }
+  }
+
 
 //Initial State
 const initialState = {
@@ -90,6 +108,8 @@ const initialState = {
   gameState: 'title',
   respawnPoint: '',
   enemyTimers: [],
+  switchTimers: [],
+  platformTimers: [],
   east: false,
   west: false,
   south: false,
@@ -101,7 +121,7 @@ const initialState = {
 //Reducer
 const gameReducer = (state = initialState, action) => {
   let newState;
-  const { gameState, coolDown, roomId, respawnPoint, previousRoomId, activeText, north, east, west, south, fire, bulletCount } = action;
+  const { gameState, coolDown, roomId, respawnPoint, previousRoomId, activeText, north, east, west, south, fire, bulletCount, enemyTimers, switchTimers, platformTimers } = action;
 
   switch (action.type) {
     case CHANGE_GAMESTATE:
@@ -152,6 +172,18 @@ const gameReducer = (state = initialState, action) => {
     case UPDATE_BULLET_COUNT:
       newState = Object.assign({}, state, {
         bulletCount: bulletCount
+      });
+      return newState;
+    case UPDATE_PLATFORM_TIMERS:
+      newState = Object.assign({}, state, {
+        platformTimers: platformTimers
+      });
+      return newState;
+    case CLEAR_TIMERS:
+      newState = Object.assign({}, state, {
+        enemyTimers: enemyTimers,
+        switchTimers: switchTimers,
+        platformTimers: platformTimers
       });
       return newState;
   default:

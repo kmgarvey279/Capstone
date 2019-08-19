@@ -7,6 +7,7 @@ import * as textModule from '../../redux/modules/text/text';
 import './Textboxes.css'
 import Options from '../Options/Options';
 import Input from '../Input/Input';
+import Speaker from '../Speaker/Speaker';
 import * as textConsts from '../../redux/modules/text/textConstants';
 
 class TextBoxes extends React.Component {
@@ -16,10 +17,10 @@ class TextBoxes extends React.Component {
 
   render(){
     let paragraphToRender;
-    let activeSpeaker = '';
+    let activeSpeaker;
     //get paragraph and speaker (if applicable)
     if (this.props.text.activeTextType == 'dialogue') {
-      activeSpeaker = textConsts.dialogue[this.props.text.activeText][this.props.text.paragraph][0] + ": ";
+      activeSpeaker = textConsts.dialogue[this.props.text.activeText][this.props.text.paragraph][0];
       paragraphToRender = textConsts.dialogue[this.props.text.activeText][this.props.text.paragraph][1];
     } else {
       paragraphToRender = textConsts.examine[this.props.text.activeText][this.props.text.paragraph];
@@ -39,7 +40,7 @@ class TextBoxes extends React.Component {
       return (
         <div id="wrap">
           <div id="content">
-            {lineToRender}
+            <div id="text">{lineToRender}</div>
             <Input text={this.props.text} menu={this.props.menu}/>
           </div>
         </div>
@@ -48,18 +49,25 @@ class TextBoxes extends React.Component {
       return (
         <div id="wrap">
           <div id="content">
-            {activeSpeaker}
-            {lineToRender}
+            <div id="text">{lineToRender}</div>
             <Options text={this.props.text} menu={this.props.menu}/>
           </div>
         </div>
       )
+    } else if (this.props.text.activeTextType == 'dialogue') {
+      return (
+        <div id="wrap">
+          <div id="content">
+            <Speaker speaker={activeSpeaker}/>
+            <div id="dialogueText">{lineToRender}</div>
+          </div>
+        </div>
+      );
     } else {
       return (
         <div id="wrap">
           <div id="content">
-            {activeSpeaker}
-            {lineToRender}
+            <div id="text">{lineToRender}</div>
           </div>
         </div>
       );

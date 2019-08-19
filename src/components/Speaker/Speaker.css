@@ -1,0 +1,14 @@
+div#speaker {
+  position: relative;
+  border: solid orange 2px;
+  background-color: yellow;
+  height: 25px;
+  min-width: 50px;
+  width: 120px;
+  z-index: 2000;
+  overflow:visible;
+  margin-bottom: 20px;
+  top: -10px;
+  left: -10px;
+  opacity: 0.9;
+}

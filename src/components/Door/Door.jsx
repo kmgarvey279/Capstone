@@ -1,4 +1,4 @@
-import * as roomConsts from '../../redux/modules/rooms/roomConstants';
+import roomConsts from '../../redux/modules/rooms/roomConstants';
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Door.css';

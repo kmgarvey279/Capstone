@@ -4,14 +4,16 @@ export const PUSH_SWITCH = "PUSH_SWITCH";
 export const NULL_ALL_SWITCHES = "NULL_ALL_SWITCHES";
 
 //Action Creators
-export function createSwitch( switchId, location, isPushed, effectLocation, timer ) {
+export function createSwitch( switchId, location, isPushed, effectId, effectType, timer, kind ) {
   return {
     type: CREATE_SWITCH,
     switchId: switchId,
     location: location,
     isPushed: isPushed,
-    effectLocation: effectLocation,
-    timer: timer
+    effectId: effectId,
+    effectType: effectType,
+    timer: timer,
+    kind: kind
   }
 }
 
@@ -35,7 +37,7 @@ export function nullAllSwitches() {
 const switchReducer = (state = {}, action) => {
   let newState;
   let newSwitch;
-  const { switchId, location, isPushed, effect, effectLocation, timer } = action;
+  const { switchId, location, isPushed, effectId, effectType, timer, kind } = action;
 
   switch (action.type) {
     case CREATE_SWITCH:
@@ -44,8 +46,10 @@ const switchReducer = (state = {}, action) => {
           switchId: switchId,
           location: location,
           isPushed: isPushed,
-          effectLocation: effectLocation,
-          timer: timer
+          effectId: effectId,
+          effectType: effectType,
+          timer: timer,
+          kind: kind
         }
       });
       return newState;

@@ -25,7 +25,10 @@ class Input extends React.Component {
 
   handleKeyPress(event){
     if (event.keyCode === 32 || event.keyCode === 13) {
-      alert(this.state.value);
+      this.props.dispatch(textModule.selectOption(this.state.value));
+      this.props.dispatch(textModule.toggleTextInput(false));
+      this.props.dispatch(textModule.setParagraph(this.props.text.paragraph + 1));
+      this.props.dispatch(textModule.setLine(0));
     }
   }
 
@@ -38,6 +41,7 @@ class Input extends React.Component {
       <div>
         <input
         type='text'
+        autoFocus={true}
         value={this.state.value}
         onChange={this.handleChange}
         id='name'/>

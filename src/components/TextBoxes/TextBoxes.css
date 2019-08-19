@@ -1,5 +1,5 @@
 div#wrap {
-  position: fixed;
+  position: relative;
   z-index: 2000;
   left: 0;
   top: 0;
@@ -7,14 +7,23 @@ div#wrap {
   height: 100%;
   padding-top: 10%;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
 }
 div#content {
-  background-color: #fefefe;
-  margin: 10% auto;
-  margin-top: 300px;
-  border: 3px solid #888;
+  background-color: yellow;
+  right: 300px;
+  margin-top: 200px;
+  border: 3px solid orange;
   width: 70%;
   height: 100px;
+  opacity: 0.9;
+}
+
+div#text {
+  position: relative;
+  margin-top: 15px;
+}
+
+div#dialogueText {
+  position: relative;
+  top: -10px;
 }
