@@ -205,17 +205,17 @@ class App extends React.Component {
         contentArr.push(['doorTrigger', door.doorId]);
         this.props.dispatch(roomModule.updateContent(square.squareId + 1, contentArr));
       } else if (door.direction == 'east') {
-        let contentArr = this.props.currentRoom[square.squareId - 12].content;
+        let contentArr = this.props.currentRoom[square.squareId - 13].content;
         contentArr.push(['doorTrigger', door.doorId]);
-        this.props.dispatch(roomModule.updateContent(square.squareId - 12, contentArr));
+        this.props.dispatch(roomModule.updateContent(square.squareId - 13, contentArr));
       } else if (door.direction == 'south') {
         let contentArr = this.props.currentRoom[square.squareId - 1].content;
         contentArr.push(['doorTrigger', door.doorId]);
         this.props.dispatch(roomModule.updateContent(square.squareId - 1, contentArr));
       } else if (door.direction == 'west') {
-        let contentArr = this.props.currentRoom[square.squareId + 12].content;
+        let contentArr = this.props.currentRoom[square.squareId + 13].content;
         contentArr.push(['doorTrigger', door.doorId]);
-        this.props.dispatch(roomModule.updateContent(square.squareId + 12, contentArr));
+        this.props.dispatch(roomModule.updateContent(square.squareId + 13, contentArr));
       }
     });
   }
@@ -270,7 +270,7 @@ class App extends React.Component {
       squareImage = roomConsts.sprites['lava'];
     //create pit
     } else if (squareValue == 'P') {
-      if (this.props.currentRoom[thisSquareId - 1].value !== 'P'){
+      if (this.props.currentRoom[thisSquareId - 1].value !== 'P' && this.props.currentRoom[thisSquareId - 1].value !== 'V'){
         squareImage = roomConsts.sprites['pit'];
       } else {
         squareImage = '';
@@ -302,7 +302,7 @@ class App extends React.Component {
       }
       content.push(['belt', squareArr[1]]);
     //create moving tile
-    } else if (squareValue == 'M') {
+    } else if (squareValue == 'M' || squareValue == 'MB') {
       let contentId = squareArr[1];
       content.push(['platform', contentId]);
       let direction = squareArr[2];
@@ -312,7 +312,8 @@ class App extends React.Component {
         squareImage = roomConsts.sprites['platformOffEW'];
       }
       this.props.dispatch(platformsModule.createPlatform(contentId, thisSquareId, thisSquareId, direction, false));
-    //spawn switch
+      
+      //spawn switch
     } else if (squareValue == 'S') {
       let contentId = v4();
       let effectId = squareArr[1];
@@ -368,7 +369,7 @@ class App extends React.Component {
       content.push(['enemy', newEnemyId]);
     }
     //spawn block
-    if (squareValue == 'B') {
+    if (squareValue == 'B' || squareValue == 'MB') {
       sprite = roomConsts.sprites['block'];
       let contentId = v4();
       content.push(['block', contentId]);
@@ -1150,9 +1151,9 @@ class App extends React.Component {
         }
       } else {
         if (platform.start > platform.location) {
-          next = 12;
+          next = 13;
         } else {
-          next = -12;
+          next = -13;
         }
       }
         let location = platform.location;

@@ -13,6 +13,7 @@ export const TOGGLE_FIRE = "TOGGLE_FIRE";
 export const UPDATE_BULLET_COUNT = "UPDATE_BULLET_COUNT";
 export const UPDATE_PLATFORM_TIMERS = "UPDATE_PLATFORM_TIMERS";
 export const CLEAR_TIMERS = "CLEAR_TIMERS";
+export const UPDATE_FILTER = "UPDATE_FILTER";
 
 
 //Action Creators
@@ -90,6 +91,13 @@ export function toggleFire(newBool) {
       platformTimers: newTimerArr
     }
   }
+  
+  export function updateFilter(newFilter) {
+    return {
+      type: UPDATE_FILTER,
+      filter: newFilter
+    }
+  }
 
   export function clearTimers() {
     return {
@@ -103,7 +111,7 @@ export function toggleFire(newBool) {
 
 //Initial State
 const initialState = {
-  roomId: 1,
+  roomId: 4,
   previousRoomId: null,
   gameState: 'title',
   respawnPoint: '',
@@ -115,13 +123,14 @@ const initialState = {
   south: false,
   north: false,
   fire: false,
-  bulletCount: 0
+  bulletCount: 0,
+  filter: null
 }
 
 //Reducer
 const gameReducer = (state = initialState, action) => {
   let newState;
-  const { gameState, coolDown, roomId, respawnPoint, previousRoomId, activeText, north, east, west, south, fire, bulletCount, enemyTimers, switchTimers, platformTimers } = action;
+  const { gameState, coolDown, roomId, respawnPoint, previousRoomId, activeText, north, east, west, south, fire, bulletCount, enemyTimers, switchTimers, platformTimers, filter} = action;
 
   switch (action.type) {
     case CHANGE_GAMESTATE:
@@ -184,6 +193,11 @@ const gameReducer = (state = initialState, action) => {
         enemyTimers: enemyTimers,
         switchTimers: switchTimers,
         platformTimers: platformTimers
+      });
+      return newState;
+    case UPDATE_FILTER:
+      newState = Object.assign({}, state, {
+        filter: filter
       });
       return newState;
   default:

@@ -1,0 +1,25 @@
+div#fireAnimate {
+  width: 100%; 
+  height: 100%;
+  background-image: url("../../assets/images/room/fire-filter.png");
+  background-position: 0px 0px;
+  background-repeat: repeat-y;
+  animation: fire 30s linear infinite;
+}
+
+@keyframes fire {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+div#fire {
+  opacity: 0.3;
+  background-color: red;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: none;
+  top: 0px;
+  left: 0px;
+  }

@@ -18,18 +18,25 @@ import tank from '../../../assets/images/room/cryoTank.gif';
 import uglyBed1 from '../../../assets/images/room/uglyBed1.png';
 import uglyBed2 from '../../../assets/images/room/uglyBed2.png';
 import shelf from '../../../assets/images/room/shelf.png';
+import dead1 from '../../../assets/images/room/dead1.png';
+import dead2 from '../../../assets/images/room/dead2.png';
 
 import corner1 from '../../../assets/images/room/wall-corner1.png';
 import corner2 from '../../../assets/images/room/wall-corner2.png';
 import corner3 from '../../../assets/images/room/wall-corner3.png';
 import corner4 from '../../../assets/images/room/wall-corner4.png';
+import innerCorner1 from '../../../assets/images/room/wall-inner-corner1.png';
+import innerCorner2 from '../../../assets/images/room/wall-inner-corner2.png';
 import innerCorner3 from '../../../assets/images/room/wall-inner-corner3.png';
+import innerCorner4 from '../../../assets/images/room/wall-inner-corner4.png';
 import top from '../../../assets/images/room/wall-top.png';
 import bottom from '../../../assets/images/room/wall-bottom.png';
 import left from '../../../assets/images/room/wall-left.png';
 import innerLeft from '../../../assets/images/room/wall-inner-left.png';
+import innerRight from '../../../assets/images/room/wall-inner-right.png';
 import right from '../../../assets/images/room/wall-right.png';
 import connectNE from '../../../assets/images/room/wall-connect-top-left.png';
+import connectNW from '../../../assets/images/room/wall-connect-top-right.png';
 
 import block from '../../../assets/images/room/block.png';
 import blockSink from '../../../assets/images/room/blockSink.gif';
@@ -88,15 +95,21 @@ const sprites = {
   shelf: <img src={shelf} width="70" height="90"/>,
   uglyBed1: <img src={uglyBed1} width="70" height="90"/>,
   uglyBed2: <img src={uglyBed2} width="70" height="90"/>,
+  dead1: <img src={dead1} width="70" height="90"/>,
+  dead2: <img src={dead2} width="70" height="90"/>,
 
   corner1: <img src={corner1} width="50" height="50"/>,
+  innerCorner1: <img src={innerCorner1} width="50" height="50"/>,
   corner2: <img src={corner2} width="50" height="50"/>,
+  innerCorner2: <img src={innerCorner2} width="50" height="50"/>,
   corner3: <img src={corner3} width="50" height="50"/>,
   innerCorner3: <img src={innerCorner3} width="50" height="50"/>,
   corner4: <img src={corner4} width="50" height="50"/>,
+  innerCorner4: <img src={innerCorner4} width="50" height="50"/>,
   top: <img src={top} width="50" height="50"/>,
   bottom: <img src={top} width="50" height="50"/>,
   left: <img src={left} width="50" height="50"/>,
+  innerRight: <img src={innerRight} width="50" height="50"/>,
   innerLeft: <img src={innerLeft} width="50" height="50"/>,
   right: <img src={right} width="50" height="50"/>,
   connectNE: <img src={connectNE} width="50" height="50"/>,

@@ -17,7 +17,7 @@ function Game(props){
       <div id="game">
         <Map maps={props.maps} game={props.game} />
         <GameUITop player={props.player}/>
-        <div id='pause'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
+        <div id='pause'><CurrentRoom currentRoom={props.currentRoom} game={props.game} player={props.player} doors={props.doors}/></div>
       </div>
     );
   } else if (props.game.gameState === 'gameOver') {
@@ -33,7 +33,7 @@ function Game(props){
     return (
       <div id="game">
         <GameUITop player={props.player}/>
-        <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
+        <div id='level'><CurrentRoom game={props.game} currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
         <Textboxes text={props.text} game={props.game} menu={props.menu}/>
       </div>
     );
@@ -46,7 +46,7 @@ function Game(props){
     return (
       <div id="game">
       <GameUITop player={props.player}/>
-      <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
+      <div id='level'><CurrentRoom currentRoom={props.currentRoom} game={props.game} player={props.player} doors={props.doors}/></div>
       <ItemGet newItem={props.player.newItem}/>
       </div>
     );
@@ -54,7 +54,7 @@ function Game(props){
     return (
       <div id="game">
         <GameUITop player={props.player}/>
-        <div id='level'><CurrentRoom currentRoom={props.currentRoom} player={props.player} doors={props.doors}/></div>
+        <div id='level'><CurrentRoom currentRoom={props.currentRoom} game={props.game} player={props.player} doors={props.doors}/></div>
       </div>
     );
   }

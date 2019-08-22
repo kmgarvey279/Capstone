@@ -3,6 +3,7 @@ div#sprite{
   position: absolute;
   bottom: 15px;
   right: -13px;
+  break-inside: avoid;
 }
 
 @keyframes fall {

@@ -2,11 +2,11 @@ export function getDifference(direction) {
   if(direction == 'north') {
     return -1;
   } else if (direction == 'east') {
-    return  12;
+    return  13;
   } else if (direction == 'south') {
     return  1;
   } else {
-    return  -12
+    return  -13
   }
 };
 
@@ -47,11 +47,11 @@ export function getTileDirection(thisSquareId) {
 export function checkForPlayer(enemyLocation, playerLocation) {
     if (enemyLocation - 1 === playerLocation || enemyLocation -2 === playerLocation) {
       return 'north'
-    } else if (enemyLocation + 12 == playerLocation || enemyLocation + 24 == playerLocation) {
+    } else if (enemyLocation + 13 == playerLocation || enemyLocation + 26 == playerLocation) {
       return 'east';
     } else if (enemyLocation + 1 == playerLocation || enemyLocation + 2 == playerLocation ) {
       return 'south';
-    } else if (enemyLocation -12 == playerLocation || enemyLocation -24 == playerLocation) {
+    } else if (enemyLocation -13 == playerLocation || enemyLocation -26 == playerLocation) {
       return 'west';
     } else {
       return false;
