@@ -12,6 +12,7 @@ import beltNorth from '../../../assets/images/room/belt-north.gif';
 import beltEast from '../../../assets/images/room/belt-east.gif';
 import beltSouth from '../../../assets/images/room/belt-south.gif';
 import beltWest from '../../../assets/images/room/belt-west.gif';
+import warp from '../../../assets/images/room/warp.gif';
 
 import terminal from '../../../assets/images/room/terminal.gif';
 import tank from '../../../assets/images/room/cryoTank.gif';
@@ -20,6 +21,9 @@ import uglyBed2 from '../../../assets/images/room/uglyBed2.png';
 import shelf from '../../../assets/images/room/shelf.png';
 import dead1 from '../../../assets/images/room/dead1.png';
 import dead2 from '../../../assets/images/room/dead2.png';
+import theMachine from '../../../assets/images/room/theMachine.gif';
+import machineLeft from '../../../assets/images/room/machine-left.png';
+import machineRight from '../../../assets/images/room/machine-right.png';
 
 import corner1 from '../../../assets/images/room/wall-corner1.png';
 import corner2 from '../../../assets/images/room/wall-corner2.png';
@@ -28,7 +32,9 @@ import corner4 from '../../../assets/images/room/wall-corner4.png';
 import innerCorner1 from '../../../assets/images/room/wall-inner-corner1.png';
 import innerCorner2 from '../../../assets/images/room/wall-inner-corner2.png';
 import innerCorner3 from '../../../assets/images/room/wall-inner-corner3.png';
+import innerCorner3Alt from '../../../assets/images/room/wall-inner-corner3-alt.png';
 import innerCorner4 from '../../../assets/images/room/wall-inner-corner4.png';
+import innerCorner4Alt from '../../../assets/images/room/wall-inner-corner4-alt.png';
 import top from '../../../assets/images/room/wall-top.png';
 import bottom from '../../../assets/images/room/wall-bottom.png';
 import left from '../../../assets/images/room/wall-left.png';
@@ -89,6 +95,7 @@ const sprites = {
   beltEast: <img src={beltEast} width="50" height="50"/>,
   beltSouth: <img src={beltSouth} width="50" height="50"/>,
   beltWest: <img src={beltWest} width="50" height="50"/>,
+  warp: <img src={warp} width="50" height="50"/>,
 
   terminal: <img src={terminal} width="50" height="50"/>,
   tank: <img src={tank} width="70" height="90"/>,
@@ -97,6 +104,9 @@ const sprites = {
   uglyBed2: <img src={uglyBed2} width="70" height="90"/>,
   dead1: <img src={dead1} width="70" height="90"/>,
   dead2: <img src={dead2} width="70" height="90"/>,
+  theMachine: <img src={theMachine} width="520" height="110"/>,
+  machineLeft: <img src={machineLeft} width="50" height="50"/>,
+  machineRight: <img src={machineRight} width="50" height="50"/>,
 
   corner1: <img src={corner1} width="50" height="50"/>,
   innerCorner1: <img src={innerCorner1} width="50" height="50"/>,
@@ -104,8 +114,10 @@ const sprites = {
   innerCorner2: <img src={innerCorner2} width="50" height="50"/>,
   corner3: <img src={corner3} width="50" height="50"/>,
   innerCorner3: <img src={innerCorner3} width="50" height="50"/>,
+  innerCorner3Alt: <img src={innerCorner3Alt} width="50" height="50"/>,
   corner4: <img src={corner4} width="50" height="50"/>,
   innerCorner4: <img src={innerCorner4} width="50" height="50"/>,
+  innerCorner4Alt: <img src={innerCorner4Alt} width="50" height="50"/>,
   top: <img src={top} width="50" height="50"/>,
   bottom: <img src={top} width="50" height="50"/>,
   left: <img src={left} width="50" height="50"/>,

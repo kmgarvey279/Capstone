@@ -111,7 +111,7 @@ export function toggleFire(newBool) {
 
 //Initial State
 const initialState = {
-  roomId: 4,
+  roomId: 1,
   previousRoomId: null,
   gameState: 'title',
   respawnPoint: '',

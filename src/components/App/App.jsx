@@ -353,7 +353,10 @@ class App extends React.Component {
         content.push(['interact', type]);
       }
     } else if (squareValue == 'V') {
-      let squareImage = '';
+      squareImage = '';
+    } else if (squareValue == '@') {
+      squareImage = roomConsts.sprites['warp'];
+      content.push(['warp', squareArr[1]]);
     } else {
       let rng = Math.floor(Math.random() * 2);
       if (rng > 0) {
@@ -674,6 +677,27 @@ class App extends React.Component {
     this.props.dispatch(roomModule.updateSprite(location, sprite));
     this.props.dispatch(roomModule.updateTransition(location, direction));
   }
+  
+  warp(currentLocation, newLocation) {
+    let direction = this.props.player.direction;
+    //prevent player movement during animation
+    this.props.dispatch(playerModule.updatePlayerStatus('warp'));
+    //switch to warp sprite
+    this.handleUpdateSprite(currentLocation, playerConsts.sprites.dash[direction], '');
+    //add another warp sprite to new location
+    let seeingDoubleTimer = setTimeout(() =>
+      this.handleUpdateSprite(newLocation, playerConsts.sprites.dash[direction], ''),
+      300
+    );
+    //clear sprite from old location, change sprite in current location to normal
+    let spriteClearTimer = setTimeout(() =>
+      {this.handleUpdateSprite(currentLocation, '', '');
+      this.handleUpdateSprite(newLocation, playerConsts.sprites.stand[direction], '');
+      this.handleUpdatePlayerLocation(currentLocation, newLocation);
+      this.props.dispatch(playerModule.updatePlayerStatus('normal'));},
+      600
+    );
+  };
 
 
   fall(pitLocation, direction) {
@@ -934,6 +958,12 @@ class App extends React.Component {
     } else if (squareToCheck.value == 'H') {
       this.knockBack(helpers.reverseDirection(direction));
       return 'knockback';
+    } else if (squareToCheck.value == '@') {
+      let thisWarp = squareToCheck.content.find(function(content) {
+        return content[0] == 'warp';
+      });
+      this.warp(squareId, thisWarp[1]);
+      return 'warp'
     } else {
       return 'moved';
     }
