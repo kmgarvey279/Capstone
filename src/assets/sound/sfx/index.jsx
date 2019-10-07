@@ -15,10 +15,33 @@ import bootDown from './krank_sounds/summer/exit.wav';
 import suspense from './krank_sounds/water/anchor_action.wav';
 import teleport from './generic_sounds/teleport.wav';
 import shutdown from './generic_sounds/shutdown.wav';
-import scrape from './scrape-7.wav';
-
+import scrape from './scrape-1.wav';
+import slide from './slide-2.wav';
+import title from './krank_sounds/industry/unlink.wav';
+import hit from './Jump4.wav';
+import dead from './Randomize11.wav';
+import warpPad from './krank_sounds/water/wall.wav';
+import shot from './shot.mp3';
+import wind from './Wind.ogg';
+import metal from './metal.mp3';
+import whoosh from './whoosh.wav';
+import explosion from './ChunkyExplosion.mp3';
+import menu from './menu-select.wav';
+import switchOn from './switchOn.wav';
+import switchOff from './switchOff.wav';
+import scream from './scream.mp3';
+import warp from './littlerobotsoundfactory/WarpDrive_02.mp3';
+import phone from './telephone.mp3';
+import pickUp from './phone-pick-up.wav';
+import regen from './potion-drink-regen.wav';
+import ping from './ping.mp3';
 
 const effects = {
+  shot: shot,
+  wind: wind, 
+  metal: metal,
+  whoosh: whoosh,
+  explosion: explosion,
   changeDoor: changeDoor,
   doorLocked: doorLocked,
   select: select,
@@ -36,7 +59,21 @@ const effects = {
   suspense: suspense,
   teleport: teleport,
   shutdown: shutdown,
-  scrape: scrape
+  scrape: scrape,
+  title: title,
+  slide: slide,
+  hit: hit,
+  dead: dead,
+  warpPad: warpPad,
+  menu: menu,
+  switchOn: switchOn,
+  switchOff: switchOff,
+  scream: scream,
+  warp: warp,
+  phone: phone,
+  pickUp: pickUp,
+  regen: regen,
+  ping: ping
 };
 
 export default effects

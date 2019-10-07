@@ -12,7 +12,6 @@ div#outer {
   min-height: 700px;
   max-width: 605px;
   min-width: 605px;
-  border: solid red 1px;
 }
 
 div#inner {

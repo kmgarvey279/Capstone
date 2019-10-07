@@ -3,6 +3,7 @@ import React from 'react';
 //Constants
 export const CHANGE_OPTION = "CHANGE_OPTION";
 export const CHANGE_MENU = "CHANGE_MENU";
+export const SET_GAME_TO_COPY = "SET_GAME_TO_COPY";
 
 //Action Creators
 export function changeOption(selectedOption) {
@@ -19,15 +20,24 @@ export function changeMenu(selectedMenu) {
   }
 }
 
+export function setGameToCopy(game) {
+  return {
+    type: SET_GAME_TO_COPY,
+    gameToCopy: game
+  }
+}
+
+
 //Initial State
 const initialState = {
-  selectedMenu: 1,
-  selectedOption: 1
+  selectedMenu: 'title',
+  selectedOption: 1,
+  gameToCopy: null
 };
 
 //Reducer
 const menuReducer = (state = initialState, action) => {
-  const { selectedMenu, selectedOption } = action;
+  const { selectedMenu, selectedOption, gameToCopy } = action;
   let newState;
   switch (action.type) {
     case CHANGE_MENU:
@@ -40,6 +50,11 @@ const menuReducer = (state = initialState, action) => {
         selectedOption: selectedOption
       });
       return newState;
+    case SET_GAME_TO_COPY:
+        newState = Object.assign({}, state, {
+          gameToCopy: gameToCopy
+        });
+        return newState;
   default:
     return state;
   }

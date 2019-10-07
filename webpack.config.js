@@ -46,7 +46,7 @@ module.exports = {
         loader: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(mp3|wav)$/,
+        test: /\.(mp3|wav|ogg|flac)$/,
         use: {
           loader: 'url-loader',
           options: {

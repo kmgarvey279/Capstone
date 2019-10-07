@@ -1,10 +1,18 @@
 import React from 'react';
 
 //Constants
+export const LOAD_MAPS = "LOAD_MAPS";
 export const CHANGE_VISITED = "CHANGE_VISITED";
 export const ADD_MAP_SQUARE = "ADD_MAP_SQUARE";
 
 //Action Creators
+export function loadMaps(mapToLoad) {
+  return {
+    type: LOAD_MAPS,
+    mapToLoad: mapToLoad
+  }
+};
+
 export function addMapSquare(mapsId, roomId) {
   return {
     type: ADD_MAP_SQUARE,
@@ -12,7 +20,7 @@ export function addMapSquare(mapsId, roomId) {
     roomId: roomId,
     visited: false
   }
-}
+};
 
 export function changeVisited(mapsId) {
   return {
@@ -20,16 +28,18 @@ export function changeVisited(mapsId) {
     mapsId: mapsId,
     visited: true
   }
-}
+};
 
 //Initial State
 
 //Reducer
 const mapReducer = (state = {}, action) => {
-  const { mapsId, roomId, visited } = action;
+  const { mapToLoad, mapsId, roomId, visited } = action;
   let newState;
   let newSquare;
   switch (action.type) {
+    case LOAD_MAPS:
+      return mapToLoad;
     case ADD_MAP_SQUARE:
       newState = Object.assign({}, state, {
         [mapsId]: {

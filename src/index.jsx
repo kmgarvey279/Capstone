@@ -14,7 +14,7 @@ const store = createStore(rootReducer, retrievedState);
 
 store.subscribe(throttle(() => {
   saveData.saveState({
-    game: store.getState().game
+    saves: store.getState().saves
   });
 }, 5000));
 

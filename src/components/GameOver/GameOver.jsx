@@ -6,6 +6,7 @@ import * as playerModule from '../../redux/modules/player/player';
 import {bindActionCreators} from 'redux';
 import { withRouter } from 'react-router-dom';
 import './GameOver.css';
+import branchEnd from '../../assets/images/menu/branch-end.png';
 
 class GameOver extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ class GameOver extends React.Component {
     this.props.dispatch(playerModule.updatePlayerHealth(100));
     this.props.handleStart();
   } else if (this.props.menu.selectedOption === 2) {
+    this.props.dispatch(menuModule.changeMenu('title'));
     this.props.history.push('/');
     }
   }
@@ -52,27 +54,20 @@ class GameOver extends React.Component {
   render() {
     if(this.props.menu.selectedOption === 1) {
       return (
-        <div>
-          <h1>Title!</h1>
-          <div id='select'><h4>Continue</h4></div>
-          <div><h4>Give Up</h4></div>
-        </div>
-      );
-    } else if (this.props.menu.selectedOption === 2) {
-      return (
-        <div>
-          <h1>Title!</h1>
-          <div><h4>Continue</h4></div>
-          <div id ='select'><h4>Give Up</h4></div>
+        <div className="game-over">
+          <h1>Branch Terminated</h1>
+          <img id="branch" src={branchEnd} width="1000" height="300"/>
+          <div id='select'><h4>Try Again</h4></div>
+          <div><h4>Embrace the Void</h4></div>
         </div>
       );
     } else {
       return (
-        <div>
-          <h1>Title!</h1>
-          {this.props.menu.selectedOption}
-          <div><h4>Continue</h4></div>
-          <div><h4>Give Up</h4></div>
+        <div className="game-over">
+          <h1>Branch Terminated</h1>
+          <img id="branch" src={branchEnd} width="1000" height="300"/>
+          <div><h4>Try Again</h4></div>
+          <div id='select'><h4>Embrace the Void</h4></div>
         </div>
       );
     }

@@ -10,6 +10,7 @@ import blobKnockbackSouth from '../../../assets/images/enemies/blob-front-knockb
 import blobKnockbackWest from '../../../assets/images/enemies/blob-front-knockback.gif';
 import blobShock from '../../../assets/images/enemies/blob-shock.gif';
 import blobFrozen from '../../../assets/images/enemies/blob-frozen.png';
+import bubble from '../../../assets/images/enemies/bubble.gif';
 
 import bossNorth from '../../../assets/images/enemies/boss1.gif';
 import bossEast from '../../../assets/images/enemies/boss1.gif';
@@ -33,6 +34,14 @@ export const sprites = {
     },
     frozen: <img id="player" src={blobFrozen} width="90" height="90"/>,
     shock: <img id="player" src={blobShock} width="90" height="90"/>
+  },
+  bubble: {
+    move: {
+      north: <img src={bubble} width="80" height="80"/>,
+      east: <img src={bubble} width="80" height="80"/>,
+      south: <img src={bubble} width="80" height="80"/>,
+      west: <img src={bubble} width="80" height="80"/>
+    }
   },
   boss: {
     move: {
@@ -62,5 +71,10 @@ export const enemies = {
     kind: 'Boss',
     sprites: sprites['boss'],
     health: 1000
+  },
+  bubble: {
+    kind: 'bubble',
+    sprites: sprites['bubble'],
+    health: 1
   }
 };

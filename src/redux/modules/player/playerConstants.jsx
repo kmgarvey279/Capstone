@@ -3,6 +3,7 @@ import React from 'react';
 import playerStandNorth from '../../../assets/images/player/playerStandNorth.gif';
 import playerStandEast from '../../../assets/images/player/playerStandEast.gif';
 import playerStandSouth from '../../../assets/images/player/playerStandSouth.gif';
+import playerStandSouthGray from '../../../assets/images/player/playerStandSouth-gray.png';
 import playerStandWest from '../../../assets/images/player/playerStandWest.gif';
 import playerWalkNorth from '../../../assets/images/player/playerWalkNorth.gif';
 import playerWalkNorth2 from '../../../assets/images/player/playerWalkNorth2.gif';
@@ -20,6 +21,7 @@ import playerKnockbackSouth from '../../../assets/images/player/playerKnockbackS
 import playerKnockbackNorth from '../../../assets/images/player/playerKnockbackNorth.gif';
 import playerDashSouth from '../../../assets/images/player/playerDashSouth.gif';
 import playerParticleSouth from '../../../assets/images/player/playerParticleSouth.gif';
+import playerParticleEast from '../../../assets/images/player/playerParticleEast.gif';
 import playerPunchSouth from '../../../assets/images/player/playerPunchSouth.gif';
 import playerPunchNorth from '../../../assets/images/player/playerPunchSouth.gif';
 import playerPunchEast from '../../../assets/images/player/playerPunchSouth.gif';
@@ -32,6 +34,7 @@ export const sprites = {
     north: <img id="player" src={playerStandNorth} width="80" height="80"/>,
     east: <img id="player" src={playerStandEast} width="80" height="80"/>,
     south: <img id="player" src={playerStandSouth} width="80" height="80"/>,
+    southGray: <img id="player" src={playerStandSouthGray} width="80" height="80"/>,
     west: <img id="player" src={playerStandWest} width="80" height="80"/>,
   },
   walk: {
@@ -70,9 +73,9 @@ export const sprites = {
   },
   particle: {
     north: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
-    east: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
+    east: <img id="player" src={playerParticleEast} width="80" height="80"/>,
     south: <img id="player" src={playerParticleSouth} width="80" height="80"/>,
-    west: <img id="player" src={playerParticleSouth} width="80" height="80"/>
+    west: <img id="player" src={playerParticleEast} width="80" height="80"/>
   },
   punchImpact: <img id="player" src={punchImpact} width="80" height="80"/>,
   fall: <img id="player" src={playerStandEast} width="80" height="80"/>,

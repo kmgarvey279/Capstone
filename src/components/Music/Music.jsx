@@ -1,23 +1,25 @@
 import React from 'react';
 import Sound from 'react-sound';
 import PropTypes from 'prop-types';
-import bmg1 from '../../assets/sound/music/AnttisInstrumentals.mp3';
-import bmg2 from '../../assets/sound/music/dearDiary.mp3';
+import { connect } from 'react-redux';
+import * as soundsModule from '../../redux/modules/sounds';
+import {bindActionCreators} from 'redux';
+import tracks from '../../assets/sound/music';
 
-function Music(props){
+class Music extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  if (props.sounds.music == 'title'){
+
+  render() {
+    let track = tracks[this.props.sounds.music];
     return (
       <div>
        <Sound
-
+        url={track}
+        loop={true}
         playStatus={Sound.status.PLAYING}/>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-
       </div>
     );
   }
@@ -27,4 +29,10 @@ Music.propTypes = {
   sounds: PropTypes.object,
 }
 
-export default Music;
+function mapDispatchToProps(dispatch) {
+  return {
+    soundsModule : bindActionCreators(soundsModule, dispatch)
+  }
+};
+
+export default (connect(mapDispatchToProps)(Music));

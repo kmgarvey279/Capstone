@@ -1,9 +1,66 @@
-div#UI {
-  color: white;
-  position: absolute;
-  left: 0;
-  top: 0%;
-  width: 100%;
+
+div#UI-content {
+  background-color: steelblue;
+  color: black;
   text-align: center;
   z-index: 10;
+  display: inline-block;
+  width: 600px;
+  border: solid black 1px;
+  border-radius: 5px;
+  height: 60px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  margin-top: 5px;
 }
+
+#hp-bar {
+  position: absolute;
+  left: 10%;
+}
+
+#weapon {
+  position: absolute;
+  left: 0;
+  right: 15%;
+  margin: auto;
+  display: block;
+  margin-top: 6px;
+  height: 35px;
+  width: 60px;
+  border: double black 1px;
+  padding-bottom: 10px;
+  background-color: cornflowerblue;
+}
+
+#skill {
+  position: absolute;
+  left: 15%;
+  right: 0;
+  margin: auto;
+  display: block;
+  margin-top: 6px;
+  height: 35px;
+  width: 60px;
+  border: double black 1px;
+  padding-bottom: 10px;
+  background-color: cornflowerblue;
+}
+
+img {
+  position: relative;
+  bottom: 10px;
+}
+
+#entangle-bar {
+  position: absolute;
+  right: 10%;
+}
+
+
+
+
+
+

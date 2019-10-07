@@ -11,6 +11,8 @@ import switchReducer from './switches';
 import mapReducer from './map';
 import flagReducer from './flags';
 import soundsReducer from './sounds';
+import savesReducer from './save-data';
+import bossReducer from './boss/boss';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
@@ -26,7 +28,9 @@ const rootReducer = combineReducers({
   maps: mapReducer,
   flags: flagReducer,
   text: textReducer,
-  sounds: soundsReducer
+  sounds: soundsReducer,
+  saves: savesReducer,
+  boss: bossReducer
 });
 
 export default rootReducer;

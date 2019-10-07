@@ -42,6 +42,7 @@ class TextBoxes extends React.Component {
           <div id="content">
             <div id="text">{lineToRender}</div>
             <Input text={this.props.text} menu={this.props.menu}/>
+            <span className="next-prompt">Next: <span className="next-button-prompt">Space</span></span>
           </div>
         </div>
       )
@@ -51,6 +52,7 @@ class TextBoxes extends React.Component {
           <div id="content">
             <div id="text">{lineToRender}</div>
             <Options text={this.props.text} menu={this.props.menu}/>
+            <span className="next-prompt">Next: <span className="next-button-prompt">Space</span></span>
           </div>
         </div>
       )
@@ -60,6 +62,16 @@ class TextBoxes extends React.Component {
           <div id="content">
             <Speaker speaker={activeSpeaker}/>
             <div id="dialogueText">{lineToRender}</div>
+            <span className="next-prompt">Next: <span className="next-button-prompt">Space</span></span>
+          </div>
+        </div>
+      );
+    } else if (this.props.text.activeText.includes("phone")) {
+      return (
+        <div id="wrap">
+          <div id="content" className="special">
+            <div id="text">{lineToRender}</div>
+            <div className="next-prompt">Next: <span className="next-button-prompt">Space</span></div> 
           </div>
         </div>
       );
@@ -68,6 +80,7 @@ class TextBoxes extends React.Component {
         <div id="wrap">
           <div id="content">
             <div id="text">{lineToRender}</div>
+            <div className="next-prompt">Next: <span className="next-button-prompt">Space</span></div> 
           </div>
         </div>
       );

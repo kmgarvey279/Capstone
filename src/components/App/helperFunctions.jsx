@@ -22,28 +22,6 @@ export function reverseDirection(direction) {
   }
 };
 
-export function getTileDirection(thisSquareId) {
-    if (thisSquareId == 1) {
-      return 'northWest';
-    } else if (thisSquareId === 133) {
-      return 'southWest';
-    } else if (thisSquareId === 12) {
-      return 'northEast';
-    } else if (thisSquareId === 144) {
-      return 'southEast';
-    } else if (thisSquareId %12 === 0) {
-      return 'south';
-    } else if (thisSquareId < 12) {
-      return 'west';
-    } else if (thisSquareId >= 131) {
-      return 'east';
-    } else if ((thisSquareId - 1) %12 === 0) {
-      return 'north';
-    } else {
-      return 'other';
-    }
-  };
-
 export function checkForPlayer(enemyLocation, playerLocation) {
     if (enemyLocation - 1 === playerLocation || enemyLocation -2 === playerLocation) {
       return 'north'

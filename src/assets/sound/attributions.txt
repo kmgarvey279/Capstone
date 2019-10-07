@@ -1,11 +1,23 @@
 www.littlerobotsoundfactory.com Sci-Fi Sound Effects Library (Open Game Art)
-
 menu click: NenadSimic (Open Game Art)
-
+shot: farfadet46 (Open Game Art)
 robot voice: DaGameKnower (Open Game Art)
-
+slam: Joth (Open Game Art)
+whoosh:  INSTINCT Trailer Sound Effects library
 Space Dimensions (8bit/Retro Version), Space Boss Battle Theme, Space Sprinkles: Matthew Pablo (Open Game Art)
-
+wind: IgnasD (Open Game Art)
 Heart of Machine: Alexandr Zhelanov
-
+monster: Copyright 2012 Iwan 'qubodup' Gabovitch http://qubodup.net qubodup@gmail.com
 Lunar Harvest: FoxSynergy
+metal:  Marcelo Fernandez  http://www.marcelofernandezmusic.com
+Illegality Point: Alexandr Zhelanov https://soundcloud.com/alexandr-zhelanov
+Synthesized explosion: Iwan Gabovitch
+silent world: ryanyunck
+switch on/off: paep3nguin (freesound.org)
+cold silence: knight of fire (opengameart)
+deep space array: Tozan
+phone ring: Werra (freesound.org)
+phone pick up: MootMcnoodles (freesound.org)
+the endless journey Hitctrl (opengameart)
+potion drink: regenDrMinky (freesound.org)
+ping: pomodoro (freesound.org)

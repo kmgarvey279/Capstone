@@ -1,9 +1,17 @@
 //Constants
+export const LOAD_DOORS = "LOAD_DOORS";
 export const CREATE_DOOR = "CREATE_DOOR";
 export const UPDATE_DOOR_LOCK = "UPDATE_DOOR_LOCK";
 export const UPDATE_DOOR_STATUS = "UPDATE_DOOR_STATUS";
 
 //Action Creators
+export function loadDoors(doorsToLoad){
+  return {
+    type: LOAD_DOORS,
+    doorsToLoad: doorsToLoad
+  }
+};
+
 export function createDoor(doorId, location, leadsTo, status, isLocked, direction, newBool) {
   return {
     type: CREATE_DOOR,
@@ -14,7 +22,7 @@ export function createDoor(doorId, location, leadsTo, status, isLocked, directio
     isLocked: isLocked,
     direction: direction
   }
-}
+};
 
 export function updateDoorLock(doorId, newBool) {
   return {
@@ -22,7 +30,7 @@ export function updateDoorLock(doorId, newBool) {
     doorId: doorId,
     isLocked: newBool
   }
-}
+};
 
 export function updateDoorStatus(doorId, newStatus) {
   return {
@@ -30,7 +38,7 @@ export function updateDoorStatus(doorId, newStatus) {
     doorId: doorId,
     status: newStatus
   }
-}
+};
 
 //Initial State
 
@@ -38,9 +46,11 @@ export function updateDoorStatus(doorId, newStatus) {
 const doorReducer = (state = {}, action) => {
   let newState;
   let newDoor;
-  const { doorId, location, isLocked, leadsTo, status, direction } = action;
+  const { doorsToLoad, doorId, location, isLocked, leadsTo, status, direction } = action;
 
   switch (action.type) {
+    case LOAD_DOORS:
+      return doorsToLoad;
     case CREATE_DOOR:
       newState = Object.assign({}, state, {
         [doorId]: {

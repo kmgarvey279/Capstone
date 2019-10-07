@@ -3,17 +3,21 @@ import PropTypes from 'prop-types';
 import './Filter.css';
 
 function Filter(props){
+if (props.branch == 3) {
     return (
-      <div id="fire">
-        <div id="fireAnimate">
+      <div id="spooky">
+        <div id="spookyAnimate">
         </div>
       </div>
     )
+  } else {
+    return null;
   }
+}
 
 
 Filter.propTypes = {
-  filter: PropTypes.string
+  branch: PropTypes.number
 };
 
 export default Filter;

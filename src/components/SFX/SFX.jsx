@@ -18,12 +18,19 @@ class SFX extends React.Component {
 
   render() {
     let effect = effects[this.props.sounds.effect];
+    let loop = false;
+    if (this.props.sounds.effect === 'phone') {
+      loop = true;
+    };
     return (
       <div>
        <Sound
         url={effect}
         onFinishedPlaying={this.handleClearSFX}
-        playStatus={Sound.status.PLAYING}/>
+        playStatus={Sound.status.PLAYING}
+        playbackRate={this.props.playbackRate}
+        loop={loop}
+        volume={75}/>
       </div>
     );
   }

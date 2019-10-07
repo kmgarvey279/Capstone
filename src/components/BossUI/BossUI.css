@@ -1,0 +1,29 @@
+div.boss-ui-wrap {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+
+  div#boss-name {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 80px;
+    font-size: 60px;
+    color: white;  
+  }
+
+
+    div#boss-titles ul {
+        list-style: none;
+        padding: 0;
+    }
+    div#boss-titles li {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 20px;
+        color: white;  
+    }

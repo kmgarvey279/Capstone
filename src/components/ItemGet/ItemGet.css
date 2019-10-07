@@ -19,4 +19,13 @@ div#content {
 
 div#header {
   font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#item-icon {
+  float: left;
+}
+
+#item-icon img {
+  margin-top: 10px;
 }

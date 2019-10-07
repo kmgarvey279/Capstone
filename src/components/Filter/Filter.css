@@ -23,3 +23,25 @@ div#fire {
   top: 0px;
   left: 0px;
   }
+
+div#spooky {
+  opacity: 0.3;
+  background-color: mediumorchid;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: none;
+  top: 0px;
+  left: 0px;
+}
+
+div#spookyAnimate {
+  width: 100%; 
+  height: 100%;
+  margin-left: 100px;
+  background-image: url("../../assets/images/room/spooky-filter.png");
+  background-position: 0px 0px;
+  background-repeat: repeat-y;
+  animation: fire 30s linear infinite;
+}

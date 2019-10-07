@@ -22,9 +22,9 @@ class Options extends React.Component {
   }
 
   handleKeyPress(event){
-    if(event.keyCode === 39){
+    if(event.keyCode === 38){
       this.cycleOption();
-    } else if(event.keyCode === 37){
+    } else if(event.keyCode === 40){
       this.cycleOption();
     } else if (event.keyCode === 32 || event.keyCode === 13) {
       if (this.props.text.activeText.includes("terminal")){

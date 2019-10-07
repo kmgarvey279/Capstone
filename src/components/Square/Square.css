@@ -1,14 +1,94 @@
   @keyframes alert {
-  0%  {bottom: 90px; transform: scale(1.0);}
-  25%  {bottom: 100px; transform: scale(1.2);}
-  50%  {bottom: 90px; transform: scale(1.0);}
-  75%  {bottom: 100px; transform: scale(1.2);}
+  0%  {bottom: 120px; transform: scale(1.0);}
+  25%  {bottom: 130px; transform: scale(1.2);}
+  50%  {bottom: 120px; transform: scale(1.0);}
+  75%  {bottom: 130px; transform: scale(1.2);}
 }
-div#alert{
+
+@keyframes heat {
+  0%  {opacity: 0.3; box-shadow: 0 0 3px yellow;}
+  25%  {opacity: 0.6; box-shadow: 0 0 6px yellow;}
+  50%  {opacity: 0.3; box-shadow: 0 0 3px yellow;}
+  75%  {opacity: 0.6; box-shadow: 0 0 6px yellow;}
+  100%  {opacity: 0.3; box-shadow: 0 0 3px yellow;}
+}
+
+@keyframes goo {
+  0%  {opacity: 0.3;}
+  25%  {opacity: 0.6;}
+  50%  {opacity: 0.3;}
+  75%  {opacity: 0.6;}
+  100%  {opacity: 0.3;}
+}
+
+@keyframes explode {
+  0%  {transform: scale(1.0); opacity: 1.0}
+  25%  {transform: scale(1.5); opacity: 0.8}
+  50%  {transform: scale(2.0); opacity: 0.6}
+  75%  {transform: scale(2.5); opacity: 0.4}
+  100%  {transform: scale(3.0); opacity: 0.2;}
+}
+
+#alert{
   z-index: 500;
+  left: -2.9px;
   position: absolute;
-  bottom: 90px;
+  opacity: 0.8;
+  bottom: 120px;
   animation-iteration-count:infinite;
   animation-name: alert;
   animation-duration: 2s;
+}
+
+.warning {
+  z-index: 10;
+  position: absolute;
+  display: inline-block;
+  left:-15px;
+  opacity: 0.3;
+  width: 50px;
+  height: 50px;
+  background-color: red;
+}
+
+div#warpOff {
+  opacity: 0.5;
+}
+
+div#lava {
+  z-index: 10;
+  position: absolute;
+  display: block;
+  opacity: 0.6;
+  width: 50px;
+  height: 50px;
+  background-color: DarkOrange;
+  animation-iteration-count:infinite;
+  animation-name: heat;
+  animation-duration: 5s;
+}
+
+div#goo {
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  position: absolute;
+  display: block;
+  opacity: 0.8;
+}
+
+
+div#lightning {
+  z-index: 500;
+  position: absolute;
+  display: block;
+  opacity: 0.8;
+}
+
+div#explosion {
+  z-index: 500;
+  position: absolute;
+  display: block;
+  animation-name: explode;
+  animation-duration: 1500ms;
 }

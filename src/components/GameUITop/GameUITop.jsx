@@ -1,21 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import HealthBar from '../HealthBar/HealthBar';
 import * as playerConsts from '../../redux/modules/player/playerConstants';
 import './GameUITop.css';
+import taserIcon from '../../assets/images/items/taserIcon.png';
+import collider from '../../assets/images/items/collider.png';
 
 function GameUITop(props) {
-  let weapon;
-  if (props.player.currentWeapon !== null) {
-    weapon = props.player.currentWeapon;
-  } else {
-    weapon = 'None';
+  let weaponIcon;
+  if (props.player.currentWeapon === null) {
+    weaponIcon = '';
+  } else if (props.player.currentWeapon === 'Taser') {
+    weaponIcon = <img src={taserIcon} width="50" height="50"/>
+  } else if (props.player.currentWeapon === 'Cryostat') {
+    weaponIcon = <img src={cryoIcon} width="50" height="50"/>
   }
   return (
-    <div id="UI">
-        <h3>Health: {props.player.health}/100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        Score: {props.player.score} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        Weapon: &nbsp; &nbsp;{weapon}</h3>
+    <div id="UI-wrap">
+      <div id="UI-content">
+        <div id="hp-bar">
+          <label>
+            Health
+            <HealthBar type={'health'} health={props.player.health} />
+          </label>
+        </div>
+        <div id="weapon">
+            {weaponIcon}  
+        </div>
+        <div id="skill">
+        <img src={collider} width="50" height="50"/>
+        </div>
+        <div id="entangle-bar">
+          <label>
+            Entanglement
+            <HealthBar type={'entanglement'} health={props.player.health} />
+          </label>
+        </div>
+      </div>
     </div>
   );
 }

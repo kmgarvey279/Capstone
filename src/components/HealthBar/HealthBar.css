@@ -1,0 +1,53 @@
+span.hp-full {
+    display: inline-block;
+    height: 23px;
+    width: 10px;
+    border: solid black 1px;
+}
+span.hp-empty {
+    display: inline-block;
+    height: 23px;
+    width: 10px;
+    background: black;
+    border: solid black 1px;
+    position:relative;
+    z-index: 3;
+}
+
+div.health-bar {
+    height: 25px;
+    width: 120px;
+    border: solid black 1.5px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+    div#low.health-bar {
+        background: rgb(62,5,5);
+        background: linear-gradient(0deg, rgba(62,5,5,1) 0%, rgba(255,0,0,1) 100%);
+    }
+    div#mid.health-bar {
+        background: rgb(190,101,10);
+        background: linear-gradient(0deg, rgba(190,101,10,1) 0%, rgba(231,255,0,1) 100%);
+    }
+    div#high.health-bar {
+        background: rgb(5,48,4);
+        background: linear-gradient(0deg, rgba(5,48,4,1) 0%, rgba(10,255,0,1) 100%);
+    }
+
+div.entanglement-bar {
+    height: 25px;
+    width: 120px;
+    background: rgb(16,3,83);
+    background: linear-gradient(90deg, rgba(16,3,83,1) 0%, rgba(43,9,215,1) 30%, rgba(7,123,232,1) 50%, rgba(0,255,219,1) 70%, rgba(226,247,244,1) 100%);
+    border: solid black 1.5px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+#particle-effect {
+    display: inline-block;
+    z-index: 2;
+    position: absolute;
+}
