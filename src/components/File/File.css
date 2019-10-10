@@ -1,3 +1,7 @@
 #branch-difference {
     color: red;
 }
+
+#file-num {
+    font-weight: bold;
+}

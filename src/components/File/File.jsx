@@ -6,14 +6,14 @@ function File(props){
   let fileInfo;
   if(props.relation == 'normal') {
     if(props.saves[props.number].status === 'empty') {
-      fileInfo = <div>File {props.number} - New Game - Time: 0:00</div>;
+      fileInfo = <div><span id="file-num">File {props.number}</span> - New Game</div>;
     } else {
-      fileInfo = <div>File {props.number} {props.saves[props.number].player.name} - Time: 5:24 <div>Branch: 19374219<span id="branch-difference">42</span></div></div>;
+      fileInfo = <div><span id="file-num">File {props.number}</span> {props.saves[props.number].player.name} - Time: 5:24 <div>Branch: 19374219<span id="branch-difference">42</span></div></div>;
     };
   } else if (props.relation == 'current') {
-    fileInfo = <div>File {props.number} - Abandoned Game - Time: 5:29 <div>Branch: 19374219<span id="branch-difference">42</span></div></div>
+    fileInfo = <div><span id="file-num">File {props.number}</span> - Abandoned Game<div>Branch: 19374219<span id="branch-difference">42</span></div></div>
   } else if (props.relation == 'new') {
-    fileInfo = <div>File {props.number} {props.saves[props.number].player.name} - Time: 0:00 <div>Branch: 19374219<span id="branch-difference">23</span></div></div>;
+    fileInfo = <div><span id="file-num">File {props.number}</span> {props.saves[props.number].player.name}<div>Branch: 19374219<span id="branch-difference">23</span></div></div>;
   };
 
     if (props.saves[props.number].status == 'active' || props.relation == 'next') {

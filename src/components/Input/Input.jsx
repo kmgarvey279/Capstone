@@ -38,7 +38,7 @@ class Input extends React.Component {
 
   render(){
     return (
-      <div>
+      <div id="input-wrap">
         <input
         type='text'
         autoFocus={true}

@@ -1584,7 +1584,7 @@ class App extends React.Component {
     this.handleUpdateSprite(location, sprite, direction+"Enter");
   }
 
-//Handle Blocks
+  //Handle Blocks
   moveBlock(blockId, direction, originalLocation, newLocation) {
     //move animation
     this.props.dispatch(soundsModule.changeEffect('scrape'));
@@ -1617,10 +1617,10 @@ class App extends React.Component {
     if (blockCheck.value == 'P') {
       this.blockFall(blockId, newLocation, direction);
     //if new square is lava
-  } else if (blockCheck.value == 'L') {
+    } else if (blockCheck.value == 'L') {
       this.blockSink(blockId, newLocation, direction);
     //if new square is a warp
-  } else if (blockCheck.value == '@') {
+    } else if (blockCheck.value == '@') {
       //add block to warp entry content array
       let newContentArr = this.props.currentRoom[newLocation].content;
       newContentArr.push(["block", blockId]);
@@ -1636,10 +1636,10 @@ class App extends React.Component {
         return content[0] !== 'block';
         });
         this.props.dispatch(roomModule.updateContent(newLocation, filteredContentArr));},
-      100
-    );
-  } else {
-    //otherwise, move normally
+        100
+      );
+    } else {
+      //otherwise, move normally
       let newContentArr = this.props.currentRoom[newLocation].content;
       newContentArr.push(["block", blockId]);
       this.props.dispatch(roomModule.updateContent(newLocation, newContentArr));
@@ -1690,7 +1690,7 @@ class App extends React.Component {
     let spriteClearTimer = setTimeout(() =>
       {this.props.dispatch(roomModule.updateSprite(lavaLocation, ''));
       this.props.dispatch(blocksModule.nullBlock(blockId));
-      this.props.dispatch(roomModule.updateValue(lavaLocation, 'L-sunk', roomConsts.sprites['tile']))},
+      this.props.dispatch(roomModule.updateValue(lavaLocation, 'L-sunk', roomConsts.sprites['lavaCovered']))},
       800
     );
   };
@@ -1745,7 +1745,7 @@ class App extends React.Component {
           this.bossAttack();
         };
       },
-      2000
+      1000
     );
   }
 
@@ -1754,7 +1754,7 @@ class App extends React.Component {
     let start1 = this.props.boss.tileArr[3];
     let start2 = this.props.boss.tileArr[7];
     let direction = this.getRandomDirection();
-    if (rng === 0 || rng === 1) {
+    if (rng === 0) {
       setTimeout(() => {
        //fire projectile
        this.handleProjectile('Taser', 'north', this.props.boss.tileArr[5], 8, <img src={bossShot} width="60" height="60"/>)
@@ -1764,7 +1764,7 @@ class App extends React.Component {
       },
         2000
       );
-    } else if (rng === 2){
+    } else if (rng === 1){
       //summon tentacle
       rng = Math.floor(Math.random() * 140);
       if(this.props.currentRoom[rng].value === '0') {
@@ -1781,7 +1781,7 @@ class App extends React.Component {
           9000
         );
       };
-    } else if (rng === 3){
+    } else if (rng === 2){
       //aoe explosion
       let bossArr = this.props.boss.tileArr;
       let explosionTiles = [];
@@ -1806,16 +1806,16 @@ class App extends React.Component {
         bossArr[9] + 26,
         bossArr[9] + 14
       );
-      let filteredContentArr = previousContentArr.filter(function(content) {
-        return content[0] !== 'enemy';
-      });
+      let room = this.props.currentRoom;
       let filteredTiles = explosionTiles.filter(function(tile) {
-        return this.props.currentRoom[tile].value === '0';
+        if(tile > 0 && tile < 156) {
+          return room[tile].value === '0';
+        }
       });
-      explosionTiles.forEach(tile => {
+      filteredTiles.forEach(tile => {
         this.props.dispatch(roomModule.setWarning(tile, true));
       });
-      let shuffledTiles = this.shuffleArray(explosionTiles)
+      let shuffledTiles = this.shuffleArray(filteredTiles)
       setTimeout(() => {
         this.props.dispatch(soundsModule.changeEffect('explosion'));
         shuffledTiles.forEach(tile => {

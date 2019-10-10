@@ -7,25 +7,21 @@ function MapRoom(props){
   if (props.roomId < 0) {
     return (
       <div id="empty">
-        {props.roomId}
       </div>
     )
   } else if (props.current == props.roomId) {
     return (
       <div id="current">
-        {props.roomId}
       </div>
     )
   } else if (props.visited == true) {
     return (
       <div id="visited">
-        {props.roomId}
       </div>
     )
   } else {
     return (
       <div id="unvisited">
-        {props.roomId}
       </div>
     )
   }

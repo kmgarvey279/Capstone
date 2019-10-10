@@ -4,7 +4,8 @@ export const examine = {
   tube: {1: ['Some sort of storage tank.', 'You can barely make out a human-like shape through the frosted glass.']},
   uglyBed1: {1: ['A truely hideous bed.', 'Just looking at it hurts your eyes.']},
   uglyBed2: {1: ['A truely hideous bed.', 'Just looking at it hurts your eyes.']},
-  terminal1: {1: ['Guest %*#@*# successfully revitalized. All vital signs normal. Stored belongings have been returned to the guest.', 'Inventory: 1) fresh as hell rags. 2) wicked ass boots.'],
+  shelf: {1: ['A shelf filled with assorted junk.', 'Nothing looks worth taking.']},
+  terminal1: {1: ['Logging in...'],
               2: ['options', 'Please input new door lock status:', ['Lock','Unlock']],
               3: ['results', ['Door Lock Engaged.','Door Lock Disengaged.']],
               4: ['Logging Out...']
@@ -20,7 +21,7 @@ export const examine = {
             },
   terminal4: {1: ['I heard her voice again. Beautiful. Haunting. It makes me feel like the entire rise and fall of the human race was all worth it. Just for one lowely human to experence such sublime majesty.'],
               2: ['After requesting access to some of the technology dr. ____\'s team was working on, I was able to confirm my hypothesis.', 'The life forms I have been studying were indeed attracted to the dimentional distortions produced by the same technology that powers this ship.'],
-              3: ['Our ship\'s verebilzation no doubt drew the organisms to us in the first place.', 'If I could only find a way to amplifiy them further, prehaps the ship could serve as an even more effective beacon. Prehaps even one strong enough to catch HER many eyes...']
+              3: ['Our ship no doubt drew the organisms to us in the first place.', 'If I could only find a way to amplifiy them further, prehaps the ship could serve as an even more effective beacon. Prehaps even one strong enough to catch HER many eyes...']
             },
   terminal5: {1: ['When dimentional technology was first developed as a power source, a common debate amoung the top minds in the field revolved around the exact source of the nearly endless supply of energy it allowed us to tap into.'],
               2: ['One theory that I found quite laughable at the time said that it was in fact drawing the power from other iterations of earth. As if in some distant dimention, entire cities were going dark just for us to heat up our microwave burritos or prehaps depriving their planet of solar warmth to fuel our funny cat pictures.'],
@@ -36,16 +37,16 @@ export const examine = {
      
 export const dialogue = {
   A1: {
-    1: ['???', ['As I am sure you\'ve noticed, the door to this room is locked.', 'The terminal next to you should be able to override the lock.', 'I\'d do it myself, but I have limited access to this facility\'s security system.']],
+    1: ['Strange Voice', ['As I am sure you\'ve noticed, the door to this room is locked.', 'The terminal next to you should be able to override the lock.', 'I\'d do it myself, but I have limited access to this facility\'s security system.']],
     2: ['Confused Girl', ['...']],
-    3: ['???', ['No doubt you have a number of questions.', 'They will be answered in due time, but before any of that, you will need a name.']],
-    4: ['Very Confused and Mildly Annoyed Girl', ['...']],
-    5: ['???', ['Unfortunately, your records on file have been irreversibly corrupted and it is impossible to determine your identity.', 'However, no need to despair. Think of this as a fresh start.', 'You can be whomever you want!']],
+    3: ['Strange Voice', ['No doubt you have a number of questions.', 'They will be answered in due time, but before any of that, you will need a name.']],
+    4: ['Very Confused Girl', ['...']],
+    5: ['Strange Voice', ['Unfortunately, your records on file have been irreversibly corrupted and it is impossible to determine your identity.', 'However, no need to despair. Think of this as a fresh start.', 'You can be whomever you want!']],
     6: ['', ['textInput', 'Name Her!']],
-    7: ['???', ['Hmm. Your suggestion has been duly noted. Thank you for your input.', 'Your name will hensefore be Aurora', 'It is ""SYMBOLIC"".']],
-    8: ['???', ['Truly much more fitting than your old forgotten name or any silly suggestion whispered through the ether by a bunch of nobodies who seem to be under the mistaken impression that their opinions hold any weight here.']],
+    7: ['Strange Voice', ['Hmm. Your suggestion has been duely noted. Thank you for your input.', 'Your name will henceforth be "Aurora"', 'It is ""SYMBOLIC"".']],
+    8: ['Strange Voice', ['Truly much more fitting than your old forgotten name or any silly suggestion whispered through the ether by a bunch of nobodies who seem to be under the mistaken impression that their opinions hold any weight here.']],
     8: ['Aurora', ['...']],
-    9: ['???', ['See? Much better.']]
+    9: ['Strange Voice', ['See? Much better.']]
   },
   B1: {
     1: ['???', ['Clever girl.']],

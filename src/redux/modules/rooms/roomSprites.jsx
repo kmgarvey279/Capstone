@@ -6,6 +6,7 @@ import tenta from '../../../assets/images/room/tenta.gif';
 import tentaHurt from '../../../assets/images/room/tenta-damage.gif';
 import ice from '../../../assets/images/room/ice.png';
 import lava from '../../../assets/images/room/lava.gif';
+import lavaCovered from '../../../assets/images/room/lava-covered.png';
 import coin from '../../../assets/images/coin.png';
 import wall from '../../../assets/images/room/wall-inner-horizontal.png';
 import tile from '../../../assets/images/room/tile.png';
@@ -123,6 +124,7 @@ const sprites = {
   pit: <img src={pit} width="50" height="50"/>,
   ice: <img src={ice} width="50" height="50"/>,
   lava: <img src={lava} width="50" height="50"/>,
+  lavaCovered: <img src={lavaCovered} width="50" height="50"/>,
   coin: <img src={coin} width="50" height="50"/>,
   wall: <img src={wall} width="50" height="50"/>,
   tile: <img src={tile} width="50" height="50"/>,
