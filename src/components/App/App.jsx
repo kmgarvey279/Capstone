@@ -130,8 +130,6 @@ class App extends React.Component {
     } else if (event.keyCode === 13) {
       if (this.props.game.gameState == 'active' || this.props.game.gameState == 'paused') {
         this.pauseGame();
-      } else if (this.props.game.gameState == 'dialogue') {
-        this.endDialogue();
       } else if (this.props.game.gameState == 'itemGet') {
         this.closeItemGet();
       };
@@ -376,7 +374,7 @@ class App extends React.Component {
     let alert = false;
     let tileStyle;
     //set initial player location
-    if (squareValue == '1') {
+    if (squareValue == '1' && this.props.game.previousRoomId == null) {
       this.props.dispatch(gameModule.setRespawnPoint(thisSquareId));
       sprite = playerConsts.sprites.stand['south'];
       content.push(['player']);
@@ -805,12 +803,12 @@ class App extends React.Component {
         this.closeDoor(trigger[1]);
       };
       //trigger first event flag
-      if (this.props.flags[1].triggered == false) {
-        let eventTimer = setTimeout(() =>
+        if (this.props.flags[1].triggered == false) {
+          let eventTimer = setTimeout(() =>
           this.triggerEvent(1, 'A'),
           800
-        );
-      };
+          );
+        };
     }
     //check if player was standing on a switch
     let hasSwitch = previousContentArr.find(function(content) {
@@ -1421,6 +1419,12 @@ class App extends React.Component {
       this.props.dispatch(soundsModule.changeEffect('changeDoor'));
       if (this.props.text.selectedOption == 1) {
         this.props.dispatch(doorsModule.updateDoorLock('1-A', false));
+        if(this.props.flags[1].triggered == false) {
+          let eventTimer = setTimeout(() =>
+            this.triggerEvent(1, 'B'),
+            1000
+          )
+        }
       } else {
         this.props.dispatch(doorsModule.updateDoorLock('1-A', true));
       };
@@ -1859,7 +1863,12 @@ class App extends React.Component {
       };
       tentacleArr.forEach(tile => {
         this.props.dispatch(roomModule.setWarning(tile, true));
-      })
+      });
+      setTimeout(() => {
+        tentacleArr.forEach(tile => {
+          this.props.dispatch(roomModule.updateValue(rng, '~', roomConsts.sprites['spookyTile']));
+        }); 
+      }, 600);
     }
   }
 

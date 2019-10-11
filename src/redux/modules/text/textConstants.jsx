@@ -49,16 +49,16 @@ export const dialogue = {
     9: ['Strange Voice', ['See? Much better.']]
   },
   B1: {
-    1: ['???', ['Clever girl.']],
+    1: ['Strange Voice', ['Clever girl.']],
     2: ['Clever Girl', ['...']],
-    3: ['???', ['No doubt you have a number of questions.', 'They will be answered in due time, but before any of that, you will need a name.']],
-    4: ['Very Confused and Mildly Annoyed Girl', ['...']],
-    5: ['???', ['Unfortunately, your records on file have been irreversibly corrupted and it is impossible to determine your identity.', 'However, no need to despair. Think of this as a fresh start.', 'You can be whomever you want!']],
+    3: ['Strange Voice', ['No doubt you have a number of questions.', 'They will be answered in due time, but before any of that, you will need a name.']],
+    4: ['Confused Girl', ['...']],
+    5: ['Strange Voice', ['Unfortunately, your records on file have been irreversibly corrupted and it is impossible to determine your identity.', 'However, no need to despair. Think of this as a fresh start.', 'You can be whomever you want!']],
     6: ['', ['textInput', 'Name Her!']],
-    7: ['???', ['Hmm. Your suggestion has been duly noted. Thank you for your input.', 'Your name will hensefore be Aurora', 'It is ""SYMBOLIC"".']],
-    8: ['???', ['Truly much more fitting than your old forgotten name or any silly suggestion whispered through the ether by a bunch of nobodies who seem to be under the mistaken impression that their opinions hold any weight here.']],
+    7: ['Strange Voice', ['Hmm. Your suggestion has been duly noted. Thank you for your input.', 'Your name will hensefore be Aurora', 'It is ""SYMBOLIC"".']],
+    8: ['Strange Voice', ['Truly much more fitting than your old forgotten name or any silly suggestion whispered through the ether by a bunch of nobodies who seem to be under the mistaken impression that their opinions hold any weight here.']],
     8: ['Aurora', ['...']],
-    9: ['???', ['See? Much better.']]
+    9: ['Strange Voice', ['See? Much better.']]
   },
   A2: {
     1: ['???', ['My, how inconvenient.', 'It would appear that you will need to find something to weigh the switch in your stead.', 'Might I suggest one of those ample boxes lying around?', 'Fortunately for us, it has been quite some time since the facility\'s cleaning crew was last online.']],

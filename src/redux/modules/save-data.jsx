@@ -50,7 +50,7 @@ export function changeStatus(file, status) {
 const initialState = {
   1: {
     id: 1,
-    status: "Empty",
+    status: "empty",
     player: {},
     flags: {},
     game: {},
@@ -59,7 +59,7 @@ const initialState = {
   },
   2: {
     id: 2,
-    status: "Empty",
+    status: "empty",
     player: {},
     flags: {},
     game: {},
@@ -68,7 +68,7 @@ const initialState = {
   },
   3: {
     id: 3,
-    status: "Empty",
+    status: "empty",
     player: {},
     flags: {},
     game: {},
