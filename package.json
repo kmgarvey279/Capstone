@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest; exit 0",
     "start": "webpack-dev-server",
-    "build": "node node_modules/webpack/bin/webpack.js --display-error-details"
+    "heroku-prebuild": "npm install --dev"
   },
   "engines": {
     "node": "v10.16.0"
