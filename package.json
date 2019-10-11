@@ -29,7 +29,9 @@
     "redux": "^3.7.2",
     "style-loader": "^1.0.0",
     "styled-jsx": "^3.2.1",
-    "uifx": "^2.0.3"
+    "uifx": "^2.0.3",
+    "webpack": "^3.4.0",
+    "webpack-dev-server": "^2.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
