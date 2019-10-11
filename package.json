@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest; exit 0",
-    "start": "node server.js"
+    "heroku-prebuild": "npm install --dev",
+    "start": "webpack"
   },
   "engines": {
     "node": "v10.16.0"
