@@ -28,7 +28,7 @@
     "react-transition-group": "^4.2.1",
     "redux": "^3.7.2",
     "style-loader": "^1.0.0",
-    "styled-jsx": "^3.2.1",
+    "styled-jsx": "^5.1.0",
     "uifx": "^2.0.3"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "eslint-loader": "^2.2.1",
     "eslint-plugin-react": "^7.14.2",
     "file-loader": "^1.1.6",
-    "html-webpack-plugin": "^2.29.0",
+    "html-webpack-plugin": "^5.5.0",
     "react-hot-loader": "^3.0.0-beta.7",
     "url-loader": "^0.6.2",
     "webpack": "^3.4.0",
